@@ -83,7 +83,6 @@ class bbgg2DFitter {
   float _minHigMjjFit;
   float _maxHigMjjFit;
   int _fitStrategy = 2;
-  int _ncat0 = 0;
   bool _useDSCB = 0;
   bool _doARW = 0;
   std::map<int,float> sigExpec;
@@ -94,7 +93,6 @@ class bbgg2DFitter {
   RooWorkspace* _w;
   std::string _folder_name;
 
-  //TCanvas *_c1, *_c2;
 
  public :
    bbgg2DFitter() {}
@@ -105,7 +103,6 @@ class bbgg2DFitter {
 		   float minSigFitMgg,float maxSigFitMgg,float minSigFitMjj,float maxSigFitMjj,
 		   float minHigMggFit,float maxHigMggFit,float minHigMjjFit,float maxHigMjjFit,
 		   Int_t doNRW=-2, std::string logFileName="", bool doARW=0);
-   void SetNCat0(int nc0) { _ncat0 = nc0;}
    void UseDoubleSidedCB() { _useDSCB = 1;}
    void SetVerbosityLevel(Int_t v) {_verbLvl=v;}
    void SetCut(TString cut) {_cut = cut;}
@@ -126,7 +123,7 @@ class bbgg2DFitter {
    void DoARW() {_doARW = 1;}
   
    void SetConstantParams(const RooArgSet* params); 
-   void PrintWorkspace();
+
    void SetSigExpectedCats(int cat, float expec) {
      if(sigExpec.find(cat) != sigExpec.end() ){std::cout << "[SetSigExpectedCats] Cat already set!" << std::endl;} else { sigExpec[cat] = expec; }}
    void SetBkgExpectedCats(int cat, float expec) {
@@ -147,8 +144,8 @@ class bbgg2DFitter {
    void SetHigExpectedCats(int cat, TString higNm, float expec) { higExpec[cat][higNm] = expec;}
    float GetExpectedCats(int cat, TString higNm) { return higExpec[cat][higNm];}
 
-   std::vector<float> EffectiveSigma(RooRealVar* mass, RooAbsPdf* binned_pdf, float wmin, float wmax, float step, float epsilon);
-
+   void PrintWorkspace() {_w->Print("v");}
+ 
    ClassDef(bbgg2DFitter,0);
 };
 

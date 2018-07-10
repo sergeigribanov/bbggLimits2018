@@ -87,25 +87,21 @@ def runFullChain(opt, Params, point=None, NRgridPoint=-1, extraLabel=''):
   else:
     logLvl = logging.DEBUG
 
-  LTDir  = os.getenv("CMSSW_BASE")+Params['LTDIR']
+  LTDir  = os.getenv("CMSSW_BASE")+'/src/HiggsAnalysis/bbggLimits2018/'+Params['LTDIR']
   if '/tmp' in Params['LTDIR'] or '/store' in Params['LTDIR'] or '/afs' in Params['LTDIR']:
     LTDir = Params['LTDIR']
     if '/store' in Params['LTDIR']:
       LTDir = '/eos/cms'+Params['LTDIR']
 
-  signalModelCard = os.getenv("CMSSW_BASE")+Params['signalModelCard']
   lumi = 35.87 # Only used for plot produced by bbgg2Dfitter
   energy = str(Params["energy"])
+  NCAT    = Params["ncat"]
   mass   = Params["higgsMass"]
   addHiggs   = Params["addHiggs"]
   scaleSingleHiggs = Params["scaleSingleHiggs"]
   doBlinding = Params["doBlinding"]
   doBands = Params["doBands"]
-  NCAT    = Params["ncat"]
-  doBrazilianFlag = Params["doBrazilianFlag"]
-  Combinelxbatch = Params['Combinelxbatch']
   doSingleLimit = Params['doSingleLimit']
-  drawSignalFit = Params['drawSignalFit']
   doCombine       = Params["runCombine"]
   useSigTheoryUnc = Params["useSigTheoryUnc"]
   HH   = Params["HH"]
@@ -124,9 +120,6 @@ def runFullChain(opt, Params, point=None, NRgridPoint=-1, extraLabel=''):
               Params["minHigMggFit"],  Params["maxHigMggFit"],
               Params["minHigMjjFit"],  Params["maxHigMjjFit"]]
 
-  if NCAT > 3:
-    mainLog.error("Error NCAT>3!")
-    return __BAD__
 
   if point!=None and NRgridPoint!=-1:
     print 'WARning: cannot have both the Node and grid Point. Chose one and try again'
@@ -200,8 +193,14 @@ def runFullChain(opt, Params, point=None, NRgridPoint=-1, extraLabel=''):
 
   createDir(newFolder,mainLog)
 
+  allCatFitsTemplate = os.getcwd()+'/'+Params['RooFitTemplateName']+'.rs'
+  os.system(' '.join(['cat', os.getcwd()+'/'+Params['RooFitTemplateName']+'_vars.rs', os.getcwd()+'/'+Params['RooFitTemplateName']+'_cat*.rs','>', allCatFitsTemplate]))
+
+  if opt.verb>1:
+    print "File with PDF templates:\n", allCatFitsTemplate
+
   HLFactoryname= str(Label)
-  hlf = RooStats.HLFactory(HLFactoryname, signalModelCard, False)
+  hlf = RooStats.HLFactory(HLFactoryname, allCatFitsTemplate, False)
   w = hlf.GetWs()
 
   theFitter = bbgg2DFitter()
@@ -215,13 +214,13 @@ def runFullChain(opt, Params, point=None, NRgridPoint=-1, extraLabel=''):
 
   theFitter.SetVerbosityLevel(opt.verb)
 
+  if opt.verb>1:
+    theFitter.PrintWorkspace();
 
   if opt.ttHTaggerCut!=None:
     theFitter.SetCut("ttHTagger > "+str(opt.ttHTaggerCut))
     if opt.verb>0:
       mainLog.info('Apply the cut on ttHTagger: ' + str(opt.ttHTaggerCut))
-
-  theFitter.SetNCat0(2)
 
   # Fit strategies. 1: 1D - m(gg); 2: 2D - m(gg),m(jj)
   if fitStrategy not in [1,2]:
@@ -252,6 +251,9 @@ def runFullChain(opt, Params, point=None, NRgridPoint=-1, extraLabel=''):
   mainLog.info("\t SIGNAL ADDED. Node=%r, GridPoint=%r", point,NRgridPoint)
   if opt.verb>0: p1 = printTime(start, start, mainLog)
 
+  if opt.verb>1:
+    theFitter.PrintWorkspace();
+
   theFitter.SigModelFit(mass)
   mainLog.info("\t SIGNAL FITTED. Node=%r, GridPoint=%r", point,NRgridPoint)
   if opt.verb>0: p2 = printTime(p1,start, mainLog)
@@ -267,7 +269,6 @@ def runFullChain(opt, Params, point=None, NRgridPoint=-1, extraLabel=''):
       mainLog.debug('Here will add SM Higgs contributions \n Higgs types: '+ pformat(higTypes))
     higgsExp = {}
     for iht,HT in enumerate(higTypes):
-      higgsExp[HT] = [0,0]
       ht = higTypes[HT]
       if opt.verb>1:
         mainLog.debug('iht = %r, ht = %r, HT = %r' % (iht,ht,HT))
@@ -277,7 +278,9 @@ def runFullChain(opt, Params, point=None, NRgridPoint=-1, extraLabel=''):
       theFitter.HigModelFit(mass,iht, str(HT) )
       theFitter.MakeHigWS(str('ws_hhbbgg.')+str(HT), iht, str(HT))
 
-      higgsExp[HT] = [exphig[0], exphig[1]]
+      higgsExp[HT] = []
+      for c in range(NCAT):
+        higgsExp[HT].append(exphig[c])
 
     if opt.verb>1:
       mainLog.debug("Done SM Higgs bzz")
@@ -345,16 +348,11 @@ def runFullChain(opt, Params, point=None, NRgridPoint=-1, extraLabel=''):
 
   if doSingleLimit or isRes:
     if doCombine:
-      runCombine(newFolder+"/", doBlinding, mainLog, combineOpt, Combinelxbatch, Label)
+      runCombine(newFolder+"/", doBlinding, mainLog, combineOpt,  Label)
 
 
   #Nonresonant data card massaging...
   if not isRes:
-
-    # Now we actually need to fix the combined card
-    #strReplace = baseFolder+'/'+Label+'/datacards/'+os.getenv("CMSSW_BASE")+'/src/HiggsAnalysis/bbggLimits2018/'
-    #os.system("sed -i 's|"+strReplace+"||g' "+combCard)
-    #mainLog.info("String to replace: "+ strReplace)
 
     if doCombine:
       for method in [1,2,3]:
@@ -363,7 +361,7 @@ def runFullChain(opt, Params, point=None, NRgridPoint=-1, extraLabel=''):
         # If combineOpt==4: run all of them at once
         if combineOpt!=4 and method!=combineOpt: continue
         try:
-          combStatus = runCombine(newFolder, doBlinding, mainLog, method, Combinelxbatch, Label, scaleSingleHiggs)
+          combStatus = runCombine(newFolder, doBlinding, mainLog, method,  Label, scaleSingleHiggs)
         except:
           return __BAD__
         mainLog.info("\t COMBINE with Option=%r is DONE. Node=%r, GridPoint=%r \n \t Status = %r",
