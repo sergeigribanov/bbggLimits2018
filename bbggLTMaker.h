@@ -34,7 +34,7 @@ public :
    // Some external variables:
    Double_t _normalization;
    Bool_t _genDiPhotonFilter;
-   
+   Int_t _whichCategorization;
    //Photon ID SF stuff
    TFile* photonidFile;
    TH2F* photonIDhist;

@@ -12,11 +12,11 @@ void bbgg2DFitter::Initialize(RooWorkspace* workspace, Int_t SigMass, float Lumi
 {
   //std::cout<<"DBG.  We Initialize..."<<std::endl;
 
+  _w = new RooWorkspace(*workspace);
   _doblinding = doBlinding;
   _NCAT = nCat;
   _sigMass = SigMass;
   _addHiggs = AddHiggs;
-  _w = new RooWorkspace(*workspace);
   _lumi = Lumi;
   _cut = "1";
   _folder_name=folder_name;
@@ -416,9 +416,9 @@ void bbgg2DFitter::HigModelFit(float mass, int higgschannel, TString higName)
 	
 	if(higName.Contains("ggh") == 1 || higName.Contains("vbf") == 1) {
 	  mjjHig[c] = new RooBernstein(TString::Format("mjjHig_%s_cat%d",higName.Data(),c),"",*mjj,
-				       RooArgList( *_w->var( TString::Format("mjj_hig_slope1_%s_cat%d", higName.Data(),c) ),
-						   *_w->var( TString::Format("mjj_hig_slope2_%s_cat%d", higName.Data(),c) ),
-						   *_w->var( TString::Format("mjj_hig_slope3_%s_cat%d", higName.Data(),c) ) ));
+				       RooArgList( *_w->var( TString::Format("mjj_hig_par1_%s_cat%d", higName.Data(),c) ),
+						   *_w->var( TString::Format("mjj_hig_par2_%s_cat%d", higName.Data(),c) ),
+						   *_w->var( TString::Format("mjj_hig_par3_%s_cat%d", higName.Data(),c) ) ));
 	}
 	else 
 	  mjjHig[c] = (RooAbsPdf*) _w->pdf(TString::Format("mjjHig_%s_cat%d",higName.Data(),c));
@@ -772,8 +772,8 @@ RooFitResult* bbgg2DFitter::BkgModelFit(Bool_t dobands, bool addhiggs)
 
     if (_verbLvl>1) {
       std::cout<<"\t categ="<<c<<std::endl;
-      if(_doblinding==0 && _fitStrategy==2) std::cout << "####### NUMBER OF OBSERVED EVENTSSSS::: " << data_h2->Integral() << std::endl;
-      if(_doblinding==0 && _fitStrategy==1) std::cout << "####### NUMBER OF OBSERVED EVENTSSSS::: " << data_h11->Integral() << std::endl;
+      if(_doblinding==0 && _fitStrategy==2) std::cout << "####### NUMBER OF OBSERVED EVENTS: " << data_h2->Integral() << std::endl;
+      if(_doblinding==0 && _fitStrategy==1) std::cout << "####### NUMBER OF OBSERVED EVENTS: " << data_h11->Integral() << std::endl;
       std::cout<<"\t sumEntries()="<<data[c]->sumEntries()<<std::endl;
     }
 
@@ -787,26 +787,26 @@ RooFitResult* bbgg2DFitter::BkgModelFit(Bool_t dobands, bool addhiggs)
 
     ////////////////////////////////////
     // these are the parameters for the bkg polinomial
-    // one slope by category - float from -10 > 10
+    // one par by category - float from -10 > 10
     // we first wrap the normalization of mggBkgTmp0, mjjBkgTmp0
-    // CMS_hhbbgg_13TeV_mgg_bkg_slope1
+    // CMS_hhbbgg_13TeV_mgg_bkg_par1
     _w->factory(TString::Format("BkgPdf_cat%d_norm[1.0,0.0,100000]",c));
     if (_verbLvl>1) std::cout << "[BkgModelFit] Cat loop 2 - cat" << c << std::endl;
     if (_verbLvl>1) std::cout << "[BkgModelFit] Cat loop 3 - cat" << c << std::endl;
 
     RooFormulaVar *mgg_p0amp = new RooFormulaVar(TString::Format("mgg_p0amp_cat%d",c),"","@0*@0",
-						            *_w->var(TString::Format("CMS_hhbbgg_13TeV_mgg_bkg_slope1_cat%d",c)));
+						            *_w->var(TString::Format("CMS_hhbbgg_13TeV_mgg_bkg_par1_cat%d",c)));
     RooFormulaVar *mgg_p1amp = new RooFormulaVar(TString::Format("mgg_p1amp_cat%d",c),"","@0*@0",
-						 RooArgList(*_w->var(TString::Format("CMS_hhbbgg_13TeV_mgg_bkg_slope2_cat%d",c)) ));
+						 RooArgList(*_w->var(TString::Format("CMS_hhbbgg_13TeV_mgg_bkg_par2_cat%d",c)) ));
     RooFormulaVar *mgg_p2amp = new RooFormulaVar(TString::Format("mgg_p2amp_cat%d",c),"","@0*@0",
-						 RooArgList(*_w->var(TString::Format("CMS_hhbbgg_13TeV_mgg_bkg_slope3_cat%d",c)) ));
+						 RooArgList(*_w->var(TString::Format("CMS_hhbbgg_13TeV_mgg_bkg_par3_cat%d",c)) ));
 
     RooFormulaVar *mjj_p0amp = new RooFormulaVar(TString::Format("mjj_p0amp_cat%d",c),"","@0*@0",
-						            *_w->var(TString::Format("CMS_hhbbgg_13TeV_mjj_bkg_slope1_cat%d",c)));
+						            *_w->var(TString::Format("CMS_hhbbgg_13TeV_mjj_bkg_par1_cat%d",c)));
     RooFormulaVar *mjj_p1amp = new RooFormulaVar(TString::Format("mjj_p1amp_cat%d",c),"","@0*@0",
-						 RooArgList(*_w->var(TString::Format("CMS_hhbbgg_13TeV_mjj_bkg_slope2_cat%d",c)) ));
+						 RooArgList(*_w->var(TString::Format("CMS_hhbbgg_13TeV_mjj_bkg_par2_cat%d",c)) ));
     RooFormulaVar *mjj_p2amp = new RooFormulaVar(TString::Format("mjj_p2amp_cat%d",c),"","@0*@0",
-						 RooArgList(*_w->var(TString::Format("CMS_hhbbgg_13TeV_mjj_bkg_slope3_cat%d",c)) ));
+						 RooArgList(*_w->var(TString::Format("CMS_hhbbgg_13TeV_mjj_bkg_par3_cat%d",c)) ));
 
 
     if (_verbLvl>1) std::cout << "[BkgModelFit] Cat loop 4 - cat" << c << std::endl;

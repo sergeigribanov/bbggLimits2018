@@ -281,9 +281,11 @@ def runFullChain(opt, Params, point=None, NRgridPoint=-1, extraLabel=''):
       higgsExp[HT] = []
       for c in range(NCAT):
         higgsExp[HT].append(exphig[c])
+        if opt.verb>1:
+          mainLog.debug('Hig events for %r, cat %r: %r' % (HT,c,exphig[c]))
 
     if opt.verb>1:
-      mainLog.debug("Done SM Higgs bzz")
+      mainLog.debug("Done SM Higgs")
 
   ddata = str(LTDir + '/LT_'+dataName+'.root')
   ddata = ddata.replace("%MASS%", str(point))
@@ -325,23 +327,18 @@ def runFullChain(opt, Params, point=None, NRgridPoint=-1, extraLabel=''):
     sigExp[cc] = theFitter.GetSigExpectedCats(cc);
     if not doBlinding:
       bkgObs[cc] = theFitter.GetObservedCats(cc);
-
-    sigExpStr += "%f" % sigExp[cc]
-    bkgObsStr += "%f" % bkgObs[cc]
-    if cc < NCAT-1:
-      sigExpStr += ","
-      bkgObsStr += ","
-
-  # print PID, "IM HERE2"
+    
+    if opt.verb>1:
+      mainLog.debug('Events in SIG: %r,  OBS (BKG): %r' % (sigExp[cc], bkgObs[cc]))
 
   # Make datacards:
   myLoc = os.getenv("CMSSW_BASE") + '/src/HiggsAnalysis/bbggLimits2018/'+newFolder
   if isRes==1:
-    DataCardMaker(str(myLoc), NCAT, sigExpStr, bkgObsStr, isRes)
+    DataCardMaker(str(myLoc), NCAT, sigExp, bkgObs, isRes)
   elif addHiggs == 0:
-    DataCardMaker(str(myLoc), NCAT, sigExpStr, bkgObsStr, isRes)
+    DataCardMaker(str(myLoc), NCAT, sigExp, bkgObs, isRes)
   else:
-    DataCardMaker_wHiggs(str(myLoc), NCAT, sigExpStr, bkgObsStr, higgsExp)
+    DataCardMaker_wHiggs(str(myLoc), NCAT, sigExp, bkgObs, higgsExp)
 
   mainLog.info("\t DATACARD DONE. Node/Mass=%r, GridPoint=%r", point,NRgridPoint)
   if opt.verb>0: p7 = printTime(p6,start,mainLog)

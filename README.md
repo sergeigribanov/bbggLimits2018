@@ -26,3 +26,7 @@ scramv1 b clean; scramv1 b
 ```
 ./runLimit.py -f conf_default.json --node=SM -o OutDir
 ```
+where config file can be edited to point to input directory and various parameters.
+
+The results of the limit will be in `OutDir/Node_SM/result_1.log`. In case of problems,
+the logfile _mainLog_data-time.log[.bbgg2D]_ can be useful

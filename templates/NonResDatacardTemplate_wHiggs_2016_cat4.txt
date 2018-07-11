@@ -3,23 +3,23 @@ jmax 6 number of processes minus 1
 kmax * number of nuisance parameters
 ----------------------------------------------------------------------------------------------------------------------------------
 
-shapes data_obs cat2 INPUTBKGLOC w_all:data_obs_cat2
-shapes Bkg cat2 INPUTBKGLOC w_all:CMS_Bkg_cat2
-shapes Sig cat2 INPUTSIGLOC w_all:CMS_sig_cat2
-shapes ggh cat2 INPUTGGHLOC w_all:CMS_hig_ggh_cat2
-shapes tth cat2 INPUTTTHLOC w_all:CMS_hig_tth_cat2
-shapes vh  cat2 INPUTVHLOC w_all:CMS_hig_vh_cat2
-shapes bbh cat2 INPUTBBHLOC w_all:CMS_hig_bbh_cat2
-shapes vbf cat2 INPUTVBFLOC w_all:CMS_hig_vbf_cat2
+shapes data_obs cat4 INPUTBKGLOC w_all:data_obs_cat4
+shapes Bkg cat4 INPUTBKGLOC w_all:CMS_Bkg_cat4
+shapes Sig cat4 INPUTSIGLOC w_all:CMS_sig_cat4
+shapes ggh cat4 INPUTGGHLOC w_all:CMS_hig_ggh_cat4
+shapes tth cat4 INPUTTTHLOC w_all:CMS_hig_tth_cat4
+shapes vh  cat4 INPUTVHLOC w_all:CMS_hig_vh_cat4
+shapes bbh cat4 INPUTBBHLOC w_all:CMS_hig_bbh_cat4
+shapes vbf cat4 INPUTVBFLOC w_all:CMS_hig_vbf_cat4
 
 ----------------------------------------------------------------------------------------------------------------------------------
-bin          cat2
-observation  OBS_CAT2
+bin          cat4
+observation  OBS_CAT4
 ----------------------------------------------------------------------------------------------------------------------------------
-bin                                   cat2	     cat2	    cat2           cat2           cat2           cat2           cat2
+bin                                   cat4	     cat4	    cat4           cat4           cat4           cat4           cat4
 process                               Sig            Bkg            vbf            bbh            vh             tth            ggh
 process                               0              1              2              3              4              5              6
-rate				      SIG_CAT2	     1		    GGH_CAT2	   TTH_CAT2	  VH_CAT2	 BBH_CAT2	VBF_CAT2
+rate				      SIG_CAT4	     1		    GGH_CAT4	   TTH_CAT4	  VH_CAT4	 BBH_CAT4	VBF_CAT4
 
 ----------------------------------------------------------------------------------------------------------------------------------
 CMS_btag_cferr1         lnN           1.043/1.035    -              1.049/0.92     1.009/1.001    1.087/0.979    1.056/0.974    1.026/0.912
@@ -74,12 +74,12 @@ CMS_hbb_sig_sigmaScale   param  1 0.05
 CMS_hgg_sig_sigmaScale   param  1 0.05
 CMS_hgg_sig_m0_absShift  param  1 0.005
 
-CMS_hhbbgg_13TeV_mjj_bkg_par1_cat2  flatParam
-CMS_hhbbgg_13TeV_mjj_bkg_par2_cat2  flatParam
-CMS_hhbbgg_13TeV_mjj_bkg_par3_cat2  flatParam
+CMS_hhbbgg_13TeV_mjj_bkg_par1_cat4  flatParam
+CMS_hhbbgg_13TeV_mjj_bkg_par2_cat4  flatParam
+CMS_hhbbgg_13TeV_mjj_bkg_par3_cat4  flatParam
 
-CMS_hhbbgg_13TeV_mgg_bkg_par1_cat2  flatParam
-CMS_hhbbgg_13TeV_mgg_bkg_par2_cat2  flatParam
-CMS_hhbbgg_13TeV_mgg_bkg_par3_cat2  flatParam
+CMS_hhbbgg_13TeV_mgg_bkg_par1_cat4  flatParam
+CMS_hhbbgg_13TeV_mgg_bkg_par2_cat4  flatParam
+CMS_hhbbgg_13TeV_mgg_bkg_par3_cat4  flatParam
 
-CMS_Bkg_cat2_norm  flatParam
+CMS_Bkg_cat4_norm  flatParam

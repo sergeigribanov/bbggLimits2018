@@ -17,6 +17,8 @@ parser.add_argument("-l", "--lumi", dest="lumi", default=35.87,
                     help="Integrated lumi to scale signal")
 parser.add_argument('-o', '--outDir', dest="outDir", type=str, default=None,
                     required=True, help="Output directory (will be created).")
+parser.add_argument('-c', '--categ', dest="categ", type=int, default=0,
+                    choices = [0,1,2], help="Which categorization to use. 0 - 2016 tagger; 1 - 2017 ETH tagger, using 2016 style categorization; 2 - 2017 ETH tagger, with optimized categorizatio")
 
 opt = parser.parse_args()
 
@@ -45,7 +47,7 @@ if __name__ == "__main__":
 
       outFileName = opt.outDir+"/LT_"+rootName
 
-      fChain.Process("bbggLTMaker.C+", "%.10f %s %i" % ( opt.lumi/n[1], outFileName, 0) )
+      fChain.Process("bbggLTMaker.C+", "%.10f %s %i %i" % ( opt.lumi/n[1], outFileName, 0, opt.categ) )
 
     print "Done with signal"
 
@@ -57,7 +59,7 @@ if __name__ == "__main__":
       fChain.Add(fname)
       outFileName = opt.outDir+"/LT_"+n[0]
 
-      fChain.Process("bbggLTMaker.C+", "%.10f %s %i" % ( opt.lumi*n[2]/n[1], outFileName, 1 ) )
+      fChain.Process("bbggLTMaker.C+", "%.10f %s %i %i" % ( opt.lumi*n[2]/n[1], outFileName, 1, opt.categ) )
 
     os.system('hadd -f '+opt.outDir+'/LT_output_bbHToGG_M-125_13TeV_amcatnlo.root '+opt.outDir+'/LT_output_bbHToGG_M-125_4FS_yb*.root')
 
@@ -65,12 +67,13 @@ if __name__ == "__main__":
 
     print "Doing Data"
     fChain = TChain("bbggSelectionTree")
-
+    
+    # fname = opt.indir+'/DoubleEG.root'
     fname = opt.indir+'/FakeData/DoubleEG.root'
     fChain.Add(fname)
     outFileName = opt.outDir+"/LT_DoubleEG.root"
     
-    fChain.Process("bbggLTMaker.C+", "%f %s %i" % ( 1, outFileName, 0) )
+    fChain.Process("bbggLTMaker.C+", "%f %s %i %i" % ( 1, outFileName, 0, opt.categ) )
     
     print "Done with Data"
 
