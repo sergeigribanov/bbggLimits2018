@@ -327,9 +327,9 @@ def runFullChain(opt, Params, point=None, NRgridPoint=-1, extraLabel=''):
     sigExp[cc] = theFitter.GetSigExpectedCats(cc);
     if not doBlinding:
       bkgObs[cc] = theFitter.GetObservedCats(cc);
-    
+
     if opt.verb>1:
-      mainLog.debug('Events in SIG: %r,  OBS (BKG): %r' % (sigExp[cc], bkgObs[cc]))
+      mainLog.debug('SIG events in cat %r: %r,  OBS (BKG): %r' % (sigExp[cc], cc, bkgObs[cc]))
 
   # Make datacards:
   myLoc = os.getenv("CMSSW_BASE") + '/src/HiggsAnalysis/bbggLimits2018/'+newFolder

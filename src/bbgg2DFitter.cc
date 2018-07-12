@@ -94,10 +94,8 @@ RooArgSet* bbgg2DFitter::defineVariables(bool swithToSimpleWeight=false)
   }
 
 
-  catID->defineType("cat_0",0);
-  catID->defineType("cat_1",1);
-  catID->defineType("cat_2",2);
-  catID->defineType("cat_3",3);
+  for ( int i=0; i<_NCAT; ++i)
+    catID->defineType(Form("cat_%i", i), i);
   
   //
   RooArgSet* ntplVars = 0;
@@ -144,7 +142,7 @@ int bbgg2DFitter::AddSigData(float mass, TString signalfile)
     ntplVars->Print();
   }
 
-  RooDataSet sigScaled("sigScaled","dataset",sigTree,*ntplVars,_cut, _wName.c_str());
+  RooDataSet sigScaled("sigScaled", "dataset", sigTree, *ntplVars, _cut, _wName.c_str());
   //  if(_doARW) sigScaled = RooDataSet("sigScaled","dataset",sigTree,*ntplVars,_cut, "new_evWeight");
   //  else sigScaled = RooDataSet("sigScaled","dataset",sigTree,*ntplVars,_cut, _wName.c_str());
 
