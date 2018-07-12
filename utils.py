@@ -90,7 +90,7 @@ def DataCardMaker_wHiggs(Folder, nCats, signalExp, observed, higgsExp):
       outToWrite = outToWrite.replace("INPUTSIGLOC", str(Folder + '/ws_hhbbgg.HH.sig.mH125_13TeV.root'))
 
       ##observed
-      outToWrite = outToWrite.replace("OBS_CAT"+str(n), '%.0f' % observed[n])
+      outToWrite = outToWrite.replace("OBS_CAT"+str(n), '%.1f' % observed[n])
       #print outToWrite
       ##expected signal
       outToWrite = outToWrite.replace("SIG_CAT"+str(n), '%.5f' % signalExp[n])

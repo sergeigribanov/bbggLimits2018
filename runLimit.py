@@ -23,7 +23,7 @@ import argparse
 parser =  argparse.ArgumentParser(description='Limit Tree maker')
 parser.add_argument('-f', '--configFile', dest="configName", type=str, default=None, required=True,
                     help="Json config file")
-parser.add_argument('-o', '--outDir', dest="outDir", type=str, default="OutDir",
+parser.add_argument('-o', '--outDir', dest="outDir", type=str, default="LIMS_OutDir",
                     help="Output directory (will be created).")
 parser.add_argument('--node', dest="node", default=None, type=str,
                     choices=['2','3','4','5','6','7','8','9','10','11','12','13','SM','box'],

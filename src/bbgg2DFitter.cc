@@ -721,30 +721,23 @@ void bbgg2DFitter::SetConstantParams(const RooArgSet* params)
 
 RooFitResult* bbgg2DFitter::BkgModelFit(Bool_t dobands, bool addhiggs)
 {
-  const Int_t ncat = _NCAT;
-  std::vector<TString> catdesc;
-  if ( _NCAT == 2 )catdesc={" High Purity Category"," Med. Purity Category"};
-  if ( _NCAT == 1 )catdesc={" High Mass Analysis", " High Mass Analysis"};
-  //  else catdesc={" #splitline{High Purity}{High m_{#gamma#gammajj}^{kin}}"," #splitline{Med. Purity}{High m_{#gamma#gammajj}^{kin}}",
-  //	        " #splitline{High Purity}{Low m_{#gamma#gammajj}^{kin}}"," #splitline{Med. Purity}{Low m_{#gamma#gammajj}^{kin}}"};
-  //
   //******************************************//
   // Fit background with model pdfs
   //******************************************//
   // retrieve pdfs and datasets from workspace to fit with pdf models
-  std::vector<RooDataSet*> data(ncat,nullptr);
-  std::vector<RooDataSet*> dataplot(ncat,nullptr); // the data
-  std::vector<RooBernstein*> mggBkg(ncat,nullptr);// the polinomial of 4* order
-  std::vector<RooBernstein*> mjjBkg(ncat,nullptr);// the polinomial of 4* order
-  std::vector<RooPlot*> plotmggBkg(ncat,nullptr);
-  std::vector<RooPlot*> plotmjjBkg(ncat,nullptr);;
-  std::vector<RooDataSet*>vecset(ncat,nullptr);
-  std::vector<RooAbsPdf*>vecpdf(ncat,nullptr);
+  std::vector<RooDataSet*> data(_NCAT,nullptr);
+  std::vector<RooDataSet*> dataplot(_NCAT,nullptr); // the data
+  std::vector<RooBernstein*> mggBkg(_NCAT,nullptr);// the polinomial of 4* order
+  std::vector<RooBernstein*> mjjBkg(_NCAT,nullptr);// the polinomial of 4* order
+  std::vector<RooPlot*> plotmggBkg(_NCAT,nullptr);
+  std::vector<RooPlot*> plotmjjBkg(_NCAT,nullptr);;
+  std::vector<RooDataSet*>vecset(_NCAT,nullptr);
+  std::vector<RooAbsPdf*>vecpdf(_NCAT,nullptr);
   std::vector<std::vector<RooDataSet*>>sigToFitvec(5,vecset);
   std::vector<std::vector<RooAbsPdf*>>mggSigvec(5,vecpdf);
   std::vector<std::vector<RooAbsPdf*>>mjjSigvec(5,vecpdf);
-  std::vector<RooAbsPdf*> mggSig(ncat,nullptr);
-  std::vector<RooAbsPdf*> mjjSig(ncat,nullptr);
+  std::vector<RooAbsPdf*> mggSig(_NCAT,nullptr);
+  std::vector<RooAbsPdf*> mjjSig(_NCAT,nullptr);
   RooProdPdf* BkgPdf = nullptr;
 
   RooBernstein* mjjBkgTmpBer1 = nullptr;
@@ -760,28 +753,28 @@ RooFitResult* bbgg2DFitter::BkgModelFit(Bool_t dobands, bool addhiggs)
   RooFitResult* fitresults = new RooFitResult();
 
   if (_verbLvl>1) std::cout << "[BkgModelFit] Starting cat loop " << std::endl;
-  for (int c = 0; c < ncat; ++c) { // to each category
+  for (int c = 0; c < _NCAT; ++c) { // to each category
     data[c] = (RooDataSet*) _w->data(TString::Format("Data_cat%d",c));
 
-    TH2* data_h2 = 0;
-    TH1* data_h11 = 0;
-    if(_fitStrategy==2)  data_h2= (TH2*) data[c]->createHistogram("mgg,mjj", 60, 40);
-    if(_fitStrategy==1)  data_h11= (TH1*) data[c]->createHistogram("mgg", 60);
+    TH2* data_h2D = 0;
+    TH1* data_h1D = 0;
+    if(_fitStrategy==2)  data_h2D = (TH2*) data[c]->createHistogram("mgg,mjj", 60, 40);
+    if(_fitStrategy==1)  data_h1D = (TH1*) data[c]->createHistogram("mgg", 60);
 
     if (_verbLvl>1) {
       std::cout<<"\t categ="<<c<<std::endl;
-      if(_doblinding==0 && _fitStrategy==2) std::cout << "####### NUMBER OF OBSERVED EVENTS: " << data_h2->Integral() << std::endl;
-      if(_doblinding==0 && _fitStrategy==1) std::cout << "####### NUMBER OF OBSERVED EVENTS: " << data_h11->Integral() << std::endl;
+      if(_doblinding==0 && _fitStrategy==2) std::cout << "####### NUMBER OF OBSERVED EVENTS: " << data_h2D->Integral() << std::endl;
+      if(_doblinding==0 && _fitStrategy==1) std::cout << "####### NUMBER OF OBSERVED EVENTS: " << data_h1D->Integral() << std::endl;
       std::cout<<"\t sumEntries()="<<data[c]->sumEntries()<<std::endl;
     }
 
     int nEvtsObs = -1;
-    if(_fitStrategy == 2) nEvtsObs = data_h2->Integral();
-    if(_fitStrategy == 1) nEvtsObs = data_h11->Integral();
+    if(_fitStrategy == 2) nEvtsObs = data_h2D->Integral();
+    if(_fitStrategy == 1) nEvtsObs = data_h1D->Integral();
 
-    //data_h11->Delete();
+    //data_h1D->Delete();
 
-    if (_verbLvl>1) std::cout << "[BkgModelFit] Cat loop 1 - cat" << c << std::endl;
+    if (_verbLvl>1) std::cout << "[BkgModelFit] Cat loop point 1 - cat " << c << std::endl;
 
     ////////////////////////////////////
     // these are the parameters for the bkg polinomial
@@ -789,8 +782,7 @@ RooFitResult* bbgg2DFitter::BkgModelFit(Bool_t dobands, bool addhiggs)
     // we first wrap the normalization of mggBkgTmp0, mjjBkgTmp0
     // CMS_hhbbgg_13TeV_mgg_bkg_par1
     _w->factory(TString::Format("BkgPdf_cat%d_norm[1.0,0.0,100000]",c));
-    if (_verbLvl>1) std::cout << "[BkgModelFit] Cat loop 2 - cat" << c << std::endl;
-    if (_verbLvl>1) std::cout << "[BkgModelFit] Cat loop 3 - cat" << c << std::endl;
+    if (_verbLvl>1) std::cout << "[BkgModelFit] Cat loop point 2 - cat " << c << std::endl;
 
     RooFormulaVar *mgg_p0amp = new RooFormulaVar(TString::Format("mgg_p0amp_cat%d",c),"","@0*@0",
 						            *_w->var(TString::Format("CMS_hhbbgg_13TeV_mgg_bkg_par1_cat%d",c)));
@@ -807,7 +799,7 @@ RooFitResult* bbgg2DFitter::BkgModelFit(Bool_t dobands, bool addhiggs)
 						 RooArgList(*_w->var(TString::Format("CMS_hhbbgg_13TeV_mjj_bkg_par3_cat%d",c)) ));
 
 
-    if (_verbLvl>1) std::cout << "[BkgModelFit] Cat loop 4 - cat" << c << std::endl;
+    if (_verbLvl>1) std::cout << "[BkgModelFit] Cat loop point 3 - cat " << c << std::endl;
 
     mggBkgTmpBer1 = new RooBernstein(TString::Format("mggBkgTmpBer1_cat%d",c),"",*mgg,RooArgList(*mgg_p0amp,*mgg_p1amp));
     mjjBkgTmpBer1 = new RooBernstein(TString::Format("mjjBkgTmpBer1_cat%d",c),"",*mjj,RooArgList(*mjj_p0amp,*mjj_p1amp));
@@ -817,7 +809,7 @@ RooFitResult* bbgg2DFitter::BkgModelFit(Bool_t dobands, bool addhiggs)
       mjjBkgTmpBer1 = new RooBernstein(TString::Format("mjjBkgTmpBer1_cat%d",c),"",*mjj,RooArgList(*mjj_p0amp,*mjj_p1amp, *mjj_p2amp));
     }
 
-    if (_verbLvl>1) std::cout << "[BkgModelFit] Cat loop 5 - cat" << c << std::endl;
+    if (_verbLvl>1) std::cout << "[BkgModelFit] Cat loop point 4 - cat" << c << std::endl;
 
 
     
@@ -835,10 +827,10 @@ RooFitResult* bbgg2DFitter::BkgModelFit(Bool_t dobands, bool addhiggs)
       //_w->import(*mggBkgTmpBer1);
     }
 
-    if (_verbLvl>1) std::cout << "[BkgModelFit] Cat loop " << c << std::endl;
+    if (_verbLvl>1) std::cout << "[BkgModelFit] Cat loop end - cat " << c << std::endl;
 
-    if (data_h2) data_h2->Delete();
-    if (data_h11) data_h11->Delete();
+    if (data_h2D) data_h2D->Delete();
+    if (data_h1D) data_h1D->Delete();
   }
 
   return fitresults;
