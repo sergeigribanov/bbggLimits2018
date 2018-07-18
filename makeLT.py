@@ -18,12 +18,13 @@ parser.add_argument("-l", "--lumi", dest="lumi", default=35.87,
 parser.add_argument('-o', '--outDir', dest="outDir", type=str, default=None,
                     required=True, help="Output directory (will be created).")
 parser.add_argument('-c', '--categ', dest="categ", type=int, default=0,
-                    choices = [0,1,2], help="Which categorization to use. 0 - 2016 tagger; 1 - 2017 ETH tagger, using 2016 style categorization; 2 - 2017 ETH tagger, with optimized categorization;")
+                    choices = [0,1,2,3], help="Which categorization to use. 0 - 2016 tagger; 1 - 2017 ETH tagger, using 2016 style categorization; 2 - 2017 ETH tagger, with optimized categorization; 3 - 2017 tagger with mjj cuts.")
 
 opt = parser.parse_args()
 
-nodes = [ ["box", 50000], ["SM", 50000], [2, 49600], [3, 50000], [4, 50000], [5, 50000], [6, 50000],
-          [7, 50000], [8, 50000], [9, 49600], [10, 49800], [11, 50000], [12, 50000], [13, 50000] ]
+nodes = [ ["box", 50000], ["SM", 50000],
+          [2, 49600], [3, 50000], [ 4, 50000], [ 5, 50000], [ 6, 50000], [ 7, 50000],
+          [8, 50000], [9, 49600], [10, 49800], [11, 50000], [12, 50000], [13, 50000] ]
 
 if opt.verb>0:
   print SMHiggsNodes

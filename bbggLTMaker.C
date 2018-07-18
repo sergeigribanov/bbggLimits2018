@@ -18,6 +18,7 @@ const Float_t boundary_MVA_tagger2017_HM[3] = {0.226, 0.6195, 1.0};
 const Float_t boundary_MVA_tagger2017[4] = {0.271, 0.543, 0.740, 1.05};
 const Float_t boundary_MX_2017[5]  = {250, 341.4, 426.1, 544, 35000};
 
+/*
 const Float_t MjjCuts_Low[] = {88.0, 81.0, 75.0,
 			       95.0, 95.0, 102.0,
 			       99.0, 91.0, 95.0,
@@ -27,7 +28,18 @@ const Float_t MjjCuts_High[] = {151.0, 155.0, 155.0,
 				155.0, 166.0, 155.0,
 				148.0, 160.0, 167.0,
 				159.0, 155.0, 151.0};
+*/
+// Fixed cuts are to test the 1D fit option in bbgg2Dfitter
+const Float_t MjjCuts_Low[] = {100.0, 100.0, 100.0,
+			       100.0, 100.0, 100.0,
+			       100.0, 100.0, 100.0,
+			       100.0, 100.0, 100.0};
 
+const Float_t MjjCuts_High[] = {150.0, 150.0, 150.0,
+				150.0, 150.0, 150.0,
+				150.0, 150.0, 150.0,
+				150.0, 150.0, 150.0};
+  
 void bbggLTMaker::Begin(TTree * /*tree*/)
 {
   TString option = GetOption();
@@ -162,14 +174,23 @@ Bool_t bbggLTMaker::Process(Long64_t entry)
     }
   }
 
-  else if (_whichCategorization==2){
+  else if (_whichCategorization==2 || _whichCategorization==3){
     if (o_MX > boundary_MX_2017[0] && o_MX <= boundary_MX_2017[1]){
-      if (HHTagger2017_transform > boundary_MVA_tagger2017[0] && HHTagger2017_transform <= boundary_MVA_tagger2017[1])
+      if (HHTagger2017_transform > boundary_MVA_tagger2017[0] && HHTagger2017_transform <= boundary_MVA_tagger2017[1]){
 	o_catID = 2;
-      else if (HHTagger2017_transform > boundary_MVA_tagger2017[1] && HHTagger2017_transform <= boundary_MVA_tagger2017[2])
+	if (_whichCategorization==3 && (o_mjj < MjjCuts_Low[o_catID] || o_mjj > MjjCuts_High[o_catID]) )
+	  return kTRUE;
+      }
+      else if (HHTagger2017_transform > boundary_MVA_tagger2017[1] && HHTagger2017_transform <= boundary_MVA_tagger2017[2]){
 	o_catID = 1;
-      else if (HHTagger2017_transform > boundary_MVA_tagger2017[2] && HHTagger2017_transform <= boundary_MVA_tagger2017[3])
+	if (_whichCategorization==3 && (o_mjj < MjjCuts_Low[o_catID] || o_mjj > MjjCuts_High[o_catID]) )
+	  return kTRUE;
+      }
+      else if (HHTagger2017_transform > boundary_MVA_tagger2017[2] && HHTagger2017_transform <= boundary_MVA_tagger2017[3]){
 	o_catID = 0;
+	if (_whichCategorization==3 && (o_mjj < MjjCuts_Low[o_catID] || o_mjj > MjjCuts_High[o_catID]) )
+	  return kTRUE;
+      }
       else {
 	//if (DEBUG) std::cout<<"MVA is out of bounds!  MVA="<<HHTagger_LM<<std::endl;
 	return kTRUE;
@@ -177,36 +198,63 @@ Bool_t bbggLTMaker::Process(Long64_t entry)
     }
     
     else if (o_MX > boundary_MX_2017[1] && o_MX <= boundary_MX_2017[2]){
-      if (HHTagger2017_transform > boundary_MVA_tagger2017[0] && HHTagger2017_transform <= boundary_MVA_tagger2017[1])
+      if (HHTagger2017_transform > boundary_MVA_tagger2017[0] && HHTagger2017_transform <= boundary_MVA_tagger2017[1]){
 	o_catID = 5;
-      else if (HHTagger2017_transform > boundary_MVA_tagger2017[1] && HHTagger2017_transform <= boundary_MVA_tagger2017[2])
+	if (_whichCategorization==3 && (o_mjj < MjjCuts_Low[o_catID] || o_mjj > MjjCuts_High[o_catID]) )
+	  return kTRUE;
+      }
+      else if (HHTagger2017_transform > boundary_MVA_tagger2017[1] && HHTagger2017_transform <= boundary_MVA_tagger2017[2]){
 	o_catID = 4;
-      else if (HHTagger2017_transform > boundary_MVA_tagger2017[2] && HHTagger2017_transform <= boundary_MVA_tagger2017[3])
+	if (_whichCategorization==3 && (o_mjj < MjjCuts_Low[o_catID] || o_mjj > MjjCuts_High[o_catID]) )
+	  return kTRUE;
+      }
+      else if (HHTagger2017_transform > boundary_MVA_tagger2017[2] && HHTagger2017_transform <= boundary_MVA_tagger2017[3]){
 	o_catID = 3;
+	if (_whichCategorization==3 && (o_mjj < MjjCuts_Low[o_catID] || o_mjj > MjjCuts_High[o_catID]) )
+	  return kTRUE;
+      }
       else {
 	return kTRUE;
       }
     }
     
     else if (o_MX > boundary_MX_2017[2] && o_MX <= boundary_MX_2017[3]){
-      if (HHTagger2017_transform > boundary_MVA_tagger2017[0] && HHTagger2017_transform <= boundary_MVA_tagger2017[1])
+      if (HHTagger2017_transform > boundary_MVA_tagger2017[0] && HHTagger2017_transform <= boundary_MVA_tagger2017[1]){
 	o_catID = 8;
-      else if (HHTagger2017_transform > boundary_MVA_tagger2017[1] && HHTagger2017_transform <= boundary_MVA_tagger2017[2])
+	if (_whichCategorization==3 && (o_mjj < MjjCuts_Low[o_catID] || o_mjj > MjjCuts_High[o_catID]) )
+	  return kTRUE;
+      }
+      else if (HHTagger2017_transform > boundary_MVA_tagger2017[1] && HHTagger2017_transform <= boundary_MVA_tagger2017[2]){
 	o_catID = 7;
-      else if (HHTagger2017_transform > boundary_MVA_tagger2017[2] && HHTagger2017_transform <= boundary_MVA_tagger2017[3])
+	if (_whichCategorization==3 && (o_mjj < MjjCuts_Low[o_catID] || o_mjj > MjjCuts_High[o_catID]) )
+	  return kTRUE;
+      }
+      else if (HHTagger2017_transform > boundary_MVA_tagger2017[2] && HHTagger2017_transform <= boundary_MVA_tagger2017[3]){
 	o_catID = 6;
+	if (_whichCategorization==3 && (o_mjj < MjjCuts_Low[o_catID] || o_mjj > MjjCuts_High[o_catID]) )
+	  return kTRUE;
+      }
       else {
 	return kTRUE;
       }
     }
     
     else if (o_MX > boundary_MX_2017[3] && o_MX <= boundary_MX_2017[4]){
-      if (HHTagger2017_transform > boundary_MVA_tagger2017[0] && HHTagger2017_transform <= boundary_MVA_tagger2017[1])
+      if (HHTagger2017_transform > boundary_MVA_tagger2017[0] && HHTagger2017_transform <= boundary_MVA_tagger2017[1]){
 	o_catID = 11;
-      else if (HHTagger2017_transform > boundary_MVA_tagger2017[1] && HHTagger2017_transform <= boundary_MVA_tagger2017[2])
+	if (_whichCategorization==3 && (o_mjj < MjjCuts_Low[o_catID] || o_mjj > MjjCuts_High[o_catID]) )
+	  return kTRUE;
+      }
+      else if (HHTagger2017_transform > boundary_MVA_tagger2017[1] && HHTagger2017_transform <= boundary_MVA_tagger2017[2]){
 	o_catID = 10;
-      else if (HHTagger2017_transform > boundary_MVA_tagger2017[2] && HHTagger2017_transform <= boundary_MVA_tagger2017[3])
+	if (_whichCategorization==3 && (o_mjj < MjjCuts_Low[o_catID] || o_mjj > MjjCuts_High[o_catID]) )
+	  return kTRUE;
+      }
+      else if (HHTagger2017_transform > boundary_MVA_tagger2017[2] && HHTagger2017_transform <= boundary_MVA_tagger2017[3]){
 	o_catID = 9;
+	if (_whichCategorization==3 && (o_mjj < MjjCuts_Low[o_catID] || o_mjj > MjjCuts_High[o_catID]) )
+	  return kTRUE;
+      }
       else {
 	return kTRUE;
       }

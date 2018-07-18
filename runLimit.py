@@ -8,7 +8,6 @@ from pprint import pformat
 from multiprocessing import current_process
 from utils import *
 from os import listdir
-from os.path import isfile, join
 import getpass
 
 __username__ = getpass.getuser()
