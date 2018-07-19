@@ -18,7 +18,6 @@ const Float_t boundary_MVA_tagger2017_HM[3] = {0.226, 0.6195, 1.0};
 const Float_t boundary_MVA_tagger2017[4] = {0.271, 0.543, 0.740, 1.05};
 const Float_t boundary_MX_2017[5]  = {250, 341.4, 426.1, 544, 35000};
 
-/*
 const Float_t MjjCuts_Low[] = {88.0, 81.0, 75.0,
 			       95.0, 95.0, 102.0,
 			       99.0, 91.0, 95.0,
@@ -28,7 +27,8 @@ const Float_t MjjCuts_High[] = {151.0, 155.0, 155.0,
 				155.0, 166.0, 155.0,
 				148.0, 160.0, 167.0,
 				159.0, 155.0, 151.0};
-*/
+
+/*
 // Fixed cuts are to test the 1D fit option in bbgg2Dfitter
 const Float_t MjjCuts_Low[] = {100.0, 100.0, 100.0,
 			       100.0, 100.0, 100.0,
@@ -39,7 +39,7 @@ const Float_t MjjCuts_High[] = {150.0, 150.0, 150.0,
 				150.0, 150.0, 150.0,
 				150.0, 150.0, 150.0,
 				150.0, 150.0, 150.0};
-  
+*/
 void bbggLTMaker::Begin(TTree * /*tree*/)
 {
   TString option = GetOption();
@@ -56,17 +56,17 @@ void bbggLTMaker::Begin(TTree * /*tree*/)
 	   <<"_outFileName: "<< _outFileName<<"\n"
 	   <<"_genDiPhotonFilter: "<< _genDiPhotonFilter<<"\n"
 	   <<std::endl;
-  
+
   // Could make those come from external options as well:
   _phoVariation = 0;
   _trigVariation = 0;
-    
+
   _outFile = new TFile(_outFileName, "RECREATE");
   _outTree = new TTree("LT", "A tree for studying new particles");
-  
+
   _outTree->Branch("run", &o_run, "o_run/i");
   _outTree->Branch("evt", &o_evt, "o_evt/l");
-  
+
   _outTree->Branch("evWeight", &o_weight, "o_weight/D");
   _outTree->Branch("mgg", &o_mgg, "o_mgg/D");
   _outTree->Branch("mjj", &o_mjj, "o_mjj/D");
@@ -80,7 +80,7 @@ void bbggLTMaker::Begin(TTree * /*tree*/)
   TString phoSFeveto_file = TString(std::getenv("CMSSW_BASE")) + TString("/src/HiggsAnalysis/bbggLimits2018/Weights/MVAID/ScalingFactors_80X_Summer16.root");
   if (DEBUG) cout << "phoSFsEV file: " << phoSFeveto_file << endl;
   bbggLTMaker::SetupPhotonSF( phoSFID_file, phoSFeveto_file);
-  
+
   TString trig_file = TString(std::getenv("CMSSW_BASE")) + TString("/src/HiggsAnalysis/bbggLimits2018/Weights/TriggerSF/TriggerSFs.root");
   if (DEBUG) cout << "TriggSF file: " << trig_file << endl;
   bbggLTMaker::SetupTriggerSF(trig_file);
@@ -89,28 +89,28 @@ void bbggLTMaker::Begin(TTree * /*tree*/)
 
 void bbggLTMaker::SlaveBegin(TTree * /*tree*/)
 {
-  TString option = GetOption();  
+  TString option = GetOption();
 }
 
 Bool_t bbggLTMaker::Process(Long64_t entry)
 {
   GetEntry(entry);
   //std::cout<<"Processing event "<<event<<" in run "<<run<<std::endl;
-  
+
   if (!isSignal) return kTRUE; // This means signal region.
   if( _genDiPhotonFilter && nPromptInDiPhoton < 2 ) return kTRUE;
-      
+
   o_run = run;
   o_evt = event;
-  
+
   o_weight = 1;
   o_mgg = (*leadingPhoton + *subleadingPhoton).M();
   o_mjj = dijetCandidate->M();
   o_bbggMass = (*dijetCandidate + *leadingPhoton + *subleadingPhoton).M();
-  
+
   o_MX = o_bbggMass - o_mjj - o_mgg + 250.;
   //if (fabs(o_MX-MX)/o_MX > 0.0001) std::cout<<"MXes are not equal!! o_mx="<<o_MX<<"  treMX="<<MX<<std::endl;
-  
+
   o_catID = -1;
 
   //std::cout<<"lead photon pt = "<<(*leadingPhoton).Pt()<<std::endl;
@@ -119,7 +119,7 @@ Bool_t bbggLTMaker::Process(Long64_t entry)
     if (o_MX > boundary_MX[0] && o_MX <= boundary_MX[1]){
       if( leadingJet_bDis < cutJetBtag || subleadingJet_bDis < cutJetBtag)
 	return kTRUE; // Some clean-up based on b-tag scores
-      
+
       if (HHTagger_LM > boundary_MVA_tagger2016_LM[0] && HHTagger_LM <= boundary_MVA_tagger2016_LM[1])
 	o_catID = 3;
       else if (HHTagger_LM > boundary_MVA_tagger2016_LM[1] && HHTagger_LM <= boundary_MVA_tagger2016_LM[2])
@@ -148,7 +148,7 @@ Bool_t bbggLTMaker::Process(Long64_t entry)
     if (o_MX > boundary_MX[0] && o_MX <= boundary_MX[1]){
       if( leadingJet_bDis < cutJetBtag || subleadingJet_bDis < cutJetBtag)
 	return kTRUE; // Some clean-up based on b-tag scores
-      
+
       if (HHTagger2017_transform > boundary_MVA_tagger2017_LM[0] && HHTagger2017_transform <= boundary_MVA_tagger2017_LM[1])
 	o_catID = 3;
       else if (HHTagger2017_transform > boundary_MVA_tagger2017_LM[1] && HHTagger2017_transform <= boundary_MVA_tagger2017_LM[2])
@@ -196,7 +196,7 @@ Bool_t bbggLTMaker::Process(Long64_t entry)
 	return kTRUE;
       }
     }
-    
+
     else if (o_MX > boundary_MX_2017[1] && o_MX <= boundary_MX_2017[2]){
       if (HHTagger2017_transform > boundary_MVA_tagger2017[0] && HHTagger2017_transform <= boundary_MVA_tagger2017[1]){
 	o_catID = 5;
@@ -217,7 +217,7 @@ Bool_t bbggLTMaker::Process(Long64_t entry)
 	return kTRUE;
       }
     }
-    
+
     else if (o_MX > boundary_MX_2017[2] && o_MX <= boundary_MX_2017[3]){
       if (HHTagger2017_transform > boundary_MVA_tagger2017[0] && HHTagger2017_transform <= boundary_MVA_tagger2017[1]){
 	o_catID = 8;
@@ -238,7 +238,7 @@ Bool_t bbggLTMaker::Process(Long64_t entry)
 	return kTRUE;
       }
     }
-    
+
     else if (o_MX > boundary_MX_2017[3] && o_MX <= boundary_MX_2017[4]){
       if (HHTagger2017_transform > boundary_MVA_tagger2017[0] && HHTagger2017_transform <= boundary_MVA_tagger2017[1]){
 	o_catID = 11;
@@ -259,7 +259,7 @@ Bool_t bbggLTMaker::Process(Long64_t entry)
 	return kTRUE;
       }
     }
-    
+
     else  {
       std::cout<<"MX is out of bounds!  MX="<<o_MX<<std::endl;
       return kTRUE;
@@ -269,29 +269,29 @@ Bool_t bbggLTMaker::Process(Long64_t entry)
     std::cout<<"This categorization is not supported: "<<_whichCategorization<<std::endl;
     return kTRUE;
   }
-    
+
   const Double_t preweight = genTotalWeight*_normalization;
   if( preweight == 1) o_weight = 1; // When preweight == 1 it's the data, no SF needed.
   else {
     const Double_t pho1_sf = bbggLTMaker::PhotonSF(*leadingPhoton, _phoVariation);
     const Double_t pho2_sf = bbggLTMaker::PhotonSF(*subleadingPhoton, _phoVariation);
-    
+
     const Double_t trig_sf = bbggLTMaker::TriggerSF(*leadingPhoton, leadingPhotonR9full5x5, *subleadingPhoton, subleadingPhotonR9full5x5, _trigVariation);
     if(DEBUG)
       cout << "Trigger sf: " << trig_sf << " lpt " << leadingPhoton->Pt()<< " spt " << subleadingPhoton->Pt()
 	   << " leta "<< leadingPhoton->Eta() << " seta "<< subleadingPhoton->Eta()
 	   << " lr9 "<< leadingPhotonR9full5x5 << " sr9 "<< subleadingPhotonR9full5x5 << std::endl;
-    
+
     const Double_t bDiffWeight = 0.96; // Use an average SF for b-tagging
-    
+
     o_weight = preweight*bDiffWeight*pho1_sf*pho2_sf*trig_sf;
   }
 
   // This is temporary, to check effect on fake data
   //if (_normalization == 1) o_weight = 1;
-  
+
   _outTree->Fill();
-  
+
   return kTRUE;
 }
 

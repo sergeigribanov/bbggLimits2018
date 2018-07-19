@@ -229,7 +229,7 @@ def runFullChain(opt, Params, point=None, NRgridPoint=-1, extraLabel=''):
     mainLog.info('Setting fit strategy to: %r', fitStrategy)
     theFitter.SetFitStrategy(fitStrategy)
   if fitStrategy==1:
-    theFitter.SetCut("mjj > 100 && mjj < 140")
+    theFitter.SetCut("mjj > 100 && mjj < 150")
 
   if opt.verb>0:
     mainLog.info('Using Double Sided Crystal Ball as Signal Model: %r', doDoubleSidedCB)

@@ -1,7 +1,7 @@
 {
-    "LTDIR" : "LT_OutDir",
+    "LTDIR" : "LT_July18_ETH_Cat0",
     "RooFitTemplateName" : "templates/models_2D_higgs_mjj70",
-    "ncat" : 12,
+    "ncat" : 4,
     "doDoubleSidedCB": 1,
     "energy" : "13TeV",
     "higgsMass" : 125.0,

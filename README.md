@@ -28,6 +28,7 @@ as well as *mgg* and *mjj*. Different type of categorizations can be done chosen
  Y = 0: 2016 tagger with categorization used in 2016 analysis (4 categories)
  Y = 1: 2017 ETH tagger, using 2016 style categorization (4 categories);
  Y = 2: 2017 ETH tagger, with optimized categorization (12 categories);
+ Y = 3: 2017 ETH tagger, with optimized categorization and mjj cuts (12 categories);
 ```
 
 The core code that makes the trees is `bbggLTMaker.C`. It is based on
@@ -40,7 +41,9 @@ the ROOT.
   CMSSW packages which is not trivial in TSelector code. For the reference,
   [this code](https://github.com/ResonantHbbHgg/bbggLimits/blob/edda480b80455c3d14f644629e5faaa5997cc9f0/src/bbggLTMaker.cc#L278-L340)
   was used in 2016 to apply the SF fpr b-tagging.
-
+* In order to implement another categorization, one has to put it
+  [here](https://github.com/ResonantHbbHgg/bbggLimits2018/blob/f031e57c6e938be983b006fc1f81a01ec53ea61a/bbggLTMaker.C#L268)
+  in _bbggLTMaker_ code.
 
 ## Fits and limits
 * Run the fits and limits on the produced LTs:
@@ -74,13 +77,14 @@ the logfile _mainLog_data-time.log[.bbgg2D]_ can be useful
 combine -M FitDiagnostics LIMS_OutDir/Node_SM/hhbbgg_13TeV_DataCard.txt --plots --out LIMS_OutDir/
 ```
   
-* Note that you may see many warnings. They are ignored at the moment, but should be fixed in the future.
-  * non-integer bin entry:
+Note that you may see many warnings. They are ignored at the moment, but should be fixed in the future.
+
+* non-integer bin entry:  
 ```
 [#0] WARNING:Plotting -- RooHist::addBin(ch4_plot__mgg) WARNING: non-integer bin entry 14.5154 with Poisson errors, interpolating between Poisson errors of adjacent integer
-```
+```  
 These are probably due to the fact that the observed data are taken from MC with weights and the events are not integers. 
-  * parameters at boundary:
+* parameters at boundary:
 ```
 [WARNING] Found [CMS_hhbbgg_13TeV_mjj_bkg_slope2_cat0] at boundary.
 ```
