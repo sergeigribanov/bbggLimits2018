@@ -83,16 +83,18 @@ the logfile _mainLog_data-time.log[.bbgg2D]_ can be useful
 combine -M FitDiagnostics LIMS_OutDir/Node_SM/hhbbgg_13TeV_DataCard.txt --plots --out LIMS_OutDir/
 ```  
 Note that you may see many warnings. They are ignored at the moment, but should be fixed in the future.
-  * non-integer bin entry:  
+
+* non-integer bin entry:  
 ```
 [#0] WARNING:Plotting -- RooHist::addBin(ch4_plot__mgg) WARNING: non-integer bin entry 14.5154 with Poisson errors, interpolating between Poisson errors of adjacent integer
 ```  
 These are probably due to the fact that the observed data are taken from MC with weights and the events are not integers. 
-  * parameters at boundary:  
+* parameters at boundary:  
 ```
 [WARNING] Found [CMS_hhbbgg_13TeV_mjj_bkg_slope2_cat0] at boundary.
 ```
-* Note on plotting
+
+### Note on plotting
 Previously, the plots were made taking the post-fit results of the Maximum Likelihood fit
 from combine,
 [see here](https://github.com/ResonantHbbHgg/bbggLimits/blob/72ae0c5d502ac4e8554ed0161c7aa345b84f5ec3/scripts/MakeSMHHFullBkgPlots.sh#L11). However,
