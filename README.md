@@ -17,6 +17,8 @@ Get this repository code:
 ```
 cd ../
 git clone git@github.com:ResonantHbbHgg/bbggLimits2018.git
+cd bbggLimits2018
+scramv1 b
 ```
 
 ## Limit trees
