@@ -13,6 +13,10 @@ git fetch origin
 git checkout v7.0.9
 scramv1 b clean; scramv1 b
 ```
+Get this repository code:
+```
+git clone git@github.com:ResonantHbbHgg/bbggLimits2018.git
+```
 
 ## Limit trees
 
