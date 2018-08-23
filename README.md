@@ -15,6 +15,7 @@ scramv1 b clean; scramv1 b
 ```
 Get this repository code:
 ```
+cd ../
 git clone git@github.com:ResonantHbbHgg/bbggLimits2018.git
 ```
 
