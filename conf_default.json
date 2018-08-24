@@ -1,5 +1,5 @@
 {
-    "LTDIR" : "LT_July18_ETH_Cat0",
+    "LTDIR" : "LT_OutDir",
     "RooFitTemplateName" : "templates/models_2D_higgs_mjj70",
     "ncat" : 4,
     "doDoubleSidedCB": 1,
