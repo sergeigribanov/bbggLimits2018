@@ -40,7 +40,7 @@ if __name__ == "__main__":
     for n in nodes:
       if n[0]!="SM": continue # Only do SM node for now
 
-      fChain = TChain("bbggSelectionTree")
+      fChain = TChain("tagsDumper/trees/GluGluToHHTo2B2G_node_SM_13TeV_madgraph_13TeV_DoubleHTag_0")
       fname = opt.indir+"/output_GluGluToHHTo2B2G_node_"+str(n[0])+"_13TeV-madgraph.root"
       fChain.Add(fname)
       rootName = fname[fname.rfind('/')+1:]

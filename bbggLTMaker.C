@@ -104,11 +104,11 @@ Bool_t bbggLTMaker::Process(Long64_t entry)
   o_evt = event;
 
   o_weight = 1;
-  o_mgg = (*leadingPhoton + *subleadingPhoton).M();
-  o_mjj = dijetCandidate->M();
-  o_bbggMass = (*dijetCandidate + *leadingPhoton + *subleadingPhoton).M();
+  o_mgg = CMS_hgg_mass;
+  o_mjj = Mjj;
+  o_bbggMass = diHiggs_mass;
 
-  o_MX = o_bbggMass - o_mjj - o_mgg + 250.;
+  o_MX = MX;
   //if (fabs(o_MX-MX)/o_MX > 0.0001) std::cout<<"MXes are not equal!! o_mx="<<o_MX<<"  treMX="<<MX<<std::endl;
 
   o_catID = -1;
@@ -272,7 +272,7 @@ Bool_t bbggLTMaker::Process(Long64_t entry)
 
   const Double_t preweight = genTotalWeight*_normalization;
   if( preweight == 1) o_weight = 1; // When preweight == 1 it's the data, no SF needed.
-  else {
+  /*else {
     const Double_t pho1_sf = bbggLTMaker::PhotonSF(*leadingPhoton, _phoVariation);
     const Double_t pho2_sf = bbggLTMaker::PhotonSF(*subleadingPhoton, _phoVariation);
 
@@ -285,7 +285,7 @@ Bool_t bbggLTMaker::Process(Long64_t entry)
     const Double_t bDiffWeight = 0.96; // Use an average SF for b-tagging
 
     o_weight = preweight*bDiffWeight*pho1_sf*pho2_sf*trig_sf;
-  }
+  }*/
 
   // This is temporary, to check effect on fake data
   //if (_normalization == 1) o_weight = 1;

@@ -53,82 +53,87 @@ public :
    //Variables from the input tree:
    
    typedef ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<double> > LorentzVector;
- 
-   Double_t        genTotalWeight;
-   //Double_t        gen_mHH;
-   //Double_t        gen_cosTheta;
-   LorentzVector   *leadingPhoton;
-   Float_t         leadingPhotonR9full5x5;
-   LorentzVector   *subleadingPhoton;
-   Float_t         subleadingPhotonR9full5x5;
-   Int_t           nPromptInDiPhoton;
+   Int_t           candidate_id;
+   Float_t         weight;
+   Float_t         CMS_hgg_mass;
+   Float_t         dZ;
+   Float_t         centralObjectWeight;
    Float_t         leadingJet_bDis;
    Float_t         subleadingJet_bDis;
-   Float_t         HHTagger2017;
-   Float_t         HHTagger2017_transform;
-   LorentzVector   *dijetCandidate;
-
-   Int_t           isSignal;
-
-   Float_t         HHTagger;
-   Float_t         HHTagger_LM;
-   Float_t         HHTagger_HM;
-
+   Float_t         absCosThetaStar_CS;
+   Float_t         absCosTheta_bb;
+   Float_t         absCosTheta_gg;
+   Float_t         diphotonCandidatePtOverdiHiggsM;
+   Float_t         dijetCandidatePtOverdiHiggsM;
+   Float_t         customLeadingPhotonIDMVA;
+   Float_t         customSubLeadingPhotonIDMVA;
+   Float_t         leadingPhotonSigOverE;
+   Float_t         subleadingPhotonSigOverE;
+   Float_t         sigmaMOverM;
+   Float_t         sigmaMOverMDecorr;
+   Float_t         sigmaMJets;
+   Float_t         PhoJetMinDr;
+   Float_t         HHbbggMVA;
    Float_t         MX;
-
-   //Int_t           nmus;
-   //Int_t           nmus_loose;
-   //Int_t           nelecs;
-   //Int_t           nelecs_loose;
-   //Float_t         rho;
-   //Int_t           nvtx;
+   Float_t         Mjj;
+   Float_t         dijet_pt;
+   Float_t         dijet_eta;
+   Float_t         dijet_phi;
+   Float_t         diphoton_pt;
+   Float_t         diphoton_eta;
+   Float_t         diphoton_phi;
+   Float_t         diHiggs_pt;
+   Float_t         diHiggs_mass;
+   Float_t         diHiggs_eta;
+   Float_t         diHiggs_phi;
+   Float_t         category;
+   Float_t         leadingPhoton_pt;
+   Float_t         leadingPhoton_eta;
+   Float_t         leadingPhoton_phi;
+   Float_t         subleadingPhoton_pt;
+   Float_t         subleadingPhoton_eta;
+   Float_t         subleadingPhoton_phi;
+   Float_t         leadingJet_pt;
+   Float_t         leadingJet_eta;
+   Float_t         leadingJet_phi;
+   Float_t         leadingJet_mass;
+   Float_t         leadingJet_bRegNNCorr;
+   Float_t         leadingJet_bRegNNResolution;
+   Float_t         subleadingJet_pt;
+   Float_t         subleadingJet_eta;
+   Float_t         subleadingJet_phi;
+   Float_t         subleadingJet_mass;
+   Float_t         subleadingJet_bRegNNCorr;
+   Float_t         subleadingJet_bRegNNResolution;
+   Float_t         ttHMVA_MET;
+   Float_t         ttHMVA_njets;
+   Float_t         ttHMVA_Xtt0;
+   Float_t         ttHMVA_Xtt1;
+   Float_t         ttHMVA_MjjW0;
+   Float_t         ttHMVA_MjjW1;
+   Float_t         ttHMVA_Mjjbt0;
+   Float_t         ttHMVA_Mjjbt1;
+   Float_t         ttHMVA_leadingMuon;
+   Float_t         ttHMVA_subleadingMuon;
+   Float_t         ttHMVA_nmus;
+   Float_t         ttHMVA_leadingElectron;
+   Float_t         ttHMVA_subleadingElectron;
+   Float_t         ttHMVA_nelecs;
+   Float_t         ttHHHbggMVA;
+   Float_t         leadingJet_bRegNNCorr;
+   Float_t         leadingJet_bRegNNResolution;
+   Float_t         subleadingJet_bRegNNCorr;
+   Float_t         subleadingJet_bRegNNResolution;
+   Float_t         sigmaMJets;
+   Float_t         rho;
+   Int_t           nvtx;
    ULong64_t       event;
    UInt_t          lumi;
-   //Int_t           processIndex;
+   Int_t           processIndex;
    UInt_t          run;
-   //Int_t           nvtx;
-   //Float_t         npu;
-   //Float_t         puweight;
-   //Double_t        lumiFactor;
-
-   // List of branches
-   //TBranch        *b_genWeights;   //!
-   TBranch        *b_genTotalWeight;   //!
-   //TBranch        *b_gen_mHH;   //!
-   //TBranch        *b_cosTheta;   //!
-      
-   TBranch        *b_leadingPhoton; //!
-   TBranch        *b_leadingPhotonR9full5x5;   //!
-   TBranch        *b_subleadingPhoton;
-   TBranch        *b_subleadingPhotonR9full5x5;   //!
-   TBranch        *b_nPromptInDiPhoton;   //!
-   TBranch        *b_leadingJet_bDis;   //!
-   TBranch        *b_subleadingJet_bDis;   //!
-
-   TBranch        *b_HHTagger2017;   //!
-   TBranch        *b_HHTagger2017_transform;   //!
-   TBranch        *b_dijetCandidate;
-
-   TBranch        *b_isSignal;   //!
-
-   TBranch        *b_HHTagger;   //!
-   TBranch        *b_HHTagger_LM;   //!
-   TBranch        *b_HHTagger_HM;   //!
-
-   TBranch        *b_MX;   //!
-
-   //TBranch        *b_nelecs;   //!
-   //TBranch        *b_nelecs_loose;   //!
-   //TBranch        *b_rho;   //!
-   //TBranch        *b_nvtx;   //!
-   TBranch        *b_event;   //!
-   TBranch        *b_lumi;   //!
-   //TBranch        *b_processIndex;   //!
-   TBranch        *b_run;   //!
-   //TBranch        *b_nvtx;   //!
-   //TBranch        *b_npu;   //!
-   //TBranch        *b_puweight;   //!
-   //TBranch        *b_lumiFactor;   //!
+   Int_t           nvtx;
+   Float_t         npu;
+   Float_t         puweight;
 
    bbggLTMaker(TTree * /*tree*/ =0) : fChain(0) { }
    virtual ~bbggLTMaker() { }
