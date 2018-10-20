@@ -55,6 +55,8 @@ public :
    typedef ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<double> > LorentzVector;
    Int_t           candidate_id;
    Float_t         weight;
+   Int_t           isSignal;
+   Double_t        genTotalWeight;
    Float_t         CMS_hgg_mass;
    Float_t         dZ;
    Float_t         centralObjectWeight;
@@ -120,13 +122,7 @@ public :
    Float_t         ttHMVA_subleadingElectron;
    Float_t         ttHMVA_nelecs;
    Float_t         ttHHHbggMVA;
-   Float_t         leadingJet_bRegNNCorr;
-   Float_t         leadingJet_bRegNNResolution;
-   Float_t         subleadingJet_bRegNNCorr;
-   Float_t         subleadingJet_bRegNNResolution;
-   Float_t         sigmaMJets;
    Float_t         rho;
-   Int_t           nvtx;
    ULong64_t       event;
    UInt_t          lumi;
    Int_t           processIndex;
@@ -134,6 +130,36 @@ public :
    Int_t           nvtx;
    Float_t         npu;
    Float_t         puweight;
+   
+   // List of branches
+   //TBranch        *b_genWeights;   //!
+   TBranch        *b_genTotalWeight;   //!
+   //TBranch        *b_gen_mHH;   //!
+   //TBranch        *b_cosTheta;   //!
+      
+   TBranch          *b_leadingJet_bDis;   //!
+   TBranch         *b_subleadingJet_bDis;   //!
+
+   TBranch        *b_dijetCandidate;
+
+   TBranch        *b_isSignal;   //!
+
+   TBranch        *b_HHbbggMVA;   //!
+   TBranch        *b_HHTagger_LM;   //!
+   TBranch        *b_HHTagger_HM;   //!
+
+   TBranch        *b_MX;   //!
+
+   //TBranch        *b_nelecs;   //!
+   //TBranch        *b_nelecs_loose;   //!
+   //TBranch        *b_rho;   //!
+   //TBranch        *b_nvtx;   //!
+   TBranch        *b_event;   //!
+   TBranch        *b_lumi;   //!
+   //TBranch        *b_processIndex;   //!
+   TBranch        *b_run;   //!
+
+
 
    bbggLTMaker(TTree * /*tree*/ =0) : fChain(0) { }
    virtual ~bbggLTMaker() { }
@@ -176,40 +202,17 @@ void bbggLTMaker::Init(TTree *tree)
 
    // Set object pointer
    //genWeights = 0;
-   leadingPhoton = 0;
-   subleadingPhoton = 0;
-   dijetCandidate = 0;
+   //leadingPhoton = 0;
+   //subleadingPhoton = 0;
+   //dijetCandidate = 0;
    // Set branch addresses and branch pointers
    if (!tree) return;
    fChain = tree;
-   //fChain->SetMakeClass(1); //This thing breaks LorentzVectors
-   
-//   fChain->SetBranchAddress("genWeights", &genWeights, &b_genWeights);
-   fChain->SetBranchAddress("genTotalWeight", &genTotalWeight, &b_genTotalWeight);
-//   fChain->SetBranchAddress("gen_mHH", &gen_mHH, &b_gen_mHH);
-//   fChain->SetBranchAddress("gen_cosTheta", &gen_cosTheta, &b_cosTheta);
-   fChain->SetBranchAddress("leadingPhoton", &leadingPhoton, &b_leadingPhoton);
-   fChain->SetBranchAddress("subleadingPhoton", &subleadingPhoton, &b_subleadingPhoton);
-
-   fChain->SetBranchAddress("leadingPhotonR9full5x5", &leadingPhotonR9full5x5, &b_leadingPhotonR9full5x5);
-   fChain->SetBranchAddress("subleadingPhotonR9full5x5", &subleadingPhotonR9full5x5, &b_subleadingPhotonR9full5x5);
-   fChain->SetBranchAddress("nPromptInDiPhoton", &nPromptInDiPhoton, &b_nPromptInDiPhoton);
    fChain->SetBranchAddress("leadingJet_bDis", &leadingJet_bDis, &b_leadingJet_bDis);
    fChain->SetBranchAddress("subleadingJet_bDis", &subleadingJet_bDis, &b_subleadingJet_bDis);
-
-   fChain->SetBranchAddress("HHTagger2017", &HHTagger2017, &b_HHTagger2017);
-   fChain->SetBranchAddress("HHTagger2017_transform", &HHTagger2017_transform, &b_HHTagger2017_transform);
-   fChain->SetBranchAddress("dijetCandidate", &dijetCandidate, &b_dijetCandidate);
-
-   fChain->SetBranchAddress("isSignal", &isSignal, &b_isSignal);
-
-   fChain->SetBranchAddress("HHTagger", &HHTagger, &b_HHTagger);
-   fChain->SetBranchAddress("HHTagger_LM", &HHTagger_LM, &b_HHTagger_LM);
-   fChain->SetBranchAddress("HHTagger_HM", &HHTagger_HM, &b_HHTagger_HM);
-
    fChain->SetBranchAddress("MX", &MX, &b_MX);
    fChain->SetBranchAddress("event", &event, &b_event);
-
+   fChain->SetBranchAddress("HHbbggMVA", &HHbbggMVA, &b_HHbbggMVA);
    fChain->SetBranchAddress("run", &run, &b_run);
 }
 

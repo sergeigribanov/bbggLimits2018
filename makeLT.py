@@ -40,7 +40,7 @@ if __name__ == "__main__":
     for n in nodes:
       if n[0]!="SM": continue # Only do SM node for now
 
-      fChain = TChain("tagsDumper/trees/GluGluToHHTo2B2G_node_SM_13TeV_madgraph_13TeV_DoubleHTag_0")
+      fChain = TChain("tagsDumper/trees/bbggtrees")
       fname = opt.indir+"/output_GluGluToHHTo2B2G_node_"+str(n[0])+"_13TeV-madgraph.root"
       fChain.Add(fname)
       rootName = fname[fname.rfind('/')+1:]
@@ -55,7 +55,7 @@ if __name__ == "__main__":
     print "Doing Single Higgs samples"
     for n in SMHiggsNodes:
       if opt.verb: print n
-      fChain = TChain("bbggSelectionTree")
+      fChain = TChain("tagsDumper/trees/bbggtrees")
       fname = opt.indir+'/'+n[0]
       fChain.Add(fname)
       outFileName = opt.outDir+"/LT_"+n[0]
@@ -66,9 +66,7 @@ if __name__ == "__main__":
 
     print "Done with Single Higgs"
 
-    print "Doing Data"
-    fChain = TChain("bbggSelectionTree")
-    
+    fChain = TChain("tagsDumper/trees/bbggtrees")
     # fname = opt.indir+'/DoubleEG.root'
     fname = opt.indir+'/FakeData/DoubleEG.root'
     fChain.Add(fname)

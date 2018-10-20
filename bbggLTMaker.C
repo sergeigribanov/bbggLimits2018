@@ -5,7 +5,7 @@
 const bool DEBUG = 0;
 
 // Cuts for 2016 categorization (_which==0):
-const Float_t cutJetBtag = 0.55;
+const Float_t cutJetBtag = 0.8;
 const Float_t boundary_MX[3]  = {0,350,35000};
 const Float_t boundary_MVA_tagger2016_LM[3] = {0.600, 0.985, 1.0};
 const Float_t boundary_MVA_tagger2016_HM[3] = {0.600, 0.970, 1.0};
@@ -15,31 +15,17 @@ const Float_t boundary_MVA_tagger2017_LM[3] = {0.115, 0.597, 1.0};
 const Float_t boundary_MVA_tagger2017_HM[3] = {0.226, 0.6195, 1.0};
 
 // Cuts for 2017 tagger, using 2017 optimized categorization (_which==2):
-const Float_t boundary_MVA_tagger2017[4] = {0.271, 0.543, 0.740, 1.05};
-const Float_t boundary_MX_2017[5]  = {250, 341.4, 426.1, 544, 35000};
+//const Float_t boundary_MVA_tagger2017[4] = {0.271, 0.543, 0.740, 1.05};
+//const Float_t boundary_MX_2017[5]  = {250, 341.4, 426.1, 544, 35000};
 
-const Float_t MjjCuts_Low[] = {88.0, 81.0, 75.0,
-			       95.0, 95.0, 102.0,
-			       99.0, 91.0, 95.0,
-			       108.0, 108.0, 103.0};
+//// upating the categrisation number according to this part of 2017 analysis code https://github.com/michelif/flashgg/blob/hh_tag_94X_20180601/Taggers/python/flashggDoubleHTag_cfi.py#L31-L34
+const Float_t boundary_MVA_2017[3]   = {0.28,0.47, 0.63}; // category boundaries for MVA
+const Float_t boundary_MX_2017[5]   = {250., 310., 391., 547., 35000};// .. and MX
 
-const Float_t MjjCuts_High[] = {151.0, 155.0, 155.0,
-				155.0, 166.0, 155.0,
-				148.0, 160.0, 167.0,
-				159.0, 155.0, 151.0};
+const Float_t MjjCuts_Low[] = {97.,95.,95.,95.,99.,100.,95.,95.,95.,95.,95.,108.};
 
-/*
-// Fixed cuts are to test the 1D fit option in bbgg2Dfitter
-const Float_t MjjCuts_Low[] = {100.0, 100.0, 100.0,
-			       100.0, 100.0, 100.0,
-			       100.0, 100.0, 100.0,
-			       100.0, 100.0, 100.0};
+const Float_t MjjCuts_High[] = {146.,153.,150.,155.,150.,147.,154.,151.,155.,155.,155.,148.};
 
-const Float_t MjjCuts_High[] = {150.0, 150.0, 150.0,
-				150.0, 150.0, 150.0,
-				150.0, 150.0, 150.0,
-				150.0, 150.0, 150.0};
-*/
 void bbggLTMaker::Begin(TTree * /*tree*/)
 {
   TString option = GetOption();
@@ -97,8 +83,7 @@ Bool_t bbggLTMaker::Process(Long64_t entry)
   GetEntry(entry);
   //std::cout<<"Processing event "<<event<<" in run "<<run<<std::endl;
 
-  if (!isSignal) return kTRUE; // This means signal region.
-  if( _genDiPhotonFilter && nPromptInDiPhoton < 2 ) return kTRUE;
+  //if( _genDiPhotonFilter && nPromptInDiPhoton < 2 ) return kTRUE;
 
   o_run = run;
   o_evt = event;
@@ -109,30 +94,26 @@ Bool_t bbggLTMaker::Process(Long64_t entry)
   o_bbggMass = diHiggs_mass;
 
   o_MX = MX;
-  //if (fabs(o_MX-MX)/o_MX > 0.0001) std::cout<<"MXes are not equal!! o_mx="<<o_MX<<"  treMX="<<MX<<std::endl;
 
   o_catID = -1;
 
-  //std::cout<<"lead photon pt = "<<(*leadingPhoton).Pt()<<std::endl;
-  //std::cout<<"Mbbgg = "<<o_bbggMass<<" MX = "<<o_MX<<std::endl;
   if (_whichCategorization==0){
-    if (o_MX > boundary_MX[0] && o_MX <= boundary_MX[1]){
+    if (o_MX > boundary_MX_2017[0] && o_MX <= boundary_MX_2017[1]){
       if( leadingJet_bDis < cutJetBtag || subleadingJet_bDis < cutJetBtag)
 	return kTRUE; // Some clean-up based on b-tag scores
 
-      if (HHTagger_LM > boundary_MVA_tagger2016_LM[0] && HHTagger_LM <= boundary_MVA_tagger2016_LM[1])
+      if (HHbbggMVA > boundary_MVA_2017[0] && HHbbggMVA <= boundary_MVA_2017[1])
 	o_catID = 3;
-      else if (HHTagger_LM > boundary_MVA_tagger2016_LM[1] && HHTagger_LM <= boundary_MVA_tagger2016_LM[2])
+      else if (HHbbggMVA > boundary_MVA_2017[1] && HHbbggMVA <= boundary_MVA_2017[2])
 	o_catID = 2;
       else {
-	//if (DEBUG) std::cout<<"MVA is out of bounds!  MVA="<<HHTagger_LM<<std::endl;
 	return kTRUE;
       }
     }
     else if (o_MX > boundary_MX[1] && o_MX <= boundary_MX[2]){
-      if (HHTagger_HM > boundary_MVA_tagger2016_HM[0] && HHTagger_HM <= boundary_MVA_tagger2016_HM[1])
+      if (HHbbggMVA > boundary_MVA_tagger2016_HM[0] && HHbbggMVA <= boundary_MVA_tagger2016_HM[1])
 	o_catID = 1;
-      else if (HHTagger_HM > boundary_MVA_tagger2016_HM[1] && HHTagger_HM <= boundary_MVA_tagger2016_HM[2])
+      else if (HHbbggMVA > boundary_MVA_tagger2016_HM[1] && HHbbggMVA <= boundary_MVA_tagger2016_HM[2])
 	o_catID = 0;
       else {
 	//if (DEBUG) std::cout<<"MVA is out of bounds!  MVA="<<HHTagger_HM<<std::endl;
@@ -149,9 +130,9 @@ Bool_t bbggLTMaker::Process(Long64_t entry)
       if( leadingJet_bDis < cutJetBtag || subleadingJet_bDis < cutJetBtag)
 	return kTRUE; // Some clean-up based on b-tag scores
 
-      if (HHTagger2017_transform > boundary_MVA_tagger2017_LM[0] && HHTagger2017_transform <= boundary_MVA_tagger2017_LM[1])
+      if (HHbbggMVA > boundary_MVA_tagger2017_LM[0] && HHbbggMVA <= boundary_MVA_tagger2017_LM[1])
 	o_catID = 3;
-      else if (HHTagger2017_transform > boundary_MVA_tagger2017_LM[1] && HHTagger2017_transform <= boundary_MVA_tagger2017_LM[2])
+      else if (HHbbggMVA > boundary_MVA_tagger2017_LM[1] && HHbbggMVA <= boundary_MVA_tagger2017_LM[2])
 	o_catID = 2;
       else {
 	//if (DEBUG) std::cout<<"MVA is out of bounds!  MVA="<<HHTagger_LM<<std::endl;
@@ -159,9 +140,9 @@ Bool_t bbggLTMaker::Process(Long64_t entry)
       }
     }
     else if (o_MX > boundary_MX[1] && o_MX <= boundary_MX[2]){
-      if (HHTagger2017_transform > boundary_MVA_tagger2017_HM[0] && HHTagger2017_transform <= boundary_MVA_tagger2017_HM[1])
+      if (HHbbggMVA > boundary_MVA_tagger2017_HM[0] && HHbbggMVA <= boundary_MVA_tagger2017_HM[1])
 	o_catID = 1;
-      else if (HHTagger2017_transform > boundary_MVA_tagger2017_HM[1] && HHTagger2017_transform <= boundary_MVA_tagger2017_HM[2])
+      else if (HHbbggMVA > boundary_MVA_tagger2017_HM[1] && HHbbggMVA <= boundary_MVA_tagger2017_HM[2])
 	o_catID = 0;
       else {
 	//if (DEBUG) std::cout<<"MVA is out of bounds!  MVA="<<HHTagger_HM<<std::endl;
@@ -174,42 +155,33 @@ Bool_t bbggLTMaker::Process(Long64_t entry)
     }
   }
 
+//// using categrisation 2 for 2017 ///////
+
   else if (_whichCategorization==2 || _whichCategorization==3){
     if (o_MX > boundary_MX_2017[0] && o_MX <= boundary_MX_2017[1]){
-      if (HHTagger2017_transform > boundary_MVA_tagger2017[0] && HHTagger2017_transform <= boundary_MVA_tagger2017[1]){
+      if (HHbbggMVA > boundary_MVA_2017[0] && HHbbggMVA <= boundary_MVA_2017[1]){
 	o_catID = 2;
 	if (_whichCategorization==3 && (o_mjj < MjjCuts_Low[o_catID] || o_mjj > MjjCuts_High[o_catID]) )
 	  return kTRUE;
       }
-      else if (HHTagger2017_transform > boundary_MVA_tagger2017[1] && HHTagger2017_transform <= boundary_MVA_tagger2017[2]){
+      else if (HHbbggMVA > boundary_MVA_2017[1] && HHbbggMVA <= boundary_MVA_2017[2]){
 	o_catID = 1;
 	if (_whichCategorization==3 && (o_mjj < MjjCuts_Low[o_catID] || o_mjj > MjjCuts_High[o_catID]) )
 	  return kTRUE;
       }
-      else if (HHTagger2017_transform > boundary_MVA_tagger2017[2] && HHTagger2017_transform <= boundary_MVA_tagger2017[3]){
-	o_catID = 0;
-	if (_whichCategorization==3 && (o_mjj < MjjCuts_Low[o_catID] || o_mjj > MjjCuts_High[o_catID]) )
-	  return kTRUE;
-      }
       else {
-	//if (DEBUG) std::cout<<"MVA is out of bounds!  MVA="<<HHTagger_LM<<std::endl;
 	return kTRUE;
       }
     }
 
     else if (o_MX > boundary_MX_2017[1] && o_MX <= boundary_MX_2017[2]){
-      if (HHTagger2017_transform > boundary_MVA_tagger2017[0] && HHTagger2017_transform <= boundary_MVA_tagger2017[1]){
+      if (HHbbggMVA > boundary_MVA_2017[0] && HHbbggMVA <= boundary_MVA_2017[1]){
 	o_catID = 5;
 	if (_whichCategorization==3 && (o_mjj < MjjCuts_Low[o_catID] || o_mjj > MjjCuts_High[o_catID]) )
 	  return kTRUE;
       }
-      else if (HHTagger2017_transform > boundary_MVA_tagger2017[1] && HHTagger2017_transform <= boundary_MVA_tagger2017[2]){
+      else if (HHbbggMVA > boundary_MVA_2017[1] && HHbbggMVA <= boundary_MVA_2017[2]){
 	o_catID = 4;
-	if (_whichCategorization==3 && (o_mjj < MjjCuts_Low[o_catID] || o_mjj > MjjCuts_High[o_catID]) )
-	  return kTRUE;
-      }
-      else if (HHTagger2017_transform > boundary_MVA_tagger2017[2] && HHTagger2017_transform <= boundary_MVA_tagger2017[3]){
-	o_catID = 3;
 	if (_whichCategorization==3 && (o_mjj < MjjCuts_Low[o_catID] || o_mjj > MjjCuts_High[o_catID]) )
 	  return kTRUE;
       }
@@ -219,46 +191,37 @@ Bool_t bbggLTMaker::Process(Long64_t entry)
     }
 
     else if (o_MX > boundary_MX_2017[2] && o_MX <= boundary_MX_2017[3]){
-      if (HHTagger2017_transform > boundary_MVA_tagger2017[0] && HHTagger2017_transform <= boundary_MVA_tagger2017[1]){
+      if (HHbbggMVA > boundary_MVA_2017[0] && HHbbggMVA <= boundary_MVA_2017[1]){
 	o_catID = 8;
 	if (_whichCategorization==3 && (o_mjj < MjjCuts_Low[o_catID] || o_mjj > MjjCuts_High[o_catID]) )
 	  return kTRUE;
       }
-      else if (HHTagger2017_transform > boundary_MVA_tagger2017[1] && HHTagger2017_transform <= boundary_MVA_tagger2017[2]){
+      else if (HHbbggMVA > boundary_MVA_2017[1] && HHbbggMVA <= boundary_MVA_2017[2]){
 	o_catID = 7;
 	if (_whichCategorization==3 && (o_mjj < MjjCuts_Low[o_catID] || o_mjj > MjjCuts_High[o_catID]) )
 	  return kTRUE;
       }
-      else if (HHTagger2017_transform > boundary_MVA_tagger2017[2] && HHTagger2017_transform <= boundary_MVA_tagger2017[3]){
-	o_catID = 6;
-	if (_whichCategorization==3 && (o_mjj < MjjCuts_Low[o_catID] || o_mjj > MjjCuts_High[o_catID]) )
-	  return kTRUE;
-      }
       else {
 	return kTRUE;
       }
     }
-
+    
     else if (o_MX > boundary_MX_2017[3] && o_MX <= boundary_MX_2017[4]){
-      if (HHTagger2017_transform > boundary_MVA_tagger2017[0] && HHTagger2017_transform <= boundary_MVA_tagger2017[1]){
+      if (HHbbggMVA > boundary_MVA_2017[0] && HHbbggMVA <= boundary_MVA_2017[1]){
 	o_catID = 11;
 	if (_whichCategorization==3 && (o_mjj < MjjCuts_Low[o_catID] || o_mjj > MjjCuts_High[o_catID]) )
 	  return kTRUE;
       }
-      else if (HHTagger2017_transform > boundary_MVA_tagger2017[1] && HHTagger2017_transform <= boundary_MVA_tagger2017[2]){
+      else if (HHbbggMVA > boundary_MVA_2017[1] && HHbbggMVA <= boundary_MVA_2017[2]){
 	o_catID = 10;
 	if (_whichCategorization==3 && (o_mjj < MjjCuts_Low[o_catID] || o_mjj > MjjCuts_High[o_catID]) )
 	  return kTRUE;
       }
-      else if (HHTagger2017_transform > boundary_MVA_tagger2017[2] && HHTagger2017_transform <= boundary_MVA_tagger2017[3]){
-	o_catID = 9;
-	if (_whichCategorization==3 && (o_mjj < MjjCuts_Low[o_catID] || o_mjj > MjjCuts_High[o_catID]) )
-	  return kTRUE;
-      }
       else {
-	return kTRUE;
+        return kTRUE;
       }
-    }
+
+     }
 
     else  {
       std::cout<<"MX is out of bounds!  MX="<<o_MX<<std::endl;
