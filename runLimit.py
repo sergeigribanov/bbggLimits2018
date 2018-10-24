@@ -92,7 +92,7 @@ def runFullChain(opt, Params, point=None, NRgridPoint=-1, extraLabel=''):
     if '/store' in Params['LTDIR']:
       LTDir = '/eos/cms'+Params['LTDIR']
 
-  lumi = 35.87 # Only used for plot produced by bbgg2Dfitter
+  lumi = 42. # Only used for plot produced by bbgg2Dfitter
   energy = str(Params["energy"])
   NCAT    = Params["ncat"]
   mass   = Params["higgsMass"]

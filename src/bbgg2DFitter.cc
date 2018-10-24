@@ -94,7 +94,7 @@ RooArgSet* bbgg2DFitter::defineVariables(bool swithToSimpleWeight=false)
   }
 
 
-  for ( int i=0; i<_NCAT; ++i)
+  for ( int i=1; i<=(_NCAT/2); ++i)
     catID->defineType(Form("cat_%i", i), i);
   
   //
@@ -565,6 +565,7 @@ void bbgg2DFitter::MakeSigWS(std::string fileBaseName)
       //wAll->import(*_w->pdf(TString::Format("mggSig_cat%d",c)), Rename(TString::Format("mggSig_cat%d", c)));
     }
   wAll->Print("v");
+  //TString filename(wsDir+TString(fileBaseName)+".root");
   TString filename(wsDir+TString(fileBaseName)+".root");
   wAll->writeToFile(filename);
   if (_verbLvl>1) std::cout << "Write signal workspace in: " << filename << " file" << std::endl;

@@ -158,8 +158,10 @@ public :
    TBranch        *b_lumi;   //!
    //TBranch        *b_processIndex;   //!
    TBranch        *b_run;   //!
-
-
+   TBranch        *b_Mjj;
+   TBranch        *b_Mgg;
+   TBranch        *b_mbbgg;
+   TBranch        *b_evWeight;
 
    bbggLTMaker(TTree * /*tree*/ =0) : fChain(0) { }
    virtual ~bbggLTMaker() { }
@@ -214,6 +216,10 @@ void bbggLTMaker::Init(TTree *tree)
    fChain->SetBranchAddress("event", &event, &b_event);
    fChain->SetBranchAddress("HHbbggMVA", &HHbbggMVA, &b_HHbbggMVA);
    fChain->SetBranchAddress("run", &run, &b_run);
+   fChain->SetBranchAddress("Mjj", &Mjj, &b_Mjj);
+   fChain->SetBranchAddress("CMS_hgg_mass", &CMS_hgg_mass, &b_Mgg);
+   fChain->SetBranchAddress("diHiggs_mass", &diHiggs_mass, &b_mbbgg);
+   fChain->SetBranchAddress("weight", &weight, &b_evWeight);
 }
 
 Bool_t bbggLTMaker::Notify()
