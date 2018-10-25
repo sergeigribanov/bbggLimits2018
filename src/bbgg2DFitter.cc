@@ -94,7 +94,7 @@ RooArgSet* bbgg2DFitter::defineVariables(bool swithToSimpleWeight=false)
   }
 
 
-  for ( int i=1; i<=(_NCAT/2); ++i)
+  for ( int i=1; i<=(_NCAT); ++i)
     catID->defineType(Form("cat_%i", i), i);
   
   //
