@@ -13,7 +13,7 @@ parser.add_argument('-x', nargs='+', choices=['res', 'nonres'], required=True, d
                     help = "Choose which samlples to create the trees from.")
 parser.add_argument("-v", "--verbosity",  dest="verb", action="store_true", default=False,
                     help="Print out more stuff")
-parser.add_argument("-l", "--lumi", dest="lumi", default=35.87,
+parser.add_argument("-l", "--lumi", dest="lumi", default=42.0,
                     help="Integrated lumi to scale signal")
 parser.add_argument('-o', '--outDir', dest="outDir", type=str, default=None,
                     required=True, help="Output directory (will be created).")
@@ -22,7 +22,7 @@ parser.add_argument('-c', '--categ', dest="categ", type=int, default=0,
 
 opt = parser.parse_args()
 
-nodes = [ ["box", 50000], ["SM", 50000],
+nodes = [ ["box", 50000], ["SM", 369000],
           [2, 49600], [3, 50000], [ 4, 50000], [ 5, 50000], [ 6, 50000], [ 7, 50000],
           [8, 50000], [9, 49600], [10, 49800], [11, 50000], [12, 50000], [13, 50000] ]
 
@@ -48,7 +48,7 @@ if __name__ == "__main__":
 
       outFileName = opt.outDir+"/LT_"+rootName
 
-      fChain.Process("bbggLTMaker.C+", "%.10f %s %i %i" % ( opt.lumi/n[1], outFileName, 0, opt.categ) )
+      fChain.Process("bbggLTMaker.C+", "%.10f %s %i %i" % ( opt.lumi*1000./n[1], outFileName, 0, opt.categ) )
 
     print "Done with signal"
 
@@ -56,11 +56,11 @@ if __name__ == "__main__":
     for n in SMHiggsNodes:
       if opt.verb: print n
       fChain = TChain("tagsDumper/trees/bbggtrees")
-      fname = opt.indir+'/'+n[0]
+      fname = opt.indir+n[0]
       fChain.Add(fname)
       outFileName = opt.outDir+"/LT_"+n[0]
 
-      fChain.Process("bbggLTMaker.C+", "%.10f %s %i %i" % ( opt.lumi*n[2]/n[1], outFileName, 1, opt.categ) )
+      fChain.Process("bbggLTMaker.C+", "%.10f %s %i %i" % ( opt.lumi*1000.*n[2]/n[1], outFileName, 1, opt.categ) )
 
     os.system('hadd -f '+opt.outDir+'/LT_output_bbHToGG_M-125_13TeV_amcatnlo.root '+opt.outDir+'/LT_output_bbHToGG_M-125_4FS_yb*.root')
 
