@@ -48,7 +48,7 @@ if __name__ == "__main__":
 
       outFileName = opt.outDir+"/LT_"+rootName
 
-      fChain.Process("bbggLTMaker.C+", "%.10f %s %i %i" % ( opt.lumi*1000./n[1], outFileName, 0, opt.categ) )
+      fChain.Process("bbggLTMaker.C+", "%.10f %s %i %i" % ( opt.lumi, outFileName, 0, opt.categ) )
 
     print "Done with signal"
 
@@ -60,7 +60,7 @@ if __name__ == "__main__":
       fChain.Add(fname)
       outFileName = opt.outDir+"/LT_"+n[0]
 
-      fChain.Process("bbggLTMaker.C+", "%.10f %s %i %i" % ( opt.lumi*1000.*n[2]/n[1], outFileName, 1, opt.categ) )
+      fChain.Process("bbggLTMaker.C+", "%.10f %s %i %i" % ( opt.lumi, outFileName, 1, opt.categ) )
 
     os.system('hadd -f '+opt.outDir+'/LT_output_bbHToGG_M-125_13TeV_amcatnlo.root '+opt.outDir+'/LT_output_bbHToGG_M-125_4FS_yb*.root')
 
