@@ -19,7 +19,7 @@ observation  OBS_CAT8
 bin                                   cat8	     cat8	    cat8           cat8           cat8           cat8           cat8
 process                               Sig            Bkg            vbf            bbh            vh             tth            ggh
 process                               0              1              2              3              4              5              6
-rate				      SIG_CAT8	     1		    GGH_CAT8	   TTH_CAT8	  VH_CAT8	 BBH_CAT8	VBF_CAT8
+rate				      SIG_CAT8	     1		    VBF_CAT8	   BBH_CAT8	  VH_CAT8	 TTH_CAT8	GGH_CAT8
 
 ----------------------------------------------------------------------------------------------------------------------------------
 CMS_btag_cferr1         lnN           1.043/1.035    -              1.049/0.92     1.009/1.001    1.087/0.979    1.056/0.974    1.026/0.912

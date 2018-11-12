@@ -46,6 +46,9 @@ def runCombine(inDir, doBlind, log, combineOpt = 1, Label = None, scaleSingleHig
     combineMethod = 'AsymptoticLimits --X-rtd TMCSO_AdaptivePseudoAsimov=50'
   elif combineOpt==3:
     combineMethod = 'HybridNew --testStat=LHC --frequentist'
+  elif combineOpt==4:
+    combineMethod = 'AsymptoticLimits -S 0' 
+
   else:
     log.error('This option is not supported: %r', combineOpt)
     return __BAD__
