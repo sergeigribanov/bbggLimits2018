@@ -75,11 +75,11 @@ CMS_hgg_sig_sigmaScale   param  1 0.05
 CMS_hgg_sig_m0_absShift  param  1 0.005
 
 CMS_hhbbgg_13TeV_mjj_bkg_par1_cat2  flatParam
-CMS_hhbbgg_13TeV_mjj_bkg_par2_cat2  flatParam
+#CMS_hhbbgg_13TeV_mjj_bkg_par2_cat2  flatParam
 #CMS_hhbbgg_13TeV_mjj_bkg_par3_cat2  flatParam
 
 CMS_hhbbgg_13TeV_mgg_bkg_par1_cat2  flatParam
-CMS_hhbbgg_13TeV_mgg_bkg_par2_cat2  flatParam
+#CMS_hhbbgg_13TeV_mgg_bkg_par2_cat2  flatParam
 #CMS_hhbbgg_13TeV_mgg_bkg_par3_cat2  flatParam
 
 CMS_Bkg_cat2_norm  flatParam

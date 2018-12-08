@@ -161,33 +161,12 @@ Bool_t bbggLTMaker::Process(Long64_t entry)
   else if (_whichCategorization==2 || _whichCategorization==3){
     if (o_MX > boundary_MX_2017[0] && o_MX <= boundary_MX_2017[1]){
       if (HHbbggMVA > boundary_MVA_2017[0] && HHbbggMVA <= boundary_MVA_2017[1]){
-	o_catID = 2;
+	o_catID = 11;
 	if (_whichCategorization==3 && (o_mjj < MjjCuts_Low[o_catID] || o_mjj > MjjCuts_High[o_catID]) )
 	  return kTRUE;
       }
       else if (HHbbggMVA > boundary_MVA_2017[1] && HHbbggMVA <= boundary_MVA_2017[2]){
-	o_catID = 1;
-	if (_whichCategorization==3 && (o_mjj < MjjCuts_Low[o_catID] || o_mjj > MjjCuts_High[o_catID]) )
-	  return kTRUE;
-      }
-      else if (HHbbggMVA > boundary_MVA_2017[2] && HHbbggMVA <= boundary_MVA_2017[3]){
-        o_catID = 0;
-        if (_whichCategorization==3 && (o_mjj < MjjCuts_Low[o_catID] || o_mjj > MjjCuts_High[o_catID]) )
-          return kTRUE;
-      }
-      else {
-	return kTRUE;
-      }
-    }
-
-    else if (o_MX > boundary_MX_2017[1] && o_MX <= boundary_MX_2017[2]){
-      if (HHbbggMVA > boundary_MVA_2017[0] && HHbbggMVA <= boundary_MVA_2017[1]){
-	o_catID = 5;
-	if (_whichCategorization==3 && (o_mjj < MjjCuts_Low[o_catID] || o_mjj > MjjCuts_High[o_catID]) )
-	  return kTRUE;
-      }
-      else if (HHbbggMVA > boundary_MVA_2017[1] && HHbbggMVA <= boundary_MVA_2017[2]){
-	o_catID = 4;
+	o_catID = 7;
 	if (_whichCategorization==3 && (o_mjj < MjjCuts_Low[o_catID] || o_mjj > MjjCuts_High[o_catID]) )
 	  return kTRUE;
       }
@@ -201,19 +180,40 @@ Bool_t bbggLTMaker::Process(Long64_t entry)
       }
     }
 
-    else if (o_MX > boundary_MX_2017[2] && o_MX <= boundary_MX_2017[3]){
+    else if (o_MX > boundary_MX_2017[1] && o_MX <= boundary_MX_2017[2]){
       if (HHbbggMVA > boundary_MVA_2017[0] && HHbbggMVA <= boundary_MVA_2017[1]){
-	o_catID = 8;
+	o_catID = 10;
 	if (_whichCategorization==3 && (o_mjj < MjjCuts_Low[o_catID] || o_mjj > MjjCuts_High[o_catID]) )
 	  return kTRUE;
       }
       else if (HHbbggMVA > boundary_MVA_2017[1] && HHbbggMVA <= boundary_MVA_2017[2]){
-	o_catID = 7;
+	o_catID = 6;
 	if (_whichCategorization==3 && (o_mjj < MjjCuts_Low[o_catID] || o_mjj > MjjCuts_High[o_catID]) )
 	  return kTRUE;
       }
       else if (HHbbggMVA > boundary_MVA_2017[2] && HHbbggMVA <= boundary_MVA_2017[3]){
-        o_catID = 6;
+        o_catID = 2;
+        if (_whichCategorization==3 && (o_mjj < MjjCuts_Low[o_catID] || o_mjj > MjjCuts_High[o_catID]) )
+          return kTRUE;
+      }
+      else {
+	return kTRUE;
+      }
+    }
+
+    else if (o_MX > boundary_MX_2017[2] && o_MX <= boundary_MX_2017[3]){
+      if (HHbbggMVA > boundary_MVA_2017[0] && HHbbggMVA <= boundary_MVA_2017[1]){
+	o_catID = 9;
+	if (_whichCategorization==3 && (o_mjj < MjjCuts_Low[o_catID] || o_mjj > MjjCuts_High[o_catID]) )
+	  return kTRUE;
+      }
+      else if (HHbbggMVA > boundary_MVA_2017[1] && HHbbggMVA <= boundary_MVA_2017[2]){
+	o_catID = 5;
+	if (_whichCategorization==3 && (o_mjj < MjjCuts_Low[o_catID] || o_mjj > MjjCuts_High[o_catID]) )
+	  return kTRUE;
+      }
+      else if (HHbbggMVA > boundary_MVA_2017[2] && HHbbggMVA <= boundary_MVA_2017[3]){
+        o_catID = 1;
         if (_whichCategorization==3 && (o_mjj < MjjCuts_Low[o_catID] || o_mjj > MjjCuts_High[o_catID]) )
           return kTRUE;
       }
@@ -224,17 +224,17 @@ Bool_t bbggLTMaker::Process(Long64_t entry)
     
     else if (o_MX > boundary_MX_2017[3] && o_MX <= boundary_MX_2017[4]){
       if (HHbbggMVA > boundary_MVA_2017[0] && HHbbggMVA <= boundary_MVA_2017[1]){
-	o_catID = 11;
+	o_catID = 8;
 	if (_whichCategorization==3 && (o_mjj < MjjCuts_Low[o_catID] || o_mjj > MjjCuts_High[o_catID]) )
 	  return kTRUE;
       }
       else if (HHbbggMVA > boundary_MVA_2017[1] && HHbbggMVA <= boundary_MVA_2017[2]){
-	o_catID = 10;
+	o_catID = 4;
 	if (_whichCategorization==3 && (o_mjj < MjjCuts_Low[o_catID] || o_mjj > MjjCuts_High[o_catID]) )
 	  return kTRUE;
       }
       else if (HHbbggMVA > boundary_MVA_2017[2] && HHbbggMVA <= boundary_MVA_2017[3]){
-        o_catID = 9;
+        o_catID = 0;
         if (_whichCategorization==3 && (o_mjj < MjjCuts_Low[o_catID] || o_mjj > MjjCuts_High[o_catID]) )
           return kTRUE;
       }
