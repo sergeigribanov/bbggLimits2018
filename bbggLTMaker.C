@@ -22,9 +22,12 @@ const Float_t boundary_MVA_tagger2017_HM[3] = {0.226, 0.6195, 1.0};
 const Float_t boundary_MVA_2017[4]   = {0.29, 0.44, 0.72, 1.0}; // category boundaries for MVA
 const Float_t boundary_MX_2017[5]   = {250., 354., 478., 560., 35000};// .. and MX
 
-const Float_t MjjCuts_Low[] = {97.,95.,95.,95.,99.,100.,95.,95.,95.,95.,95.,108.};
+//const Float_t MjjCuts_Low[] = {97.,95.,95.,95.,99.,100.,95.,95.,95.,95.,95.,108.};
 
-const Float_t MjjCuts_High[] = {146.,153.,150.,155.,150.,147.,154.,151.,155.,155.,155.,148.};
+//const Float_t MjjCuts_High[] = {146.,153.,150.,155.,150.,147.,154.,151.,155.,155.,155.,148.};
+
+const Float_t MjjCuts_Low[] = {98.0,95.0,97.0,96.0,95.0,95.0,95.0,95.0,95.0,95.0,95.0,95.0};
+const Float_t MjjCuts_High[] = {150.0,150.0,143.0,150.0,150.0,150.0,150.0,145.0,155.0,142.0,146.0,152.0};
 
 void bbggLTMaker::Begin(TTree * /*tree*/)
 {
