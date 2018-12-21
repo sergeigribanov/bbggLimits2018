@@ -78,7 +78,7 @@ def runCombine(inDir, doBlind, log, combineOpt = 1, Label = None, scaleSingleHig
   return combExitCode
 
 
-def DataCardMaker_wHiggs(Folder, nCats, signalExp, observed, higgsExp):
+def DataCardMaker_wHiggs(Folder, nCats, signalExp, observed, higgsExp, log):
   # Need to loop over categories here
 
   for n in range(nCats):
@@ -111,7 +111,17 @@ def DataCardMaker_wHiggs(Folder, nCats, signalExp, observed, higgsExp):
         
   # print "Combining the cards"
   combCard = Folder+'/hhbbgg_13TeV_DataCard.txt'
-  os.system("combineCards.py " + Folder+"/hhbbgg_13TeV_DataCard_cat*.txt > " + combCard)
+
+  combo="combineCards.py "
+
+  for n in range(nCats):
+    combo = combo + "cat"+str(n)+"="+Folder+"/hhbbgg_13TeV_DataCard_cat"+str(n)+".txt "
+
+  combo = combo + " > " + combCard
+
+  log.info("========= ", combo)
+  
+  os.system(combo)
 
   # Now we actually need to fix the combined card
   #strReplace = Folder+'/'
