@@ -5,23 +5,21 @@ echo '=== Preparing datacards in root format ==='
 DIR=$1/Node_SM
 echo $DIR
 
-text2workspace.py $DIR/hhbbgg_13TeV_DataCard.txt $DIR/hhbbgg_13TeV_DataCard.root -m 125 --X-nuisance-group-function 'theory' '0.5'
+text2workspace.py $DIR/hhbbgg_13TeV_DataCard.txt $DIR/hhbbgg_13TeV_DataCard.root -m 125
 
 cd $DIR
 
-printf '\n=== Start fitting ==\n\n'
+printf '\n=== Start fitting for background plots ==\n\n'
 
-combine -M FitDiagnostics -d hhbbgg_13TeV_DataCard.root -S 0 &> MaxLikelihood_stat.txt
-
-combine -M FitDiagnostics -d hhbbgg_13TeV_DataCard.root -S 0  --saveWorkspace --saveShapes --saveNormalization &> MaxLikelihood_stat.txt
+combine -M FitDiagnostics -t -1 -d hhbbgg_13TeV_DataCard.root -S 0  --saveWorkspace --saveShapes --saveNormalization  --saveToys --savePredictionsPerToy
 
 printf '\n=====\n\n'
 
-combine -M Asymptotic -d hhbbgg_13TeV_DataCard.root -t -1 --run blind --expectSignal 1 -m 125 -n SM_13TeV_3ab -S 0
+combine -M AsymptoticLimits -d hhbbgg_13TeV_DataCard.root --run blind -m 125 -n SM_13TeV_3ab -S 0 &> Limit_stat.txt
 
 echo '== 3.1) Finished stat only limits'
 
-head  Limit_stat.txt
+tail  Limit_stat.txt
 
 #printf '\n=====\n\n'
 
