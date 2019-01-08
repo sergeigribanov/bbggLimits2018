@@ -741,6 +741,8 @@ RooFitResult* bbgg2DFitter::BkgModelFit(Bool_t dobands, bool addhiggs)
   std::vector<RooAbsPdf*> mjjSig(_NCAT,nullptr);
   RooProdPdf* BkgPdf = nullptr;
 
+  //  RooExponential* mjjBkgTmpBer1 = nullptr;
+  //  RooExponential* mggBkgTmpBer1 = nullptr;
   RooBernstein* mjjBkgTmpBer1 = nullptr;
   RooBernstein* mggBkgTmpBer1 = nullptr;
 
@@ -802,13 +804,23 @@ RooFitResult* bbgg2DFitter::BkgModelFit(Bool_t dobands, bool addhiggs)
 
     if (_verbLvl>1) std::cout << "[BkgModelFit] Cat loop point 3 - cat " << c << std::endl;
 
+    //mggBkgTmpBer1 = new RooExponential(TString::Format("mggBkgTmpBer1_cat%d",c),"",*mgg,*mgg_p0amp);
+    //mjjBkgTmpBer1 = new RooExponential(TString::Format("mjjBkgTmpBer1_cat%d",c),"",*mjj,*mjj_p0amp);
+
     mggBkgTmpBer1 = new RooBernstein(TString::Format("mggBkgTmpBer1_cat%d",c),"",*mgg,RooArgList(*mgg_p0amp));
     mjjBkgTmpBer1 = new RooBernstein(TString::Format("mjjBkgTmpBer1_cat%d",c),"",*mjj,RooArgList(*mjj_p0amp));
 
-    if(nEvtsObs > 15) {
+    if(nEvtsObs > 4 && nEvtsObs < 100) {
       mggBkgTmpBer1 = new RooBernstein(TString::Format("mggBkgTmpBer1_cat%d",c),"",*mgg,RooArgList(*mgg_p0amp,*mgg_p1amp));
       mjjBkgTmpBer1 = new RooBernstein(TString::Format("mjjBkgTmpBer1_cat%d",c),"",*mjj,RooArgList(*mjj_p0amp,*mjj_p1amp));
     }
+
+
+    if(nEvtsObs > 99) {
+      mggBkgTmpBer1 = new RooBernstein(TString::Format("mggBkgTmpBer1_cat%d",c),"",*mgg,RooArgList(*mgg_p0amp,*mgg_p1amp,*mgg_p2amp));
+      mjjBkgTmpBer1 = new RooBernstein(TString::Format("mjjBkgTmpBer1_cat%d",c),"",*mjj,RooArgList(*mjj_p0amp,*mjj_p1amp,*mgg_p2amp));
+    }
+
 
     if (_verbLvl>1) std::cout << "[BkgModelFit] Cat loop point 4 - cat" << c << std::endl;
 
