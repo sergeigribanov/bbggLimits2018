@@ -68,6 +68,19 @@ void bbgg2DFitter::Initialize(RooWorkspace* workspace, Int_t SigMass, float Lumi
 	   <<"\n "<<std::endl;
 }
 
+RooAbsPdf* bbgg2DFitter::getPdf(PdfModelBuilder pdfsModel, string type, int order, const char* ext=""){
+  
+  if (type=="Bernstein") return pdfsModel.getBernstein(Form("%s_bern%d",ext,order),order); 
+  else if (type=="Chebychev") return pdfsModel.getChebychev(Form("%s_cheb%d",ext,order),order); 
+  else if (type=="Exponential") return pdfsModel.getExponentialSingle(Form("%s_exp%d",ext,order),order); 
+  else if (type=="PowerLaw") return pdfsModel.getPowerLawSingle(Form("%s_pow%d",ext,order),order); 
+  else if (type=="Laurent") return pdfsModel.getLaurentSeries(Form("%s_lau%d",ext,order),order); 
+  else {
+    cerr << "[ERROR] -- getPdf() -- type " << type << " not recognised." << endl;
+    return NULL;
+  }
+}
+
 RooArgSet* bbgg2DFitter::defineVariables(bool swithToSimpleWeight=false)
 {
   RooRealVar* mgg  = new RooRealVar("mgg","M(#gamma#gamma)",_minMggMassFit,_maxMggMassFit,"GeV");
@@ -739,15 +752,22 @@ RooFitResult* bbgg2DFitter::BkgModelFit(Bool_t dobands, bool addhiggs)
   std::vector<std::vector<RooAbsPdf*>>mjjSigvec(5,vecpdf);
   std::vector<RooAbsPdf*> mggSig(_NCAT,nullptr);
   std::vector<RooAbsPdf*> mjjSig(_NCAT,nullptr);
-  RooProdPdf* BkgPdf = nullptr;
+  RooProdPdf* BkgPdfBer = nullptr;
+  RooProdPdf* BkgPdfExp = nullptr;
+  RooProdPdf* BkgPdf	 = nullptr;
+  PdfModelBuilder pdfsModel;
+  PdfModelBuilder pdfsModel_1;
 
-  //  RooExponential* mjjBkgTmpBer1 = nullptr;
-  //  RooExponential* mggBkgTmpBer1 = nullptr;
+
+  /*RooExponential* mjjBkgTmpExp1 = nullptr;
+  RooExponential* mggBkgTmpExp1 = nullptr;
   RooBernstein* mjjBkgTmpBer1 = nullptr;
-  RooBernstein* mggBkgTmpBer1 = nullptr;
+  RooBernstein* mggBkgTmpBer1 = nullptr;*/
 
   RooRealVar* mgg = _w->var("mgg");
   RooRealVar* mjj = _w->var("mjj");
+  pdfsModel.setObsVar(mgg);
+  pdfsModel_1.setObsVar(mjj);
   //RooRealVar* mtot = _w->var("mtot");
   mgg->setUnit("GeV");
   mjj->setUnit("GeV");
@@ -787,7 +807,7 @@ RooFitResult* bbgg2DFitter::BkgModelFit(Bool_t dobands, bool addhiggs)
     _w->factory(TString::Format("BkgPdf_cat%d_norm[1.0,0.0,100000]",c));
     if (_verbLvl>1) std::cout << "[BkgModelFit] Cat loop point 2 - cat " << c << std::endl;
 
-    RooFormulaVar *mgg_p0amp = new RooFormulaVar(TString::Format("mgg_p0amp_cat%d",c),"","@0*@0",
+    /*RooFormulaVar *mgg_p0amp = new RooFormulaVar(TString::Format("mgg_p0amp_cat%d",c),"","@0*@0",
 						            *_w->var(TString::Format("CMS_hhbbgg_13TeV_mgg_bkg_par1_cat%d",c)));
     RooFormulaVar *mgg_p1amp = new RooFormulaVar(TString::Format("mgg_p1amp_cat%d",c),"","@0*@0",
 						 RooArgList(*_w->var(TString::Format("CMS_hhbbgg_13TeV_mgg_bkg_par2_cat%d",c)) ));
@@ -800,45 +820,75 @@ RooFitResult* bbgg2DFitter::BkgModelFit(Bool_t dobands, bool addhiggs)
 						 RooArgList(*_w->var(TString::Format("CMS_hhbbgg_13TeV_mjj_bkg_par2_cat%d",c)) ));
     RooFormulaVar *mjj_p2amp = new RooFormulaVar(TString::Format("mjj_p2amp_cat%d",c),"","@0*@0",
 						 RooArgList(*_w->var(TString::Format("CMS_hhbbgg_13TeV_mjj_bkg_par3_cat%d",c)) ));
-
+    */
 
     if (_verbLvl>1) std::cout << "[BkgModelFit] Cat loop point 3 - cat " << c << std::endl;
+    
+    //mggBkgTmpExp1 = new RooExponential(TString::Format("mggBkgTmpExp1_cat%d",c),"",*mgg, *mgg_p0amp);
+    //mjjBkgTmpExp1 = new RooExponential(TString::Format("mjjBkgTmpExp1_cat%d",c),"",*mjj, *mjj_p0amp);
+    
+    //mggBkgTmpBer1 = new RooBernstein(TString::Format("mggBkgTmpBer1_cat%d",c),"",*mgg,RooArgList(*mgg_p0amp));
+    //mjjBkgTmpBer1 = new RooBernstein(TString::Format("mjjBkgTmpBer1_cat%d",c),"",*mjj,RooArgList(*mjj_p0amp));
 
-    //mggBkgTmpBer1 = new RooExponential(TString::Format("mggBkgTmpBer1_cat%d",c),"",*mgg,*mgg_p0amp);
-    //mjjBkgTmpBer1 = new RooExponential(TString::Format("mjjBkgTmpBer1_cat%d",c),"",*mjj,*mjj_p0amp);
+   for(int i=1;i<7;i++){
+    if(nEvtsObs > 4 && nEvtsObs < 100) i=i+1;
+    if(nEvtsObs > 99) i=i+2;
+    RooAbsPdf *mggBkgTmpBer = getPdf(pdfsModel,"Bernstein",i,TString::Format("mggBkgTmpBer%d_cat%d",i,c));
+    RooAbsPdf *mjjBkgTmpBer = getPdf(pdfsModel,"Bernstein",i,TString::Format("mjjBkgTmpBer%d_cat%d",i,c));
 
-    mggBkgTmpBer1 = new RooBernstein(TString::Format("mggBkgTmpBer1_cat%d",c),"",*mgg,RooArgList(*mgg_p0amp));
-    mjjBkgTmpBer1 = new RooBernstein(TString::Format("mjjBkgTmpBer1_cat%d",c),"",*mjj,RooArgList(*mjj_p0amp));
+    RooAbsPdf *mggBkgTmpExp = getPdf(pdfsModel,"Exponential",i,TString::Format("mggBkgTmpExp%d_cat%d",i,c));
+    RooAbsPdf *mjjBkgTmpExp = getPdf(pdfsModel_1,"Exponential",i,TString::Format("mjjBkgTmpExp%d_cat%d",i,c));
 
-    if(nEvtsObs > 4 && nEvtsObs < 100) {
+    RooAbsPdf *mggBkgTmpPL = getPdf(pdfsModel,"PowerLaw",i,TString::Format("mggBkgTmpPL%d_cat%d",i,c));
+    RooAbsPdf *mjjBkgTmpPL = getPdf(pdfsModel_1,"PowerLaw",i,TString::Format("mjjBkgTmpPL%d_cat%d",i,c));
+    }
+
+    /*if(nEvtsObs > 4 && nEvtsObs < 100) {
       mggBkgTmpBer1 = new RooBernstein(TString::Format("mggBkgTmpBer1_cat%d",c),"",*mgg,RooArgList(*mgg_p0amp,*mgg_p1amp));
       mjjBkgTmpBer1 = new RooBernstein(TString::Format("mjjBkgTmpBer1_cat%d",c),"",*mjj,RooArgList(*mjj_p0amp,*mjj_p1amp));
+ 
     }
 
 
     if(nEvtsObs > 99) {
       mggBkgTmpBer1 = new RooBernstein(TString::Format("mggBkgTmpBer1_cat%d",c),"",*mgg,RooArgList(*mgg_p0amp,*mgg_p1amp,*mgg_p2amp));
-      mjjBkgTmpBer1 = new RooBernstein(TString::Format("mjjBkgTmpBer1_cat%d",c),"",*mjj,RooArgList(*mjj_p0amp,*mjj_p1amp,*mgg_p2amp));
-    }
+      mjjBkgTmpBer1 = new RooBernstein(TString::Format("mjjBkgTmpBer1_cat%d",c),"",*mjj,RooArgList(*mjj_p0amp,*mjj_p1amp,*mjj_p2amp));
+     
+    }*/
 
 
     if (_verbLvl>1) std::cout << "[BkgModelFit] Cat loop point 4 - cat" << c << std::endl;
 
 
-    
-    if(_fitStrategy == 2) {
-      BkgPdf = new RooProdPdf(TString::Format("BkgPdf_cat%d",c), "", RooArgList(*mggBkgTmpBer1, *mjjBkgTmpBer1));
-      RooExtendPdf* BkgPdfExt;
-      BkgPdfExt = new RooExtendPdf(TString::Format("BkgPdfExt_cat%d",c),"", *BkgPdf,*_w->var(TString::Format("BkgPdf_cat%d_norm",c)));
-      fitresults = BkgPdfExt->fitTo(*data[c], Strategy(1),Minos(kFALSE), Range("BkgFitRange"),SumW2Error(kTRUE), Save(kTRUE),PrintLevel(-1));
-      _w->import(*BkgPdfExt);
+      if(_fitStrategy == 2) {                                                                                                                                                                                                                                  
+      BkgPdfBer = new RooProdPdf(TString::Format("BkgPdfBer_cat%d",c), "",  RooArgList(mggBkgTmpBer,  mjjBkgTmpBer));
+      RooExtendPdf* BkgPdfExtBer;                                                                                                                                                                                                                             
+      BkgPdfExtBer = new RooExtendPdf(TString::Format("BkgPdfExtBer_cat%d",c),"", *BkgPdfBer,*_w->var(TString::Format("BkgPdfBer_cat%d_norm",c)));                                                                                                        
+      fitresults = BkgPdfExtBer->fitTo(*data[c], Strategy(1),Minos(kFALSE), Range("BkgFitRange"),SumW2Error(kTRUE), Save(kTRUE),PrintLevel(-1));                                                                                                              
+      _w->import(*BkgPdfExtBer);
+      
+      
+      }
+    /*if(_fitStrategy == 2) {
+      BkgPdfBer1 = new RooProdPdf(TString::Format("BkgPdfBer1_cat%d",c), "", RooArgList(*mggBkgTmpBer1, *mjjBkgTmpBer1));
+      RooExtendPdf* BkgPdfExtBer1;
+      BkgPdfExtBer1 = new RooExtendPdf(TString::Format("BkgPdfExtBer1_cat%d",c),"", *BkgPdfBer1,*_w->var(TString::Format("BkgPdfBer1_cat%d_norm",c)));
+      fitresults = BkgPdfExtBer1->fitTo(*data[c], Strategy(1),Minos(kFALSE), Range("BkgFitRange"),SumW2Error(kTRUE), Save(kTRUE),PrintLevel(-1));
+      _w->import(*BkgPdfExtBer1);
+
+      BkgPdfExp1 = new RooProdPdf(TString::Format("BkgPdfExp1_cat%d",c), "", RooArgList(*mggBkgTmpExp1, *mjjBkgTmpExp1));
+      RooExtendPdf* BkgPdfExtExp1;
+      BkgPdfExtExp1 = new RooExtendPdf(TString::Format("BkgPdfExtExp1_cat%d",c),"", *BkgPdfExp1,*_w->var(TString::Format("BkgPdfExp1_cat%d_norm",c)));
+      fitresults = BkgPdfExtExp1->fitTo(*data[c], Strategy(1),Minos(kFALSE), Range("BkgFitRange"),SumW2Error(kTRUE), Save(kTRUE),PrintLevel(-1));
+      _w->import(*BkgPdfExtExp1);
+     
     }
     if(_fitStrategy == 1) {
       fitresults = mggBkgTmpBer1->fitTo(*data[c], Strategy(1),Minos(kFALSE), Range("BkgFitRange"),SumW2Error(kTRUE), Save(kTRUE),PrintLevel(-1));
       RooAbsPdf* BkgPdf1 = (RooAbsPdf*) mggBkgTmpBer1->Clone(TString::Format("BkgPdf_cat%d",c));
       _w->import(*BkgPdf1);
       //_w->import(*mggBkgTmpBer1);
-    }
+      }*/
 
     if (_verbLvl>1) std::cout << "[BkgModelFit] Cat loop end - cat " << c << std::endl;
 

@@ -15,7 +15,7 @@
 #include <TTree.h>
 #include <TH1F.h>
 #include <TH2F.h>
-
+#include "PdfModelBuilder.h"
 // RooFit headers
 #include <RooWorkspace.h>
 #include <RooFitResult.h>
@@ -35,6 +35,8 @@
 #include <RooMsgService.h>
 #include <RooProdPdf.h>
 #include <RooExponential.h>
+#include "RooExponentialSum.h"
+#include "RooPowerLaw.h" 
 #include <RooPolynomial.h>
 #include <RooMoment.h>
 
@@ -107,6 +109,7 @@ class bbgg2DFitter {
    void SetVerbosityLevel(Int_t v) {_verbLvl=v;}
    void SetCut(TString cut) {_cut = cut;}
    void SetType(std::string tp) { _signalType = tp; }
+   RooAbsPdf* getPdf(PdfModelBuilder pdfsModel,string type, int order, const char* ext);
    RooArgSet* defineVariables(bool s);
    int AddSigData(float mass, TString signalfile); 
    std::vector<float> AddHigData(float mass, TString signalfile, int higgschannel, TString higName); 
