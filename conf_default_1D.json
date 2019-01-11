@@ -9,7 +9,7 @@
     "scaleSingleHiggs" : 0,
     "doBlinding" : 1,
     "doBands" : 0,
-    "fitStrategy" : 2,
+    "fitStrategy" : 1,
     "doSingleLimit" : 0,
     "useSigTheoryUnc" : 0,
     "runCombine" : 0,
