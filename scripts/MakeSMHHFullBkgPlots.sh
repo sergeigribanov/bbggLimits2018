@@ -16,10 +16,10 @@ echo $BKG
 FACT=1.
 
 
-#for icat in {0..0}
-#do
-#    python scripts/MakeFullBackgroundFit_Data.py -i ${INFILE} -d ${DATAFILE} -o ${BKG} -c ${icat} --signalFactor ${FACT} ${FACT} --ndims ${NDIMS} --unblind
-#done
+for icat in {0..11}
+do
+    python scripts/MakeFullBackgroundFit_Data.py -i ${INFILE} -d ${DATAFILE} -o ${BKG} -c ${icat} --signalFactor ${FACT} ${FACT} --ndims ${NDIMS} --unblind
+done
 
 for ipurity in {0..2}
 do
