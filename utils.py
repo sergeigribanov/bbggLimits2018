@@ -119,7 +119,7 @@ def DataCardMaker_wHiggs(Folder, nCats, signalExp, observed, higgsExp, log):
 
   combo = combo + " > " + combCard
 
-  log.info("========= ", combo)
+#  log.info("========= ", combo)
   
   os.system(combo)
 
