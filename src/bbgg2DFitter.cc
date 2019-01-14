@@ -733,8 +733,8 @@ RooFitResult* bbgg2DFitter::BkgModelFit(Bool_t dobands, bool addhiggs)
   // retrieve pdfs and datasets from workspace to fit with pdf models
   std::vector<RooDataSet*> data(_NCAT,nullptr);
   std::vector<RooDataSet*> dataplot(_NCAT,nullptr); // the data
-  std::vector<RooBernstein*> mggBkg(_NCAT,nullptr);// the polinomial of 4* order
-  std::vector<RooBernstein*> mjjBkg(_NCAT,nullptr);// the polinomial of 4* order
+  //std::vector<RooBernstein*> mggBkg(_NCAT,nullptr);// the polinomial of 4* order
+  //std::vector<RooBernstein*> mjjBkg(_NCAT,nullptr);// the polinomial of 4* order
   std::vector<RooPlot*> plotmggBkg(_NCAT,nullptr);
   std::vector<RooPlot*> plotmjjBkg(_NCAT,nullptr);;
   std::vector<RooDataSet*>vecset(_NCAT,nullptr);
@@ -809,20 +809,31 @@ RooFitResult* bbgg2DFitter::BkgModelFit(Bool_t dobands, bool addhiggs)
 
     //mggBkgTmpBer1 = new RooExponential(TString::Format("mggBkgTmpBer1_cat%d",c),"",*mgg,*mgg_p0amp);
     //mjjBkgTmpBer1 = new RooExponential(TString::Format("mjjBkgTmpBer1_cat%d",c),"",*mjj,*mjj_p0amp);
-
-    mggBkgTmpBer1 = new RooBernstein(TString::Format("mggBkgTmpBer1_cat%d",c),"",*mgg,RooArgList(*mgg_p0amp));
-    mjjBkgTmpBer1 = new RooBernstein(TString::Format("mjjBkgTmpBer1_cat%d",c),"",*mjj,RooArgList(*mjj_p0amp));
-
-    if(nEvtsObs > 1 && nEvtsObs < 100) {
+    
+    if (c == 0 || c == 1 || c == 2 || c == 4 || c == 5 || c == 9)
       mggBkgTmpBer1 = new RooBernstein(TString::Format("mggBkgTmpBer1_cat%d",c),"",*mgg,RooArgList(*mgg_p0amp,*mgg_p1amp));
-      mjjBkgTmpBer1 = new RooBernstein(TString::Format("mjjBkgTmpBer1_cat%d",c),"",*mjj,RooArgList(*mjj_p0amp,*mjj_p1amp));
-    }
+    else
+      mggBkgTmpBer1 = new RooBernstein(TString::Format("mggBkgTmpBer1_cat%d",c),"",*mgg,RooArgList(*mgg_p0amp,*mgg_p1amp,*mgg_p2amp));
+    
+    /* if (c != 11)
+       mggBkgTmpBer1 = new RooBernstein(TString::Format("mggBkgTmpBer1_cat%d",c),"",*mgg,RooArgList(*mgg_p0amp,*mgg_p1amp));
+     else
+       mggBkgTmpBer1 = new RooBernstein(TString::Format("mggBkgTmpBer1_cat%d",c),"",*mgg,RooArgList(*mgg_p0amp,*mgg_p1amp,*mgg_p2amp));
+   */
+      
+    
+	
+    if (c == 0 || c == 1 || c == 3 || c == 4 || c == 5 || c == 7 || c == 8 || c == 9)
+      mjjBkgTmpBer1 = new RooBernstein(TString::Format("mjjBkgTmpBer1_cat%d",c),"",*mjj,RooArgList(*mjj_p0amp,*mjj_p0amp));
+    else    
+      mjjBkgTmpBer1 = new RooBernstein(TString::Format("mjjBkgTmpBer1_cat%d",c),"",*mjj,RooArgList(*mjj_p0amp,*mjj_p1amp,*mjj_p2amp));
+	
 
 
-    if(nEvtsObs > 99) {
+    /*if(nEvtsObs > 99) {
       mggBkgTmpBer1 = new RooBernstein(TString::Format("mggBkgTmpBer1_cat%d",c),"",*mgg,RooArgList(*mgg_p0amp,*mgg_p1amp,*mgg_p2amp));
       mjjBkgTmpBer1 = new RooBernstein(TString::Format("mjjBkgTmpBer1_cat%d",c),"",*mjj,RooArgList(*mjj_p0amp,*mjj_p1amp,*mjj_p2amp));
-    }
+      }*/
 
 
     RooExtendPdf* BkgPdfExt;
