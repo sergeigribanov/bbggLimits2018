@@ -297,7 +297,9 @@ def runFullChain(opt, Params, point=None, NRgridPoint=-1, extraLabel=''):
   if opt.verb>1:
     theFitter.PrintWorkspace();
 
-  fitresults = theFitter.BkgModelFit( doBands, addHiggs)
+  fitresults = theFitter.BkgModelFit()
+  wsMultipdfFileBkgName = "ws_hhbbgg.data_bkg_multipdf"
+  theFitter.BkgMultiModelFit(wsMultipdfFileBkgName)
   mainLog.info("\t BKG FITTED. Node=%r, GridPoint=%r", point,NRgridPoint)
   if opt.verb>0: p5 = printTime(p4,start,mainLog)
   if fitresults==None:

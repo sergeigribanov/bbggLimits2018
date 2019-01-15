@@ -38,6 +38,9 @@
 #include <RooPolynomial.h>
 #include <RooMoment.h>
 
+
+#include "HiggsAnalysis/CombinedLimit/interface/RooMultiPdf.h"
+
 // namespaces
 //using namespace std;
 using namespace RooFit;
@@ -113,9 +116,10 @@ class bbgg2DFitter {
    void AddBkgData(TString datafile); 
    void SigModelFit(float mass); 
    void HigModelFit(float mass, int higgschannel, TString higName); 
-   RooFitResult* BkgModelFit(Bool_t m,bool h); 
-   RooFitResult* BkgModelFit(Bool_t m,bool h,std::vector<std::string>higgstrue,std::map<std::string,int>higgsNumber) {
-     return BkgModelFit(m, h);} 
+   RooFitResult* BkgModelFit(); 
+   void BkgMultiModelFit(std::string fileBaseName);
+   //   RooFitResult* BkgModelFit(Bool_t m,bool h,std::vector<std::string>higgstrue,std::map<std::string,int>higgsNumber) {
+   //     return BkgModelFit();} 
    void SetFitStrategy( int st) { _fitStrategy = st; }
    void MakeSigWS(std::string filename); 
    void MakeHigWS(std::string filename, int higgschannel, TString higName); 
