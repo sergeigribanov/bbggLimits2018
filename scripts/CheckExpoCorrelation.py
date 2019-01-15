@@ -17,10 +17,10 @@ parser.add_argument('-m', '--mggmax', dest='mggmax', type=float, default=180)
 
 opt = parser.parse_args()
 
-binning = 40
-minval = 100
-maxval = 180
+
+mggmin = 100
 mggmax = opt.mggmax
+binning = int((mggmax-mggmin)/2)
 
 xtitle = 'm_{#gamma#gamma} [GeV]'
 ytitle = 'Events/(2 GeV)'
@@ -68,13 +68,13 @@ myModelExt = RooExtendPdf("myModelExt","", myModel,w_data.var('norm'))
 
 for slc in range(0, lslices-1):
 
-  data2d =  data.reduce(myArgSet, '(mgg < 120 || mgg > 130) && ( mjj > ' +str(slices[slc])+' && mjj < '+ str(slices[slc+1]) + ') && mgg < ' + str(mggmax))
+  data2d =  data.reduce(myArgSet, '( mjj > ' +str(slices[slc])+' && mjj < '+ str(slices[slc+1]) + ')  && mgg < ' + str(mggmax))
   if opt.unblind:
     data2d =  data.reduce(myArgSet, '( mjj > ' +str(slices[slc])+' && mjj < '+ str(slices[slc+1]) + ') && mgg < ' + str(mggmax))
 
   print "============================== totData = ",   data2d.sumEntries()
 
-  myModelExt.fitTo(data2d, RooFit.Strategy(2),RooFit.Minos(kTRUE), RooFit.DataError(RooAbsData.SumW2));
+  myModelExt.fitTo(data2d, RooFit.Strategy(2),RooFit.Minos(kTRUE));
   
   norm = w_data.var('norm');
   p0 =  w_data.var('p0')
@@ -89,18 +89,16 @@ for slc in range(0, lslices-1):
 #-------------------------------------------#
 
 
-data2d =  data.reduce(myArgSet, '(mgg < 120 || mgg > 130)' + '&& mgg < ' + str(mggmax))
-if opt.unblind:
-  data2d =  data
+data2d =  data.reduce(myArgSet, 'mgg < ' + str(mggmax))
 
 print "============================== totData = ",   data2d.sumEntries()
 
-myModelExt.fitTo(data2d, RooFit.Strategy(2),RooFit.Minos(kTRUE), RooFit.DataError(RooAbsData.SumW2));
+myModelExt.fitTo(data2d, RooFit.Strategy(2),RooFit.Minos(kTRUE));
   
 norm = w_data.var('norm');
 p0 =  w_data.var('p0')
   
-print "in ", slices[slc], " < mjj < ", slices[slc+1], " expo = ",  p0.getVal(), " +- ",  p0.getError()
+print "in 70 < mjj < 180, expo = ",  p0.getVal(), " +- ",  p0.getError()
 
 # --------------- Plot the total data in given purity category with exponenatial fit -------------------
 
@@ -110,10 +108,18 @@ cNiceRed = TColor.GetColor('#FA4912')
 
 ymax =  norm.getVal()/binning*5
 
-frame = mgg.frame(RooFit.Title(" "),RooFit.Bins(binning),RooFit.Range(minval,maxval))
+frame = mgg.frame(RooFit.Title(" "),RooFit.Bins(binning),RooFit.Range(mggmin,mggmax))
 
-data2d.plotOn(frame,RooFit.DataError(RooAbsData.SumW2),RooFit.XErrorSize(0))
-myModelExt.plotOn(frame,RooFit.LineColor(cNiceGreenDark), RooFit.LineStyle(kDashed), RooFit.Precision(1E-5))
+mgg.setRange("unblindReg_1",mggmin,120);
+mgg.setRange("unblindReg_2",130,mggmax);
+if not opt.unblind: 
+  data2d.plotOn(frame,RooFit.DataError(RooAbsData.SumW2),RooFit.XErrorSize(0),RooFit.CutRange("unblindReg_1"));
+  data2d.plotOn(frame,RooFit.DataError(RooAbsData.SumW2),RooFit.XErrorSize(0),RooFit.CutRange("unblindReg_2"));
+else:
+  data2d.plotOn(frame,RooFit.DataError(RooAbsData.SumW2),RooFit.XErrorSize(0));
+
+
+myModelExt.plotOn(frame,RooFit.LineColor(cNiceGreenDark), RooFit.LineStyle(kDashed), RooFit.Precision(1E-5), RooFit.Normalization(norm.getVal(), RooAbsReal.NumEvent))
 
 c = TCanvas("c", "c", 800, 600)
 frame.Draw()
