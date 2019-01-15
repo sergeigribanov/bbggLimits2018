@@ -789,7 +789,19 @@ RooFitResult* bbgg2DFitter::BkgModelFit()
     if(nEvtsObs > 1000)
       mggBkgTmpBer1 = new RooBernstein(TString::Format("mggBkgTmpBer1_cat%d",c),"",*mgg,RooArgList(*mgg_p0amp,*mgg_p1amp,*mgg_p2amp));
     */
-
+    /*
+    if (c == 0 || c == 1 || c == 2 || c == 4 || c == 5 || c == 9)
+      mggBkgTmpBer1 = new RooBernstein(TString::Format("mggBkgTmpBer1_cat%d",c),"",*mgg,RooArgList(*mgg_p0amp,*mgg_p1amp));
+    else
+      mggBkgTmpBer1 = new RooBernstein(TString::Format("mggBkgTmpBer1_cat%d",c),"",*mgg,RooArgList(*mgg_p0amp,*mgg_p1amp,*mgg_p2amp));
+    
+    
+	
+    if (c == 0 || c == 1 || c == 3 || c == 4 || c == 5 || c == 7 || c == 8 || c == 9)
+      mjjBkgTmpBer1 = new RooBernstein(TString::Format("mjjBkgTmpBer1_cat%d",c),"",*mjj,RooArgList(*mjj_p0amp,*mjj_p0amp));
+    else    
+      mjjBkgTmpBer1 = new RooBernstein(TString::Format("mjjBkgTmpBer1_cat%d",c),"",*mjj,RooArgList(*mjj_p0amp,*mjj_p1amp,*mjj_p2amp));
+    */	
 
 
 
@@ -854,7 +866,6 @@ void bbgg2DFitter::BkgMultiModelFit(std::string fileBaseName)
   RooRealVar* mjj = _w->var("mjj");
   mgg->setRange("BkgFitRange",_minMggMassFit,_maxMggMassFit);
   mjj->setRange("BkgFitRange",_minMjjMassFit,_maxMjjMassFit);
-  RooFitResult* fitresults = new RooFitResult();
   RooCategory category("pdf_index","Index of Pdf which is active");
   wBias->import(category);
 
@@ -910,29 +921,10 @@ void bbgg2DFitter::BkgMultiModelFit(std::string fileBaseName)
     //  BkgPdf = (RooAbsPdf*) mggBkgTmpBer1->Clone(TString::Format("pdf_bern2_cat%d",c));
 
 
-
-    RooArgSet *params_test = BkgPdfExt->getParameters((const RooArgSet*)(0));
-    int ntries = 0;
-    int stat = 1;
-        
     if (_verbLvl>1) std::cout << "[BkgMultiPDFModelFit] Fit to Cat " << c << std::endl;
 
-    fitresults = BkgPdfExt->fitTo(*data[c]);
-    /*
-    while (stat!=0 && ntries < 100){
-      
-      //      fitresults = BkgPdf->fitTo(*data[c], Strategy(2),Minos(kFALSE), Range("BkgFitRange"),SumW2Error(kTRUE), Save(kTRUE),PrintLevel(-1));
-      fitresults = BkgPdfExt->fitTo(*data[c]);
-      stat = fitresults->status();
-      if (stat!=0) params_test->assignValueOnly(fitresults->randomizePars());
-      ntries++; 
-    }
-    
-    if (stat == 0 && _verbLvl>1) std::cout << " ====================== Fit suceeded after " << ntries << " attempts in category " << c << " data norm = " << data[c]->sumEntries() << " PDF norm = " << BkgPdfExt->expectedEvents(RooArgList(*mgg, *mjj))<< std::endl;
-    else if (stat != 0  && _verbLvl>1) std::cout << " ====================== Fit failed after " << ntries << " attempts in category " << c << std::endl;
-
-    fitresults->Print();
-    */
+    BkgPdfExt->fitTo(*data[c]);
+ 
     // source https://twiki.cern.ch/twiki/bin/view/CMS/HiggsWG/SWGuideNonStandardCombineUses#Conventional_bias_studies_with_R
     RooArgList mypdfs;
     mypdfs.add(*BkgPdf);
