@@ -1,0 +1,30 @@
+imax 1 number of bins
+jmax 1 number of processes minus 1
+kmax * number of nuisance parameters
+----------------------------------------------------------------------------------------------------------------------------------
+
+shapes data_obs ICAT INPUTBKGLOC w_all:data_obs_ICAT
+shapes Bkg ICAT INPUTBKGLOC w_bias:roomultipdf_ICAT
+shapes Sig ICAT INPUTSIGLOC w_all:CMS_sig_ICAT
+
+----------------------------------------------------------------------------------------------------------------------------------
+bin          ICAT
+observation  OBS_ICAT
+----------------------------------------------------------------------------------------------------------------------------------
+bin                                   ICAT	     ICAT
+process                               Sig            Bkg 
+process                               0              1   
+rate				      SIG_ICAT	     1	
+
+----------------------------------------------------------------------------------------------------------------------------------
+CMS_eff_PhoID           lnN           1.01           -  
+
+CMS_hhbbgg_13TeV_mjj_bkg_par1_ICAT  flatParam
+CMS_hhbbgg_13TeV_mjj_bkg_par2_ICAT  flatParam
+
+CMS_hhbbgg_13TeV_mgg_bkg_par1_ICAT  flatParam
+CMS_hhbbgg_13TeV_mgg_bkg_par2_ICAT  flatParam
+
+roomultipdf_ICAT_norm  flatParam
+
+pdf_index discrete
