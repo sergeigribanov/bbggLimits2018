@@ -1,6 +1,5 @@
 #define bbgg2DFitter_cxx
 #include "HiggsAnalysis/bbggLimits2018/interface/bbgg2DFitter.h"
-
 std::ofstream newCout;
 
 void bbgg2DFitter::Initialize(RooWorkspace* workspace, Int_t SigMass, float Lumi,std::string folder_name,
@@ -479,6 +478,19 @@ void bbgg2DFitter::HigModelFit(float mass, int higgschannel, TString higName)
     } // close for ncat
 } // close higgs model fit
 
+RooAbsPdf* bbgg2DFitter::getPdf(PdfModelBuilder pdfsModel, string type, int order, const char* ext=""){
+  
+  if (type=="Bernstein") return pdfsModel.getBernstein(Form("%s_bern%d",ext,order),order); 
+  else if (type=="Chebychev") return pdfsModel.getChebychev(Form("%s_cheb%d",ext,order),order); 
+  else if (type=="Exponential") return pdfsModel.getExponentialSingle(Form("%s_exp%d",ext,order),order); 
+  else if (type=="PowerLaw") return pdfsModel.getPowerLawSingle(Form("%s_pow%d",ext,order),order); 
+  else if (type=="Laurent") return pdfsModel.getLaurentSeries(Form("%s_lau%d",ext,order),order); 
+  else {
+    cerr << "[ERROR] -- getPdf() -- type " << type << " not recognised." << endl;
+    return NULL;
+  }
+}
+
 
 void bbgg2DFitter::MakeSigWS(std::string fileBaseName)
 {
@@ -665,15 +677,16 @@ void bbgg2DFitter::MakeBkgWS(std::string fileBaseName)
       BkgPdf[c] = (RooAbsPdf*) _w->pdf(TString::Format("BkgPdf_cat%d",c));
 
       RooArgSet* bkgParams;
-      if (_fitStrategy==1)
+      if (_fitStrategy==1){
 	bkgParams = (RooArgSet*) BkgPdf[c]->getParameters(RooArgSet(*_w->var("mgg")));
-      else 
+      }
+      else{ 
 	bkgParams = (RooArgSet*) BkgPdf[c]->getParameters(RooArgSet(*_w->var("mgg"), *_w->var("mjj")));
-
+      }
+ 
       TIterator* paramIter = (TIterator*) bkgParams->createIterator();
       TObject* tempObj = nullptr;
       std::vector<std::pair<TString,TString>> varsToChange;
-
       while( (tempObj = paramIter->Next()) ) {
 
         if ( (TString(tempObj->GetName()).EqualTo("mjj")) || (TString(tempObj->GetName()).EqualTo("mgg"))) continue;
@@ -695,6 +708,7 @@ void bbgg2DFitter::MakeBkgWS(std::string fileBaseName)
 
       wAll->import(*_w->pdf(TString::Format("CMS_Bkg_cat%d", c)));
       wAll->import(*_w->var(TString::Format("BkgPdf_cat%d_norm", c)), RenameVariable(TString::Format("BkgPdf_cat%d_norm", c) , TString::Format("CMS_Bkg_cat%d_norm",c)));
+
       wAll->import(*_w->data(TString::Format("Data_cat%d", c)), Rename(TString::Format("data_obs_cat%d", c) ));
       //if (_fitStrategy==1)
       //wAll->import(*_w->pdf(TString::Format("mggBkgTmpBer1_cat%d",c)), Rename(TString::Format("mggBkgTmpBer1_cat%d",c)));
@@ -852,25 +866,49 @@ void bbgg2DFitter::BkgMultiModelFit(std::string fileBaseName)
   //******************************************//
   // retrieve pdfs and datasets from workspace to fit with pdf models
   std::vector<RooDataSet*> data(_NCAT,nullptr);
-  std::vector<RooBernstein*> mggBkg(_NCAT,nullptr);// the polinomial of 4* order
-  std::vector<RooBernstein*> mjjBkg(_NCAT,nullptr);// the polinomial of 4* order
+  //std::vector<RooBernstein*> mggBkg(_NCAT,nullptr);// the polinomial of 4* order
+  //std::vector<RooBernstein*> mjjBkg(_NCAT,nullptr);// the polinomial of 4* order
   RooProdPdf* BkgPdf = nullptr;
   RooExtendPdf* BkgPdfExt = nullptr;
-
+  RooProdPdf* BkgPdfBer = nullptr;
+  RooExtendPdf* BkgPdfExtBer = nullptr;
+  RooProdPdf* BkgPdfExp = nullptr;
+  RooExtendPdf* BkgPdfExtExp = nullptr;
+  RooProdPdf* BkgPdfPow = nullptr;
+  RooExtendPdf* BkgPdfExtPow = nullptr;
+  std::vector<string> function;
+  //std::vector<string> label;
   RooWorkspace *wBias = new RooWorkspace("w_bias","w_bias");
-
-  RooBernstein* mjjBkgTmpBer1 = nullptr;
-  RooBernstein* mggBkgTmpBer1 = nullptr;
+  
+  RooAbsPdf* mggBkgTmpBer1 = nullptr;
+  RooAbsPdf* mjjBkgTmpBer1 = nullptr;
+  RooAbsPdf* mggBkgTmpExp1 = nullptr;
+  RooAbsPdf* mjjBkgTmpExp1 = nullptr;
+  RooAbsPdf* mggBkgTmpPow1 = nullptr;
+  RooAbsPdf* mjjBkgTmpPow1 = nullptr;
   
   RooRealVar* mgg = _w->var("mgg");
   RooRealVar* mjj = _w->var("mjj");
   mgg->setRange("BkgFitRange",_minMggMassFit,_maxMggMassFit);
   mjj->setRange("BkgFitRange",_minMjjMassFit,_maxMjjMassFit);
+  PdfModelBuilder pdfsModel;
+  PdfModelBuilder pdfsModel_1;
+  pdfsModel.setObsVar(mgg);
+  pdfsModel_1.setObsVar(mjj);
   RooCategory category("pdf_index","Index of Pdf which is active");
   wBias->import(category);
+  
+  int order=2, order1=1;
+  /// Add function here
+  function.push_back("Bernstein");
+  function.push_back("Exponential");
+  function.push_back("PowerLaw");
+  // add label for pdf according to function
+  const char *label[3] = {"Ber", "Exp", "Pow"};
 
   if (_verbLvl>1) std::cout << "[BkgMultiPDFModelFit] Starting cat loop " << std::endl;
-  for (int c = 0; c < _NCAT; ++c) { // to each category
+  //for (unsigned int i = 0; i < function.size() ; i++){
+   for (int c = 0; c < _NCAT; ++c) { // to each category
     data[c] = (RooDataSet*) _w->data(TString::Format("Data_cat%d",c));
     wBias->import(*data[c]);
      ////////////////////////////////////
@@ -878,62 +916,65 @@ void bbgg2DFitter::BkgMultiModelFit(std::string fileBaseName)
     // one par by category - float from -10 > 10
     // we first wrap the normalization of mggBkgTmp0, mjjBkgTmp0
     // CMS_hhbbgg_13TeV_mgg_bkg_par1
+
+    TH2* data_h2D = 0;
+    TH1* data_h1D = 0;
+    if(_fitStrategy==2)  data_h2D = (TH2*) data[c]->createHistogram("mgg,mjj", 60, 40);
+    if(_fitStrategy==1)  data_h1D = (TH1*) data[c]->createHistogram("mgg", 60);
+
+    int nEvtsObs = -1;
+    if(_fitStrategy == 2) nEvtsObs = data_h2D->Integral();
+    if(_fitStrategy == 1) nEvtsObs = data_h1D->Integral();
  
     wBias->factory(TString::Format("BkgPdf_cat%d_norm[20.0,0.0,100000]",c));
 
-
-    RooFormulaVar *mgg_p0amp = new RooFormulaVar(TString::Format("mgg_p0amp_cat%d",c),"","@0*@0",
-						            *_w->var(TString::Format("CMS_hhbbgg_13TeV_mgg_bkg_par1_cat%d",c)));
-    RooFormulaVar *mgg_p1amp = new RooFormulaVar(TString::Format("mgg_p1amp_cat%d",c),"","@0*@0",
-						 RooArgList(*_w->var(TString::Format("CMS_hhbbgg_13TeV_mgg_bkg_par2_cat%d",c)) ));
-    RooFormulaVar *mgg_p2amp = new RooFormulaVar(TString::Format("mgg_p2amp_cat%d",c),"","@0*@0",
-						 RooArgList(*_w->var(TString::Format("CMS_hhbbgg_13TeV_mgg_bkg_par3_cat%d",c)) ));
-
-    RooFormulaVar *mjj_p0amp = new RooFormulaVar(TString::Format("mjj_p0amp_cat%d",c),"","@0*@0",
-						            *_w->var(TString::Format("CMS_hhbbgg_13TeV_mjj_bkg_par1_cat%d",c)));
-    RooFormulaVar *mjj_p1amp = new RooFormulaVar(TString::Format("mjj_p1amp_cat%d",c),"","@0*@0",
-						 RooArgList(*_w->var(TString::Format("CMS_hhbbgg_13TeV_mjj_bkg_par2_cat%d",c)) ));
-    RooFormulaVar *mjj_p2amp = new RooFormulaVar(TString::Format("mjj_p2amp_cat%d",c),"","@0*@0",
-						 RooArgList(*_w->var(TString::Format("CMS_hhbbgg_13TeV_mjj_bkg_par3_cat%d",c)) ));
-
-
-    mggBkgTmpBer1 = new RooBernstein(TString::Format("env_mggBkgTmpBer1_cat%d",c),"",*mgg,RooArgList(*mgg_p0amp,*mgg_p1amp));
-    mjjBkgTmpBer1 = new RooBernstein(TString::Format("env_mjjBkgTmpBer1_cat%d",c),"",*mjj,RooArgList(*mjj_p0amp,*mjj_p1amp));
-
-    /*
-    if(nEvtsObs > 1 && nEvtsObs < 100) {
-      mjjBkgTmpBer1 = new RooBernstein(TString::Format("mjjBkgTmpBer1_cat%d",c),"",*mjj,RooArgList(*mjj_p0amp,*mjj_p1amp));
-    }
-    else if(nEvtsObs > 99) {
-      mjjBkgTmpBer1 = new RooBernstein(TString::Format("mjjBkgTmpBer1_cat%d",c),"",*mjj,RooArgList(*mjj_p0amp,*mjj_p1amp,*mjj_p2amp));
-    }
-
-    if(nEvtsObs > 1000)
-      mggBkgTmpBer1 = new RooBernstein(TString::Format("mggBkgTmpBer1_cat%d",c),"",*mgg,RooArgList(*mgg_p0amp,*mgg_p1amp,*mgg_p2amp));
-    */
+    /* if(nEvtsObs > 1 && nEvtsObs < 100) order=2;
+       else if(nEvtsObs > 99) order=3;*/
+    if (c == 3 || c == 6 || c == 7 || c == 8 || c == 10 || c == 11) order = 3;
+    //if(c == 11) order = 3;  // uncomment this line and comment out above line for 2nd 2D map   
+    
+    mggBkgTmpBer1 = getPdf(pdfsModel,function[0],order,TString::Format("mggBkgTmp%d_cat%d",order,c));
+    mggBkgTmpExp1 = getPdf(pdfsModel,function[1],order1,TString::Format("mggBkgTmp%d_cat%d",order1,c));
+    mggBkgTmpPow1 = getPdf(pdfsModel,function[2],order1,TString::Format("mggBkgTmp%d_cat%d",order1,c));
+    
+    order = 2;
+    if (c == 2 || c == 6 || c == 10 || c == 11) order = 3;
+    mjjBkgTmpBer1 = getPdf(pdfsModel_1,function[0],order,TString::Format("mjjBkgTmp%d_cat%d",order,c));
+    mjjBkgTmpExp1 = getPdf(pdfsModel_1,function[1],order1,TString::Format("mjjBkgTmp%d_cat%d",order1,c));
+    mjjBkgTmpPow1 = getPdf(pdfsModel_1,function[2],order1,TString::Format("mjjBkgTmp%d_cat%d",order1,c));
 
     
-    //if(_fitStrategy == 2)
+     
     RooRealVar norm(TString::Format("roomultipdf_cat%d_norm",c),"Number of background events",0,10000);
-    BkgPdf = new RooProdPdf(TString::Format("pdf_bern2_cat%d",c), "", RooArgList(*mggBkgTmpBer1, *mjjBkgTmpBer1));
-    BkgPdfExt = new RooExtendPdf(TString::Format("ext_pdf_bern2_cat%d",c),"", *BkgPdf,norm);
-    //  else 
-    //  BkgPdf = (RooAbsPdf*) mggBkgTmpBer1->Clone(TString::Format("pdf_bern2_cat%d",c));
 
+    BkgPdf = new RooProdPdf(TString::Format("pdf_%s_cat%d",label[0],c), "", RooArgList(*mggBkgTmpBer1, *mjjBkgTmpBer1));
+    BkgPdfExp = new RooProdPdf(TString::Format("pdf_%s_cat%d",label[1],c), "", RooArgList(*mggBkgTmpExp1, *mjjBkgTmpExp1));
+    BkgPdfPow = new RooProdPdf(TString::Format("pdf_%s_cat%d",label[2],c), "", RooArgList(*mggBkgTmpPow1, *mjjBkgTmpPow1));
+
+    BkgPdfExt = new RooExtendPdf(TString::Format("ext_pdf_%s_cat%d",label[0],c),"", *BkgPdf,norm);
+    BkgPdfExtExp = new RooExtendPdf(TString::Format("ext_pdf_%s_cat%d",label[1],c),"", *BkgPdfExp,norm);
+    BkgPdfExtPow = new RooExtendPdf(TString::Format("ext_pdf_%s_cat%d",label[2],c),"", *BkgPdfPow,norm);
 
     if (_verbLvl>1) std::cout << "[BkgMultiPDFModelFit] Fit to Cat " << c << std::endl;
 
-    BkgPdfExt->fitTo(*data[c]);
- 
-    // source https://twiki.cern.ch/twiki/bin/view/CMS/HiggsWG/SWGuideNonStandardCombineUses#Conventional_bias_studies_with_R
-    RooArgList mypdfs;
-    mypdfs.add(*BkgPdf);
-    RooMultiPdf multipdf(TString::Format("roomultipdf_cat%d",c),"All Pdfs",category,mypdfs);
+      BkgPdfExt->fitTo(*data[c]);
+      BkgPdfExtExp->fitTo(*data[c]);
+      BkgPdfExtPow->fitTo(*data[c]);
 
+    
+    // source https://twiki.cern.ch/twiki/bin/view/CMS/HiggsWG/SWGuideNonStandardCombineUses#Conventional_bias_studies_with_R
+       RooArgList mypdfs;
+       mypdfs.add(*BkgPdf);
+       mypdfs.add(*BkgPdfExp);
+       mypdfs.add(*BkgPdfPow);
+   
+    
+    RooMultiPdf multipdf(TString::Format("roomultipdf_cat%d",c),"All Pdfs",category,mypdfs);
 
     wBias->import(norm);
     wBias->import(multipdf);
-
+    
+     
    }
 
   if (_verbLvl>1) std::cout << "[BkgMultiPDFModelFit] Finish cat loop " << std::endl;
