@@ -66,9 +66,9 @@ dims = ['mgg', 'mjj']
 if opt.ndims == 1:
   dims = ['mgg']
 
-bin = [25, 20]
-minval = [105, 94]
-maxval = [145, 190]
+bin = [40, 20]
+minval = [100, 94]
+maxval = [180, 190]
 
 hig_pdfs = []
 hig_norms = []
@@ -124,12 +124,15 @@ for iobs,obs in enumerate(dims):
 
 
 
-  w_all.Print()
-  bkg_pdf_name = obs+'BkgTmpBer1_cat'+str(icat)+'_CMS_Bkg_cat'+str(icat)
-  if opt.ndims == 1:
-    bkg_pdf_name = 'shapeBkg_Bkg_cat'+str(icat)
+#  w_all.Print()
+  bkg_pdf_name = "CMS_bkg_"+obs+"_cat"+str(icat)+"_bern1"
 
   bkg_pdf = w_all.pdf(bkg_pdf_name)
+  if not bkg_pdf:
+     bkg_pdf_name = "CMS_bkg_"+obs+"_cat"+str(icat)+"_bern2"
+     bkg_pdf = w_all.pdf(bkg_pdf_name)
+
+
   bkg_normName = 'n_exp_final_bincat'+str(icat)+'_proc_Bkg'
   bkg_norm = RooRealVar('bkg_norm', 'nonres bkg norm', w_all.obj(bkg_normName).getVal())
 
