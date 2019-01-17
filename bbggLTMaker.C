@@ -91,7 +91,7 @@ Bool_t bbggLTMaker::Process(Long64_t entry)
   o_run = run;
   o_evt = event;
 
-  o_weight = weight*_normalization*(1./77.4);
+  o_weight = weight*_normalization;
   //o_weight = 1;
   o_mgg = CMS_hgg_mass;
   o_mjj = Mjj;

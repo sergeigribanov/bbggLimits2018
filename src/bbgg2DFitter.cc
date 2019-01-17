@@ -930,6 +930,7 @@ void bbgg2DFitter::BkgMultiModelFit(std::string fileBaseName)
 
     /* if(nEvtsObs > 1 && nEvtsObs < 100) order=2;
        else if(nEvtsObs > 99) order=3;*/
+    order=2;
     if (c == 3 || c == 6 || c == 7 || c == 8 || c == 10 || c == 11) order = 3;
     //if(c == 11) order = 3;  // uncomment this line and comment out above line for 2nd 2D map   
     
@@ -973,7 +974,6 @@ void bbgg2DFitter::BkgMultiModelFit(std::string fileBaseName)
 
     wBias->import(norm);
     wBias->import(multipdf);
-    
      
    }
 
