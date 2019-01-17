@@ -4,7 +4,7 @@ kmax * number of nuisance parameters
 ----------------------------------------------------------------------------------------------------------------------------------
 
 shapes data_obs cat8 INPUTBKGLOC w_all:data_obs_cat8
-shapes Bkg cat8 INPUTBKGLOC w_all:CMS_Bkg_cat8
+shapes Bkg cat8 INPUTBKGLOC w_all:CMS_bkg_cat8
 shapes Sig cat8 INPUTSIGLOC w_all:CMS_sig_cat8
 shapes ggh cat8 INPUTGGHLOC w_all:CMS_hig_ggh_cat8
 shapes tth cat8 INPUTTTHLOC w_all:CMS_hig_tth_cat8
@@ -38,12 +38,4 @@ CMS_hbb_sig_sigmaScale   param  1 0.05
 CMS_hgg_sig_sigmaScale   param  1 0.05
 CMS_hgg_sig_m0_absShift  param  1 0.005
 
-CMS_hhbbgg_13TeV_mjj_bkg_par1_cat8  flatParam
-CMS_hhbbgg_13TeV_mjj_bkg_par2_cat8  flatParam
-CMS_hhbbgg_13TeV_mjj_bkg_par3_cat8  flatParam
-
-CMS_hhbbgg_13TeV_mgg_bkg_par1_cat8  flatParam
-CMS_hhbbgg_13TeV_mgg_bkg_par2_cat8  flatParam
-CMS_hhbbgg_13TeV_mgg_bkg_par3_cat8  flatParam
-
-CMS_Bkg_cat8_norm  flatParam
+CMS_bkg_cat8_norm  flatParam

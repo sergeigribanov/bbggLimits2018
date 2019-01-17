@@ -1,7 +1,3 @@
-CMS_hhbbgg_13TeV_mgg_bkg_par1_cat11[10.0, -10000000, 10000000];
-CMS_hhbbgg_13TeV_mgg_bkg_par2_cat11[10.0, -10000000, 10000000];
-CMS_hhbbgg_13TeV_mgg_bkg_par3_cat11[10.0, -100000, 100000];
-
 mgg_sig_m0_cat11[125., 122, 127];
 mgg_sig_sigma_cat11[1.0, 0.1, 3.0];
 mgg_sig_alpha1_cat11[1.0, 0.05, 10.0];
@@ -58,10 +54,6 @@ mjj_sig_n1_cat11[2.0, 0.1, 10.0];
 mjj_sig_alpha2_cat11[1.0, 0.05, 10.0];
 mjj_sig_n2_cat11[2.0, 0.1, 10.0];
 mjjSig_cat11 = RooDoubleCB(mjj, mjj_sig_m0_cat11, mjj_sig_sigma_cat11, mjj_sig_alpha1_cat11, mjj_sig_n1_cat11, mjj_sig_alpha2_cat11, mjj_sig_n2_cat11);
-
-CMS_hhbbgg_13TeV_mjj_bkg_par1_cat11[10.0, -100000, 100000];
-CMS_hhbbgg_13TeV_mjj_bkg_par2_cat11[10.0, -100000, 100000];
-CMS_hhbbgg_13TeV_mjj_bkg_par3_cat11[10.0, -100000, 100000];
 
 mjj_hig_par1_ggh_cat11[0.1, 0, 10];
 mjj_hig_par2_ggh_cat11[0.1, 0, 10];
