@@ -741,6 +741,8 @@ RooFitResult* bbgg2DFitter::BkgModelFit()
     if (c == 3 || c == 6 || c == 7 || c == 8 || c == 10 || c == 11) order_mgg = 2;
     double order_mjj=1;
     if (c == 2 || c == 6 || c == 10 || c == 11) order_mjj = 2;
+    //double order_mgg=2;
+    //double order_mjj=2;
 
 
     data[c] = (RooDataSet*) _w->data(TString::Format("Data_cat%d",c));
@@ -799,8 +801,6 @@ void bbgg2DFitter::BkgMultiModelFit(std::string fileBaseName)
   //std::vector<RooBernstein*> mjjBkg(_NCAT,nullptr);// the polinomial of 4* order
   RooProdPdf* BkgPdf = nullptr;
   RooExtendPdf* BkgPdfExt = nullptr;
-  RooProdPdf* BkgPdfBer = nullptr;
-  RooExtendPdf* BkgPdfExtBer = nullptr;
   RooProdPdf* BkgPdfExp = nullptr;
   RooExtendPdf* BkgPdfExtExp = nullptr;
   RooProdPdf* BkgPdfPow = nullptr;
@@ -809,12 +809,12 @@ void bbgg2DFitter::BkgMultiModelFit(std::string fileBaseName)
   //std::vector<string> label;
   RooWorkspace *wBias = new RooWorkspace("w_bias","w_bias");
   
-  RooAbsPdf* mggBkgTmpBer1 = nullptr;
-  RooAbsPdf* mjjBkgTmpBer1 = nullptr;
-  RooAbsPdf* mggBkgTmpExp1 = nullptr;
-  RooAbsPdf* mjjBkgTmpExp1 = nullptr;
-  RooAbsPdf* mggBkgTmpPow1 = nullptr;
-  RooAbsPdf* mjjBkgTmpPow1 = nullptr;
+  RooAbsPdf* mggBkgTmpBer = nullptr;
+  RooAbsPdf* mjjBkgTmpBer = nullptr;
+  RooAbsPdf* mggBkgTmpExp = nullptr;
+  RooAbsPdf* mjjBkgTmpExp = nullptr;
+  RooAbsPdf* mggBkgTmpPow = nullptr;
+  RooAbsPdf* mjjBkgTmpPow = nullptr;
   
   RooRealVar* mgg = _w->var("mgg");
   RooRealVar* mjj = _w->var("mjj");
@@ -824,10 +824,9 @@ void bbgg2DFitter::BkgMultiModelFit(std::string fileBaseName)
   PdfModelBuilder pdfsModel_1;
   pdfsModel.setObsVar(mgg);
   pdfsModel_1.setObsVar(mjj);
-  RooCategory category("pdf_index","Index of Pdf which is active");
-  wBias->import(category);
+
   
-  int order=2, order1=1;
+  int order=1, order1=1;
   /// Add function here
   function.push_back("Bernstein");
   function.push_back("Exponential");
@@ -840,46 +839,28 @@ void bbgg2DFitter::BkgMultiModelFit(std::string fileBaseName)
    for (int c = 0; c < _NCAT; ++c) { // to each category
     data[c] = (RooDataSet*) _w->data(TString::Format("Data_cat%d",c));
     wBias->import(*data[c]);
-     ////////////////////////////////////
-    // these are the parameters for the bkg polinomial
-    // one par by category - float from -10 > 10
-    // we first wrap the normalization of mggBkgTmp0, mjjBkgTmp0
-    // CMS_hhbbgg_13TeV_mgg_bkg_par1
-
-    TH2* data_h2D = 0;
-    TH1* data_h1D = 0;
-    if(_fitStrategy==2)  data_h2D = (TH2*) data[c]->createHistogram("mgg,mjj", 60, 40);
-    if(_fitStrategy==1)  data_h1D = (TH1*) data[c]->createHistogram("mgg", 60);
-
-    int nEvtsObs = -1;
-    if(_fitStrategy == 2) nEvtsObs = data_h2D->Integral();
-    if(_fitStrategy == 1) nEvtsObs = data_h1D->Integral();
  
-    wBias->factory(TString::Format("BkgPdf_cat%d_norm[20.0,0.0,100000]",c));
-
-    /* if(nEvtsObs > 1 && nEvtsObs < 100) order=2;
-       else if(nEvtsObs > 99) order=3;*/
-    order=2;
-    if (c == 3 || c == 6 || c == 7 || c == 8 || c == 10 || c == 11) order = 3;
  
+    order=1;
+    if (c == 3 || c == 6 || c == 7 || c == 8 || c == 10 || c == 11) order = 2;
+     
+    mggBkgTmpBer = getPdf(pdfsModel,function[0],order,TString::Format("bkg_mgg_cat%d",c));
+    mggBkgTmpExp = getPdf(pdfsModel,function[1],order1,TString::Format("bkg_mgg_cat%d",c));
+    mggBkgTmpPow = getPdf(pdfsModel,function[2],order1,TString::Format("bkg_mgg_cat%d",c));
     
-    mggBkgTmpBer1 = getPdf(pdfsModel,function[0],order,TString::Format("mggBkgTmp%d_cat%d",order,c));
-    mggBkgTmpExp1 = getPdf(pdfsModel,function[1],order1,TString::Format("mggBkgTmp%d_cat%d",order1,c));
-    mggBkgTmpPow1 = getPdf(pdfsModel,function[2],order1,TString::Format("mggBkgTmp%d_cat%d",order1,c));
-    
-    order = 2;
-    if (c == 2 || c == 6 || c == 10 || c == 11) order = 3;
-    mjjBkgTmpBer1 = getPdf(pdfsModel_1,function[0],order,TString::Format("mjjBkgTmp%d_cat%d",order,c));
-    mjjBkgTmpExp1 = getPdf(pdfsModel_1,function[1],order1,TString::Format("mjjBkgTmp%d_cat%d",order1,c));
-    mjjBkgTmpPow1 = getPdf(pdfsModel_1,function[2],order1,TString::Format("mjjBkgTmp%d_cat%d",order1,c));
+    order = 1;
+    if (c == 2 || c == 6 || c == 10 || c == 11) order = 2;
+    mjjBkgTmpBer = getPdf(pdfsModel_1,function[0],order,TString::Format("bkg_mjj_cat%d",c));
+    mjjBkgTmpExp = getPdf(pdfsModel_1,function[1],order1,TString::Format("bkg_mjj_cat%d",c));
+    mjjBkgTmpPow = getPdf(pdfsModel_1,function[2],order1,TString::Format("bkg_mjj_cat%d",c));
 
     
      
     RooRealVar norm(TString::Format("roomultipdf_cat%d_norm",c),"Number of background events",0,10000);
 
-    BkgPdf = new RooProdPdf(TString::Format("pdf_%s_cat%d",label[0],c), "", RooArgList(*mggBkgTmpBer1, *mjjBkgTmpBer1));
-    BkgPdfExp = new RooProdPdf(TString::Format("pdf_%s_cat%d",label[1],c), "", RooArgList(*mggBkgTmpExp1, *mjjBkgTmpExp1));
-    BkgPdfPow = new RooProdPdf(TString::Format("pdf_%s_cat%d",label[2],c), "", RooArgList(*mggBkgTmpPow1, *mjjBkgTmpPow1));
+    BkgPdf = new RooProdPdf(TString::Format("pdf_%s_cat%d",label[0],c), "", RooArgList(*mggBkgTmpBer, *mjjBkgTmpBer));
+    BkgPdfExp = new RooProdPdf(TString::Format("pdf_%s_cat%d",label[1],c), "", RooArgList(*mggBkgTmpExp, *mjjBkgTmpExp));
+    BkgPdfPow = new RooProdPdf(TString::Format("pdf_%s_cat%d",label[2],c), "", RooArgList(*mggBkgTmpPow, *mjjBkgTmpPow));
 
     BkgPdfExt = new RooExtendPdf(TString::Format("ext_pdf_%s_cat%d",label[0],c),"", *BkgPdf,norm);
     BkgPdfExtExp = new RooExtendPdf(TString::Format("ext_pdf_%s_cat%d",label[1],c),"", *BkgPdfExp,norm);
@@ -898,9 +879,11 @@ void bbgg2DFitter::BkgMultiModelFit(std::string fileBaseName)
        mypdfs.add(*BkgPdfExp);
        mypdfs.add(*BkgPdfPow);
    
-    
-    RooMultiPdf multipdf(TString::Format("roomultipdf_cat%d",c),"All Pdfs",category,mypdfs);
 
+
+    RooCategory category(TString::Format("pdf_index_cat%d",c),"Index of Pdf which is active");
+    RooMultiPdf multipdf(TString::Format("roomultipdf_cat%d",c),"All Pdfs",category,mypdfs);
+    wBias->import(category);
     wBias->import(norm);
     wBias->import(multipdf);
      
