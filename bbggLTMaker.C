@@ -39,11 +39,12 @@ void bbggLTMaker::Begin(TTree * /*tree*/)
   _outFileName = (string)((TObjString*)args->At(1))->GetString();
   _genDiPhotonFilter = (Bool_t) std::stoi( (string)((TObjString*)args->At(2))->GetString() );
   _whichCategorization = (Int_t) std::stoi( (string)((TObjString*)args->At(3))->GetString() );
-
+  _ttHTagger = (Bool_t) std::stoi( (string)((TObjString*)args->At(4))->GetString() );
   std::cout<<"Input paremeters:\n"
 	   <<"_normalization: "<<_normalization<<"\n"
 	   <<"_outFileName: "<< _outFileName<<"\n"
 	   <<"_genDiPhotonFilter: "<< _genDiPhotonFilter<<"\n"
+           <<"_ttHTagger: "<< _ttHTagger<<"\n"
 	   <<std::endl;
 
   // Could make those come from external options as well:
@@ -62,6 +63,7 @@ void bbggLTMaker::Begin(TTree * /*tree*/)
   _outTree->Branch("MX",  &o_MX,  "o_MX/D");
   _outTree->Branch("mbbgg", &o_bbggMass, "o_bbggMass/D");
   _outTree->Branch("catID", &o_catID, "o_catID/I");
+  _outTree->Branch("ttHTagger", &o_ttHTagger, "ttHTagger/D");
 
 
   TString phoSFID_file = TString(std::getenv("CMSSW_BASE")) + TString("/src/HiggsAnalysis/bbggLimits2018/Weights/MVAID/egammaEffi.txt_EGM2D.root");
@@ -84,10 +86,6 @@ void bbggLTMaker::SlaveBegin(TTree * /*tree*/)
 Bool_t bbggLTMaker::Process(Long64_t entry)
 {
   GetEntry(entry);
-  //std::cout<<"Processing event "<<event<<" in run "<<run<<std::endl;
-
-  //if( _genDiPhotonFilter && nPromptInDiPhoton < 2 ) return kTRUE;
-
   o_run = run;
   o_evt = event;
 
@@ -100,6 +98,11 @@ Bool_t bbggLTMaker::Process(Long64_t entry)
   o_MX = MX;
 
   o_catID = -1;
+
+  if(_ttHTagger)
+    o_ttHTagger = ttHScore;
+  else     
+    o_ttHTagger = -1;
 
   if (_whichCategorization==0){
     if (o_MX > boundary_MX_2017[0] && o_MX <= boundary_MX_2017[1]){
