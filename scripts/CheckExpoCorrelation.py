@@ -152,9 +152,10 @@ gr.GetYaxis().SetTitle("exponential slope [1/GeV]")
 gr.GetXaxis().SetTitle("mjj range")
 
 DrawCMSLabels(c, opt.lumi)
-label = "Purity " + Cats[opt.ipurity] + "for mgg < " + str(mggmax) + ",  #chi^{2}/NDF = " + str('%.1f' % func.GetChisquare()) + "/4,    pval = " + str('%.2f' % func.GetProb())
+#label = "Purity " + Cats[opt.ipurity] + "for mgg < " + str(mggmax) + ",  #chi^{2}/NDF = " + str('%.1f' % func.GetChisquare()) + "/4,    pval = " + str('%.2f' % func.GetProb())
+label = "Purity " + Cats[opt.ipurity]
 
 DrawCatLabels(c, label)
 
-nameout=opt.outName+"/Correlation_Purity_"+Cats[opt.ipurity]+"_mgg_"+str(int(mggmax))+".png"
+nameout=opt.outName+"/Correlation_Purity_"+Cats[opt.ipurity]+"_mgg_"+str(int(mggmax))+"_nopval.png"
 c.SaveAs(nameout)
