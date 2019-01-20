@@ -19,7 +19,8 @@ do
     echo ttH_cut $cut
 
     echo === step : creating workspace and datacards ===
-    ./runLimit.py -f conf_default_local.json --node=$node -o outDir_LIM_node_${node}_ttHcut_$num --analyticalRW --ttHTaggerCut=$cut
+    echo ./runLimit.py -f conf_default_local.json --node=$node -o outDir_LIM_node_${node}_ttHcut_$num --ttHTaggerCut=$cut
+    ./runLimit.py -f conf_default_local.json --node=$node -o outDir_LIM_node_${node}_ttHcut_$num --ttHTaggerCut=$cut
 
     echo === step : running combine for limits ===
     sh scripts/Analyzer.sh outDir_LIM_node_${node}_ttHcut_$num    
