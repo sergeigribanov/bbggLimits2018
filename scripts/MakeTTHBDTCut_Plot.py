@@ -1,4 +1,9 @@
 #!/usr/bin/env python
+import sys
+
+#It is called in ttHOptimization.sh script.
+#command "pyhton MakeTTHBDTCut_Plot.py arg1" where arg1=no. of ttHcuts used in ttHOptimization.sh
+##############################################################################################################
 
 from ROOT import *
 
@@ -10,7 +15,9 @@ gStyle.SetOptStat(0)
 
 node=["SM","1","2"]
 i=0
-for x in range(0,5):
+nmax=sys.argv[1]
+print nmax
+for x in range(1,int(nmax)+1):
     
     iCounter = iCounter+1
     cut=0.3+x*0.02

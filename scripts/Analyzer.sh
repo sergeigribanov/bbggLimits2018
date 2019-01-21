@@ -1,37 +1,66 @@
 #!/bin/bash
+#This script run limits using Higgs combime tool. It is called in tthCutOptimization.sh scripts.
+#command "sh scripts/Analyzer.sh arg1 arg2" where arg1=directory to run the limits and save the result and arg2=run the limits for each catgegry if arg2={1....12}. 
+#use arg2=13 if want to run for categories combinely.
+########################################################################################################################################################
 
 echo '=== Preparing datacards in root format ==='
 
-DIR=$1/Node_SM
+DIR=$1/Node_SM  
 echo $DIR
+opt=$2   ##put no of categroies for which you want to run limits as 2nd arguement
+opt_1=13
 
-text2workspace.py $DIR/hhbbgg_13TeV_DataCard.txt $DIR/hhbbgg_13TeV_DataCard.root -m 125
+if [ $opt -eq $opt_1 ];then
 
-cd $DIR
+  echo 'running for all categories'
 
-printf '\n=== Start fitting for background plots ==\n\n'
+  text2workspace.py $DIR/hhbbgg_13TeV_DataCard.txt $DIR/hhbbgg_13TeV_DataCard.root -m 125
 
-combine -M FitDiagnostics -t -1 -d hhbbgg_13TeV_DataCard.root -S 0  --saveWorkspace --saveShapes --saveNormalization  --saveToys --savePredictionsPerToy
+  cd $DIR
 
-printf '\n=====\n\n'
+  printf '\n=== Start fitting for background plots ==\n\n'
 
-combine -M AsymptoticLimits -d hhbbgg_13TeV_DataCard.root --run blind -m 125 -n SM_13TeV_3ab -S 0 &> Limit_stat.txt
+  combine -M FitDiagnostics -t -1 -d hhbbgg_13TeV_DataCard.root -S 0  --saveWorkspace --saveShapes --saveNormalization  --saveToys --savePredictionsPerToy
 
-echo '== 3.1) Finished stat only limits'
+  printf '\n=====\n\n'
 
-tail  Limit_stat.txt
+  combine -M AsymptoticLimits -d hhbbgg_13TeV_DataCard.root --run blind -m 125 -n SM_13TeV_3ab -S 0 &> Limit_stat.txt
 
-#printf '\n=====\n\n'
+  echo '== 3.1) Finished stat only limits'
 
-#combine -M Asymptotic -d hhbbgg_13TeV_DataCard.root -t -1  --run blind --expectSignal 1 -m 125 -n SM_13TeV_3ab &> Limit.txt
+  tail  Limit_stat.txt
 
-#echo '== 3.2) Finished full limits'
+  cd -
 
-#head  Limit.txt
+  printf '\n== END ===\n\n'
 
-#printf '\n=====\n\n'
+elif [ $opt -ne $opt_1 ];then
 
-cd -
+icat=0
 
-printf '\n== END ===\n\n'
+  while [ $icat -lt $opt ]
+  do
 
+     text2workspace.py $DIR/hhbbgg_13TeV_DataCard_cat${icat}.txt $DIR/hhbbgg_13TeV_DataCard_cat${icat}.root -m 125
+
+     cd $DIR
+
+     printf '\n=== Start fitting for background plots ==\n\n'
+
+     combine -M FitDiagnostics -t -1 -d hhbbgg_13TeV_DataCard_cat${icat}.root -S 0  --saveWorkspace --saveShapes --saveNormalization  --saveToys --savePredictionsPerToy
+
+     printf '\n=====\n\n'
+
+     combine -M AsymptoticLimits -d hhbbgg_13TeV_DataCard_cat${icat}.root --run blind -m 125 -n SM_13TeV_3ab -S 0 &> Limit_stat_cat${icat}.txt
+
+     echo '== 3.1) Finished stat only limits for cat='$icat 
+
+     tail   Limit_stat_cat${icat}.txt
+
+     cd -
+
+     printf '\n== END ===\n\n'
+     icat=$(( $icat + 1 ))
+  done
+fi
