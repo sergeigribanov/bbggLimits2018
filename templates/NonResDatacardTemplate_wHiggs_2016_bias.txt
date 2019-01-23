@@ -9,22 +9,16 @@ shapes Sig ICAT INPUTSIGLOC w_all:CMS_sig_ICAT
 
 ----------------------------------------------------------------------------------------------------------------------------------
 bin          ICAT
-observation  OBS_ICAT
+observation  OBS
 ----------------------------------------------------------------------------------------------------------------------------------
 bin                                   ICAT	     ICAT
 process                               Sig            Bkg 
 process                               0              1   
-rate				      SIG_ICAT	     1	
+rate				      SIG	     1	
 
 ----------------------------------------------------------------------------------------------------------------------------------
 CMS_eff_PhoID           lnN           1.01           -  
 
-CMS_hhbbgg_13TeV_mjj_bkg_par1_ICAT  flatParam
-CMS_hhbbgg_13TeV_mjj_bkg_par2_ICAT  flatParam
-
-CMS_hhbbgg_13TeV_mgg_bkg_par1_ICAT  flatParam
-CMS_hhbbgg_13TeV_mgg_bkg_par2_ICAT  flatParam
-
 roomultipdf_ICAT_norm  flatParam
 
-pdf_index discrete
+pdf_index_ICAT discrete

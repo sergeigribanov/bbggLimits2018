@@ -257,7 +257,7 @@ for iobs,obs in enumerate(dims):
   leg.Draw('same')
   SetPadStyle(c)
   SetAxisTextSizes(frame)
-  DrawCMSLabels(c, '41.5')
+  DrawCMSLabels(c, opt.lumi)
   DrawCatLabels(c, Cats[icat])
   c.Update()
 
