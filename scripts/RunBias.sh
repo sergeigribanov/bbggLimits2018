@@ -12,7 +12,7 @@ NGEN=2000
 echo " ========== Func used " ${arr[func]} " with " ${NGEN} " events " 
 echo " "
 
-for icat in {7..11}
+for icat in {0..11}
 do
     for truth in {0..2}
     do

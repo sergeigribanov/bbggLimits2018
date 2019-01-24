@@ -738,8 +738,8 @@ RooFitResult* bbgg2DFitter::BkgModelFit()
   for (int c = 0; c < _NCAT; ++c) { // to each category
 
 
-    if (c < 3) order_mgg = 1;
-    else if (c == 3 || c == 5) order_mgg = 2;
+    if (c < 2 || c == 3) order_mgg = 1;
+    else if (c == 2 || c == 5) order_mgg = 2;
     else order_mgg = 3;
     
     if (c < 2) order_mjj = 1;
@@ -848,8 +848,8 @@ void bbgg2DFitter::BkgMultiModelFit(std::string fileBaseName)
     //    if (c == 4 || c == 5 || c == 6) order = 2; // bias check
     //   if (c == 11) order = 3;
     //  if (c > 3) order=2;
-    if (c < 3) order = 1;
-    else if (c == 3 || c == 5) order = 2;
+    if (c < 2 || c == 3) order = 1;
+    else if (c == 2 || c == 5) order = 2;
     else order = 3;
     
 

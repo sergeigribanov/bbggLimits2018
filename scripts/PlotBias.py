@@ -5,13 +5,18 @@ vmu = [1, 1, 1, 10, 10, 10, 10, 20, 20, 20, 20, 20]
 #vmu = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
 
 ltruths = ["Ber", "Exp", "Pow"]
-fbase = '2016_2017_withPU_BerFast_2D_FORBIAS_BER2All/Node_SM/BIAS/mlfit.catICAT.tTRUTH.fFUNC.musigMU0.root'
-#lcats = [0,1,2,3,4,5,6,7,8,9,10,11]
-lcats = [4,5,6, 7, 8, 9, 10, 11]
+dir='2016_2017_withPU_BerFast_2D_FORBIAS_Unbiasedcat3/Node_SM/BIAS/'
+fbase = dir+'mlfit.catICAT.tTRUTH.fFUNC.musigMU0'
+lcats = [0,1,2,3,4,5,6,7,8,9,10,11]
+#lcats = [2,3]
 iFunc=0
 
 out = TFile('bias_out.root', 'RECREATE')
 grs = []
+c1 = TCanvas("c", "c", 800, 600)
+c1.cd()
+
+
 for truth in ltruths:
   gr = TGraphErrors()
   gr.SetName('gr_t'+truth+"_fBer")
@@ -23,7 +28,7 @@ for truth in ltruths:
     gr.SetPointError(icat, float(0), 1)
 
   for icat in lcats:
-    tf = TFile(fbase.replace('ICAT', str(icat)).replace('TRUTH', truth).replace('MU0', str(vmu[icat])).replace('FUNC', ltruths[iFunc]))
+    tf = TFile(fbase.replace('ICAT', str(icat)).replace('TRUTH', truth).replace('MU0', str(vmu[icat])).replace('FUNC', ltruths[iFunc])+'.root')
     tt = tf.Get('tree_fit_sb')
     hname2 = 'hist_t'+truth+"_fBer_cat"+str(icat)+"_pm2"
     hist2 = TH1F(hname2, '', 60, -2, 2)
@@ -31,6 +36,17 @@ for truth in ltruths:
     fitres2 = hist2.Fit('gaus', 'S')
     mean2 = fitres2.GetParams()[1]
     e_mean2 = fitres2.GetErrors()[1]
+    c1.Update()
+#    c1.SaveAs(fbase.replace('ICAT', str(icat)).replace('TRUTH', truth).replace('MU0', str(vmu[icat])).replace('FUNC', ltruths[iFunc])+'.png')
+
+    hname1p5 = 'hist_t'+truth+"_fBer_cat"+str(icat)+"_pm1p5"
+    hist1p5 = TH1F(hname1p5, '', 60, -2, 2)
+    tt.Draw('(mu-'+str(vmu[icat])+')/muErr>>'+hname1p5, 'numbadnll>-1')
+    fitres1p5 = hist1p5.Fit('gaus', 'S')
+    mean1p5 = fitres1p5.GetParams()[1]
+    e_mean1p5 = fitres1p5.GetErrors()[1]
+
+
 
     hname5 = 'hist_t'+truth+"_fBer_cat"+str(icat)+"_pm5"
     hist5 = TH1F(hname5, '', 120, -5, 5)
@@ -38,13 +54,21 @@ for truth in ltruths:
     fitres5 = hist5.Fit('gaus', 'S')
     mean5 = fitres5.GetParams()[1]
     e_mean5 = fitres5.GetErrors()[1]
+
+
     mymean = mean2
     myerr = e_mean2
     if abs(mean5) < abs(mean2):
       mymean = mean5
       myerr = e_mean5
+    if abs(mean1p5) < abs(mymean):
+      mymean = mean1p5
+      myerr = e_mean1p5
+
     print icat, " for truth function ",truth, mymean, myerr
-    
+
+
+
     gr.SetPoint(icat, float(icat), mymean)
     gr.SetPointError(icat, float(0), myerr)
   grs.append(gr)
@@ -97,6 +121,8 @@ LUp.Draw()
 LDo.Draw()
 SetPadStyle(c)
 DrawCMSLabels(c, '77.4')
-DrawCatLabels(c, '~2 #sigma sig. inj. / cat')
+DrawCatLabels(c, '~1-3 #sigma sig. inj. / cat')
 c.Update()
-c.SaveAs("BiasStudies.png")
+print 'Saved into '+dir+"BiasStudies.png"
+c.SaveAs(dir+"BiasStudies.png")
+raw_input("Press Enter to continue...")
