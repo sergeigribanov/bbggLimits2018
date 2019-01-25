@@ -43,7 +43,7 @@ def SetPadStyle(obj):
   obj.SetTicky()
   obj.SetTickx()
 
-def DrawCMSLabels(obj, lumi=''):
+def DrawCMSLabels(obj, lumi, sim = 0):
   pad = obj.cd()
   l = pad.GetLeftMargin()
   t = pad.GetTopMargin()
@@ -55,9 +55,9 @@ def DrawCMSLabels(obj, lumi=''):
   lat.SetTextFont(62)
   cmsTag = "CMS"
   lumiTag = lumi+' fb^{-1} (13 TeV)'
-#  if lumi == '':
-#    cmsTag = "#bf{CMS} #it{Simulation}"
-#    lumiTag = '(13 TeV)'
+  if sim==1:
+    cmsTag = "#bf{CMS} #it{Simulation}"
+    lumiTag = lumi
   lat.DrawLatexNDC(l+0.01, 1-t+0.02, cmsTag)
 
   lat.SetTextFont(42)
