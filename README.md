@@ -56,7 +56,8 @@ as well as *mgg* and *mjj*. Different type of categorizations can be done chosen
 * Run the fits and limits on the produced LTs:
 
 ```
-./runLimit.py -f conf_default.json --node=SM -o LIMS_OutDir
+./runLimit.py -f conf_default.json --node=SM -o ws_DIR_Name
+sh scripts/Analyzer.sh ws_DIR_Name cat_no     #### it runs the limit from 0 to cat_no. for each categroy put 13 for running combinely for all categories
 ```  
 The process may take a while to complete, especially when running with many categories.  
 The config file `conf_default.json` can be edited to provide needed parameters. Some of them are:  
@@ -81,14 +82,6 @@ the logfile _mainLog_data-time.log[.bbgg2D]_ can be useful
   modifien from _templates/models_2D_higgs_mjj70_cat*.rs_ files and then taken care in
   _src/bbgg2DFitter.cc_
   
-
-
-## The plots 
-
-* Run the following command to do fit diagnostics of combine and make quick plots:
-``` 
-combine -M FitDiagnostics LIMS_OutDir/Node_SM/hhbbgg_13TeV_DataCard.txt --plots --out LIMS_OutDir/
-```  
 Note that you may see many warnings. They are ignored at the moment, but should be fixed in the future.
 
 * non-integer bin entry:  
@@ -100,6 +93,21 @@ These are probably due to the fact that the observed data are taken from MC with
 ```
 [WARNING] Found [CMS_hhbbgg_13TeV_mjj_bkg_slope2_cat0] at boundary.
 ```
+
+## The ttH cut optimization
+
+* Run the following command to optimize ttH cut for all categories/per catgeory (depends on the arg2 in the command), it will generate a plot for limts vs cut if arg=13 (only when you optimize this for all catgegories)
+``` 
+sh scripts/tthCutOptimization.sh arg1 arg2   ## arg1=no. of ttH cuts, arg2= cat_no. use accordingly as explained above
+```  
+
+## Bias study
+
+* RunBias.sh script is for interactely running. For condor jobs use this script condor_job.sub according to this command 
+``` 
+condor_submit condor_job.sub DIR=ws_DIR_Name
+```  
+
 
 ### Note on plotting
 Previously, the plots were made taking the post-fit results of the Maximum Likelihood fit
