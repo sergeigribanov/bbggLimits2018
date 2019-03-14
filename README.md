@@ -16,7 +16,7 @@ scramv1 b clean; scramv1 b
 Get this repository code:
 ```
 cd ../
-git clone git@github.com:panwarlsweet/bbggLimits2018.git -b forPAS
+git clone git@github.com:panwarlsweet/bbggLimits2018.git -b ForPAS
 cd bbggLimits2018
 scramv1 b
 ```
