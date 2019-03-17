@@ -737,15 +737,25 @@ RooFitResult* bbgg2DFitter::BkgModelFit()
   if (_verbLvl>1) std::cout << "[BkgModelFit] Starting cat loop " << std::endl;
   for (int c = 0; c < _NCAT; ++c) { // to each category
 
-
+    /*
+    // Minimal bias study
     if (c < 2 || c == 3) order_mgg = 1;
     else if (c == 2 || c == 5) order_mgg = 2;
     else order_mgg = 3;
-    
+
     if (c < 2) order_mjj = 1;
     else if (c > 1 && c < 11) order_mjj = 2; // keep cat5 with order 2 to avoid problem of par 1 at boundary. There is no impact on final SM limits: cat5 ber3 : 0.7812 fb; cat5 ber2 : 77.73
     else order_mjj = 3;
+    */
 
+    // FTEST
+    order_mgg = 1;
+    // Compromise
+    if (c > 2 && c < 6) order_mgg = 2;
+    else if (c > 5 ) order_mgg = 3;
+
+    order_mjj = 1;
+    if (c == 2 || c == 6 || c > 9) order_mjj = 2;
 
     data[c] = (RooDataSet*) _w->data(TString::Format("Data_cat%d",c));
 
@@ -842,26 +852,39 @@ void bbgg2DFitter::BkgMultiModelFit(std::string fileBaseName)
     data[c] = (RooDataSet*) _w->data(TString::Format("Data_cat%d",c));
     wBias->import(*data[c]);
  
- 
     order=1;
-    //    if (c == 3 || c == 6 || c == 7 || c == 8 || c == 10 || c == 11) order = 2;
-    //    if (c == 4 || c == 5 || c == 6) order = 2; // bias check
-    //   if (c == 11) order = 3;
-    //  if (c > 3) order=2;
+    // minimal bias
+    /*
     if (c < 2 || c == 3) order = 1;
     else if (c == 2 || c == 5) order = 2;
     else order = 3;
-    
+    */
+    // FTEST
+    //    if (c == 3 || ( c > 5 && c < 11 && c != 9)) order = 2; 
+    //else if (c == 11) order = 3;
+    // compromise
+    if (c == 3 || c == 4 || c == 5) order = 2;
+    else if (c > 5 ) order = 3;
+
+
 
     mggBkgTmpBer = getPdf(pdfsModel,function[0],order,TString::Format("bkg_mgg_cat%d",c));
     mggBkgTmpExp = getPdf(pdfsModel,function[1],order1,TString::Format("bkg_mgg_cat%d",c));
     mggBkgTmpPow = getPdf(pdfsModel,function[2],order1,TString::Format("bkg_mgg_cat%d",c));
     
+
+    order=1;
+    //minimal bias
+    /*
     if (c < 2) order = 1;
     else if (c > 1 && c < 11 && c != 5) order = 2;
     else order = 3;
-    //if (c == 4 || c == 5 || c == 6) order = 2; // bias check
-    //   if (c > 3)   order=2;
+    */
+    // FTEST
+    if (c == 2 || c == 6 || c > 9) order = 2;
+    // compromise
+    //if (c == 2 || c > 4) order = 2;
+
 
     mjjBkgTmpBer = getPdf(pdfsModel_1,function[0],order,TString::Format("bkg_mjj_cat%d",c));
     mjjBkgTmpExp = getPdf(pdfsModel_1,function[1],order1,TString::Format("bkg_mjj_cat%d",c));

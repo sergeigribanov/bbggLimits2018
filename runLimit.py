@@ -340,6 +340,7 @@ def runFullChain(opt, Params, point=None, NRgridPoint=-1, extraLabel=''):
     DataCardMaker(str(myLoc), NCAT, sigExp, bkgObs, isRes)
   else:
     DataCardMaker_wHiggs(str(myLoc), NCAT, sigExp, bkgObs, higgsExp, mainLog)
+    DataCardMaker_bias(str(myLoc), NCAT, sigExp, bkgObs, mainLog)
 
   mainLog.info("\t DATACARD DONE. Node/Mass=%r, GridPoint=%r", point,NRgridPoint)
   if opt.verb>0: p7 = printTime(p6,start,mainLog)
