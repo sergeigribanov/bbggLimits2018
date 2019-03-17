@@ -57,10 +57,11 @@ as well as *mgg* and *mjj*. Different type of categorizations can be done chosen
 
 ```
 ./runLimit.py -f conf_default.json --node=SM -o ws_DIR_Name
-sh scripts/Analyzer.sh ws_DIR_Name cat_no     #### it runs the limit from 0 to cat_no. for each categroy put 13 for running combinely for all categories for example
+sh scripts/Analyzer.sh ws_DIR_Name cat_no     #### it runs the limit from 0 to cat_no. for each categroy put 13 for running combinely
+# example
 sh scripts/Analyzer.sh TEST 13
-sh scripts/MakeSMHHFullBkgPlots.sh TEST
-sh scripts/MakeSMHHSignalPlots.sh TEST
+sh scripts/MakeSMHHFullBkgPlots.sh TEST #### To get background plots in TEST/Node_SM/Background
+sh scripts/MakeSMHHSignalPlots.sh TEST #### To get signal plots test/Node_SM/SignalShapes
 ```  
 The process may take a while to complete, especially when running with many categories.  
 The config file `conf_default.json` can be edited to provide needed parameters. Some of them are:  
