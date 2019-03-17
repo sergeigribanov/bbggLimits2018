@@ -57,7 +57,10 @@ as well as *mgg* and *mjj*. Different type of categorizations can be done chosen
 
 ```
 ./runLimit.py -f conf_default.json --node=SM -o ws_DIR_Name
-sh scripts/Analyzer.sh ws_DIR_Name cat_no     #### it runs the limit from 0 to cat_no. for each categroy put 13 for running combinely for all categories
+sh scripts/Analyzer.sh ws_DIR_Name cat_no     #### it runs the limit from 0 to cat_no. for each categroy put 13 for running combinely for all categories for example
+sh scripts/Analyzer.sh TEST 13
+sh scripts/MakeSMHHFullBkgPlots.sh TEST
+sh scripts/MakeSMHHSignalPlots.sh TEST
 ```  
 The process may take a while to complete, especially when running with many categories.  
 The config file `conf_default.json` can be edited to provide needed parameters. Some of them are:  
@@ -107,15 +110,6 @@ sh scripts/tthCutOptimization.sh arg1 arg2   ## arg1=no. of ttH cuts, arg2= cat_
 ``` 
 condor_submit condor_job.sub DIR=ws_DIR_Name
 ```  
-
-
-### Note on plotting
-Previously, the plots were made taking the post-fit results of the Maximum Likelihood fit
-from combine,
-[see here](https://github.com/ResonantHbbHgg/bbggLimits/blob/72ae0c5d502ac4e8554ed0161c7aa345b84f5ec3/scripts/MakeSMHHFullBkgPlots.sh#L11). However,
-this is no longer provided with `FitDiagnostics` option, as also pointed out in
-[this post in HN](https://hypernews.cern.ch/HyperNews/CMS/get/higgs-combination/1223.html). In the same HN post, it's suggested to use 
-`-M MultiDimFit --saveWorkspace` options, which should provide the post-fit PDFs. This should be explored in the future
 
 
 
