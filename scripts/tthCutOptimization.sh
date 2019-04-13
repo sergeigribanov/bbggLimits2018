@@ -28,10 +28,10 @@ do
 
     echo === step : creating workspace and datacards ===
     echo ./runLimit.py -f conf_default_local.json --node=$node -o outDir_LIM_node_${node}_ttHcut_$num --ttHTaggerCut=$cut
-    #./runLimit.py -f conf_default_local.json --node=$node -o outDir_LIM_node_${node}_ttHcut_$num --ttHTaggerCut=$cut
+    ./runLimit.py -f conf_default_local.json --node=$node -o outDir_LIM_node_${node}_ttHcut_$num --ttHTaggerCut=$cut
 
     echo === step : running combine for limits ===
-    #sh scripts/Analyzer.sh outDir_LIM_node_${node}_ttHcut_$num $cat    
+    sh scripts/Analyzer.sh outDir_LIM_node_${node}_ttHcut_$num $cat    
 
     num=$(( $num + 1 ))
     done
