@@ -17,10 +17,10 @@ node=["SM","1","2"]
 i=0
 nmax=sys.argv[1]
 print nmax
-for x in range(1,int(nmax)+1):
+for x in range(0,int(nmax)):
     
     iCounter = iCounter+1
-    cut=0.3+x*0.02
+    cut=0.0+x*0.05
     print cut
     #if cut < 0:
      #   file = "outDir_m"+str(abs(cut*10))+"/CombinedCard_ARW_/result_1.log"
@@ -41,10 +41,10 @@ for x in range(1,int(nmax)+1):
                 
     
 c = TCanvas("c", "c", 800, 600)
-plotter = TH1F("ttHcut_vs_Limit",";ttH_cut;limits;", 1, 0.2, 0.7)
+plotter = TH1F("ttHcut_vs_Limit",";ttH_cut;limits;", 1, 0.0, 0.7)
 plotter.Draw()
-plotter.SetMaximum(16)
-plotter.SetMinimum(0.5)
+plotter.SetMaximum(1)
+plotter.SetMinimum(0.2)
 #c.SetGrid()
 gOpt.SetMarkerStyle(25)
 gOpt.SetMarkerColor(4)
