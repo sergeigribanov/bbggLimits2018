@@ -22,6 +22,7 @@ for x in range(0,int(nmax)):
     iCounter = iCounter+1
     cut=0.0+x*0.05
     print cut
+    if x > 0 and  x <= 3: continue   
     #if cut < 0:
      #   file = "outDir_m"+str(abs(cut*10))+"/CombinedCard_ARW_/result_1.log"
     #else
@@ -41,14 +42,16 @@ for x in range(0,int(nmax)):
                 
     
 c = TCanvas("c", "c", 800, 600)
-plotter = TH1F("ttHcut_vs_Limit",";ttH_cut;limits;", 1, 0.0, 0.7)
+plotter = TH1F("ttHcut_vs_Limit",";ttHkiller_cut;limits on 2D fit;", 1, -0.2, 0.5)
 plotter.Draw()
-plotter.SetMaximum(1)
-plotter.SetMinimum(0.2)
+plotter.SetMaximum(0.9)
+plotter.SetMinimum(0.65)
 #c.SetGrid()
-gOpt.SetMarkerStyle(25)
-gOpt.SetMarkerColor(4)
-
+gOpt.SetMarkerStyle(33)
+gOpt.SetMarkerColor(2)
+gOpt.SetMarkerSize(2)
 gOpt.Draw("P")
 
 c.SaveAs("ttH_Optimisation.png")
+c.SaveAs("ttH_Optimisation.pdf")
+c.SaveAs("ttH_Optimisation.root")
