@@ -33,7 +33,8 @@ The core code that makes the trees is `bbggLTMaker.C`. It is based on
 [TSelector](https://root.cern.ch/developing-tselector) and does not depend on CMSSW, just
 the ROOT.  
 The goal of this code is to categorize events and make a new tree which *catID* variable,
-as well as *mgg* and *mjj*. Different type of categorizations can be done chosen by option `-c Y`:  
+as well as *mgg* and *mjj*. Different type of categorizations can be done chosen by option `-c Y`
+The recommended option is Y = 2:  
 ```
  Y = 0: 2016 tagger with categorization used in 2016 analysis (4 categories)
  Y = 1: 2017 ETH tagger, using 2016 style categorization (4 categories);
