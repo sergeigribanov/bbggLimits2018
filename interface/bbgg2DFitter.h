@@ -118,8 +118,9 @@ class bbgg2DFitter {
    void AddBkgData(TString datafile); 
    void SigModelFit(float mass); 
    void HigModelFit(float mass, int higgschannel, TString higName); 
-   RooFitResult* BkgModelFit(); 
-   void BkgMultiModelFit(std::string fileBaseName);
+   RooFitResult* BkgModelFit(std::string);  
+   void BkgMultiModelFit(std::string fileBaseName); 
+   void BkgMultiModelFitAllOrders(std::string fileBaseName, std::string);
    //   RooFitResult* BkgModelFit(Bool_t m,bool h,std::vector<std::string>higgstrue,std::map<std::string,int>higgsNumber) {
    //     return BkgModelFit();} 
    void SetFitStrategy( int st) { _fitStrategy = st; }

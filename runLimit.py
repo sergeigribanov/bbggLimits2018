@@ -229,7 +229,7 @@ def runFullChain(opt, Params, point=None, NRgridPoint=-1, extraLabel=''):
     mainLog.info('Setting fit strategy to: %r', fitStrategy)
     theFitter.SetFitStrategy(fitStrategy)
 #  if fitStrategy==1:
-#    theFitter.SetCut("mjj > 100 && mjj < 150")
+##    theFitter.SetCut("mjj > 100 && mjj < 150")
 
   if opt.verb>0:
     mainLog.info('Using Double Sided Crystal Ball as Signal Model: %r', doDoubleSidedCB)
@@ -297,9 +297,10 @@ def runFullChain(opt, Params, point=None, NRgridPoint=-1, extraLabel=''):
   if opt.verb>1:
     theFitter.PrintWorkspace();
 
-  fitresults = theFitter.BkgModelFit()
+  JsonForEnvelop = "/afs/cern.ch/user/i/ivovtin/HHggbb/CMSSW_8_1_0/src/HiggsAnalysis/bbggLimits2018/jsonsForEnvelope/Env_json_new_1D_ttHon.dat"
+  fitresults = theFitter.BkgModelFit(JsonForEnvelop)
   wsMultipdfFileBkgName = "ws_hhbbgg.data_bkg_multipdf"
-  theFitter.BkgMultiModelFit(wsMultipdfFileBkgName)
+  theFitter.BkgMultiModelFitAllOrders(wsMultipdfFileBkgName, JsonForEnvelop)
   mainLog.info("\t BKG FITTED. Node=%r, GridPoint=%r", point,NRgridPoint)
   if opt.verb>0: p5 = printTime(p4,start,mainLog)
   if fitresults==None:
@@ -341,6 +342,7 @@ def runFullChain(opt, Params, point=None, NRgridPoint=-1, extraLabel=''):
   else:
     DataCardMaker_wHiggs(str(myLoc), NCAT, sigExp, bkgObs, higgsExp, mainLog)
     DataCardMaker_bias(str(myLoc), NCAT, sigExp, bkgObs, mainLog)
+    DataCardMaker_wHiggs_bias(str(myLoc), NCAT, sigExp, bkgObs, higgsExp, mainLog)
 
   mainLog.info("\t DATACARD DONE. Node/Mass=%r, GridPoint=%r", point,NRgridPoint)
   if opt.verb>0: p7 = printTime(p6,start,mainLog)

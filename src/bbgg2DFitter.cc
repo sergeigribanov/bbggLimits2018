@@ -709,7 +709,8 @@ void bbgg2DFitter::SetConstantParams(const RooArgSet* params)
     }
 } // close set const parameters
 
-RooFitResult* bbgg2DFitter::BkgModelFit()
+//RooFitResult* bbgg2DFitter::BkgModelFit()
+RooFitResult* bbgg2DFitter::BkgModelFit(std::string jsonForFTEST)
 {
   //******************************************//
   // Fit background with model pdfs
@@ -738,7 +739,7 @@ RooFitResult* bbgg2DFitter::BkgModelFit()
   if (_verbLvl>1) std::cout << "[BkgModelFit] Starting cat loop " << std::endl;
   for (int c = 0; c < _NCAT; ++c) { // to each category
 
-    /*
+   /*
     // Minimal bias study
     if (c < 2 || c == 3) order_mgg = 1;
     else if (c == 2 || c == 5) order_mgg = 2;
@@ -747,22 +748,49 @@ RooFitResult* bbgg2DFitter::BkgModelFit()
     if (c < 2) order_mjj = 1;
     else if (c > 1 && c < 11) order_mjj = 2; // keep cat5 with order 2 to avoid problem of par 1 at boundary. There is no impact on final SM limits: cat5 ber3 : 0.7812 fb; cat5 ber2 : 77.73
     else order_mjj = 3;
-    */
-
+    */ 
+    /*
     // FTEST
     order_mgg = 1;        
     if (c == 1 || c == 2 || c == 3 || c == 7 || c == 8 || c == 10 ) order_mgg = 2;
     else if ( c == 6 || c == 11 ) order_mgg = 3;
-  
+ 
     order_mjj = 1;
     if ( c > 8) order_mjj = 2;
     else if ( c == 2 ||  c == 6 ) order_mjj = 3;
-
+    */
+       
+   //Read from file for FTEST 
+   ifstream  jFileFT(jsonForFTEST.c_str());
+   if(!jFileFT.good()){
+      cout<<"[WARNING]: Can't open FTEST json file "<<jsonForFTEST.c_str()<<endl;
+   }
+   else{
+      int cat; char funcs[500]; char line[500];
+      int order_mgg1, order_mgg2, order_mgg3, order_mjj1, order_mjj2, order_mjj3;
+      double maxmgg1, maxmgg2, maxmjj1, maxmjj2;
+      jFileFT.getline(line,500);
+      for(int i=0;i<_NCAT;i++){
+         jFileFT.getline(line,500);
+         cat=-1; strcpy(funcs, "");
+         sscanf(line,"cat%d: %d %d %d %d %d %d %s",&cat,&order_mgg1,&order_mgg2,&order_mgg3,&order_mjj1,&order_mjj2,&order_mjj3,funcs);
+         //printf("cat %d:\n ",cat);
+         if(c==cat){ 
+             order_mgg=order_mgg1;
+             order_mjj=order_mjj1;  
+         } 
+         //printf("%d %d %d %d %d %d\n",order_mgg1,order_mgg2,order_mgg3,order_mjj1,order_mjj2,order_mjj3);
+         }  
+   }
+   //printf("Category is %d:\n ",c);
+   //printf("order_mgg= %f; order_mjj= %f :\n ",order_mgg,order_mjj);
+  
+ 
     data[c] = (RooDataSet*) _w->data(TString::Format("Data_cat%d",c));
 
     _w->factory(TString::Format("CMS_bkg_cat%d_norm[20.0,0.0,100000]",c));
  
-    RooAbsPdf* mggBkgTmp = getPdf(pdfsModel_mgg,function[0],order_mgg,TString::Format("CMS_bkg_mgg_cat%d",c));
+    RooAbsPdf* mggBkgTmp = getPdf(pdfsModel_mgg,function[0],order_mgg,TString::Format("CMS_bkg_mgg_cat%d",c)); 
     RooAbsPdf* mjjBkgTmp = getPdf(pdfsModel_mjj,function[0],order_mjj,TString::Format("CMS_bkg_mjj_cat%d",c));
     
     if(_fitStrategy == 2) {
@@ -871,7 +899,7 @@ void bbgg2DFitter::BkgMultiModelFit(std::string fileBaseName)
     else if (c == 6 || c == 11 ) orderB = 3;
     
     if ( c == 4 || c == 5 || c == 8 || c == 9 || c == 10 ) orderL=2;
-    
+
     mggBkgTmpBer = getPdf(pdfsModel_gg,function[0],orderB,TString::Format("bkg_mgg_cat%d",c));
     mggBkgTmpExp = getPdf(pdfsModel_gg,function[1],orderE,TString::Format("bkg_mgg_cat%d",c));
     mggBkgTmpPow = getPdf(pdfsModel_gg,function[2],orderP,TString::Format("bkg_mgg_cat%d",c));
@@ -887,7 +915,7 @@ void bbgg2DFitter::BkgMultiModelFit(std::string fileBaseName)
     */
     // FTEST
     if (c == 2 || c == 6 || c > 8) orderB = 2;
-    
+ 
     mjjBkgTmpBer = getPdf(pdfsModel_jj,function[0],orderB,TString::Format("bkg_mjj_cat%d",c));
     mjjBkgTmpExp = getPdf(pdfsModel_jj,function[1],orderE,TString::Format("bkg_mjj_cat%d",c));
     mjjBkgTmpPow = getPdf(pdfsModel_jj,function[2],orderP,TString::Format("bkg_mjj_cat%d",c));
@@ -931,6 +959,207 @@ void bbgg2DFitter::BkgMultiModelFit(std::string fileBaseName)
 
   if (_verbLvl>1) std::cout << "[BkgMultiPDFModelFit] Finish cat loop " << std::endl;
   wBias->Print("v");
+
+  TString wsDir = TString::Format("%s/",_folder_name.data());
+  TString filename(wsDir+fileBaseName+".root");
+
+  TFile * tFile = new TFile(filename.Data(), "RECREATE");
+  tFile->cd();
+  wBias->Write();
+  tFile->Close();
+
+
+
+}
+
+void bbgg2DFitter::BkgMultiModelFitAllOrders(std::string fileBaseName, std::string jsonForEnvelop)
+{
+  //******************************************//
+  // Fit background with model pdfs
+  //******************************************//
+  // retrieve pdfs and datasets from workspace to fit with pdf models
+   std::vector<RooDataSet*> data(_NCAT,nullptr);
+  //std::vector<RooBernstein*> mggBkg(_NCAT,nullptr);// the polinomial of 4* order
+  //std::vector<RooBernstein*> mjjBkg(_NCAT,nullptr);// the polinomial of 4* order   
+
+
+   std::vector<string> function;
+//   std::vector<int> func_ord;
+  //std::vector<string> label;
+  RooWorkspace *wBias = new RooWorkspace("w_bias","w_bias");
+   
+  RooRealVar* mgg = _w->var("mgg");
+  RooRealVar* mjj = _w->var("mjj");
+  mgg->setRange("BkgFitRange",_minMggMassFit,_maxMggMassFit);
+  mjj->setRange("BkgFitRange",_minMjjMassFit,_maxMjjMassFit);
+   RooArgSet *obsset = new RooArgSet();
+   obsset->add(*mgg);
+   obsset->add(*mjj);
+   //mgg->setBins(_BinsMgg);
+   //mjj->setBins(_BinsMjj);
+   RooFitResult* fitresults = new RooFitResult();
+  PdfModelBuilder pdfsModel;
+  PdfModelBuilder pdfsModel_1;
+  pdfsModel.setObsVar(mgg);
+  pdfsModel_1.setObsVar(mjj);
+
+   RooAbsPdf* mggBkgTmp = nullptr;
+   RooAbsPdf* mjjBkgTmp = nullptr;
+   RooProdPdf* BkgProdPdf = nullptr;
+   RooExtendPdf* BkgExtPdf = nullptr;   
+   
+  /// Add function here
+  function.push_back("Bernstein");
+  function.push_back("Exponential");
+  function.push_back("PowerLaw");
+  // add label for pdf according to function
+  int NumOfFunc = function.size();
+   const char *label[NumOfFunc] = {"Ber", "Exp", "Pow"};
+   int func_ordmgg[_NCAT][NumOfFunc];
+   int func_ordmjj[_NCAT][NumOfFunc];
+   bool allorders[_NCAT];
+   for(int i=0;i<_NCAT;i++) allorders[i]=false;
+   ifstream  jFile(jsonForEnvelop.c_str());
+   std::vector<TString> EnvFunc[_NCAT];
+
+
+   if(!jFile.good()){
+      cout<<"[WARNING]: Can't open envelope json file "<<jsonForEnvelop.c_str()<<endl;
+      for(int c=0;c<_NCAT;c++){
+	 for(int i=0;i<NumOfFunc;i++){
+	    func_ordmgg[c][i] = 3;
+	    func_ordmjj[c][i] = 3;
+	    allorders[c] = true;
+	 }
+      }	 
+   }
+   else{      
+      int cat; char funcs[500]; char line[500];
+      jFile.getline(line,500);
+      for(int c=0;c<_NCAT;c++){
+	 jFile.getline(line,500);
+	 cat=-1; strcpy(funcs, "");
+	 sscanf(line,"cat%d: %d %d %d %d %d %d %s",&cat,&(func_ordmgg[c][0]),&(func_ordmgg[c][1]),&(func_ordmgg[c][2]),&(func_ordmjj[c][0]),&(func_ordmjj[c][1]),&(func_ordmjj[c][2]),funcs);
+
+	 TString st_funcs(funcs);
+	 TObjArray *tx = st_funcs.Tokenize(",");
+	 if(tx->GetEntries()>0){
+	    for (Int_t i = 0; i < tx->GetEntries(); i++) EnvFunc[cat].push_back(  ((TObjString *)(tx->At(i)))->String() );
+	 }
+	 else
+	   allorders[c] = true;
+	 delete tx;
+
+	 //	 printf("cat %d:\n ",cat);
+	 // printf("%d %d %d %d %d %d\n",func_ordmgg[c][0],func_ordmgg[c][1],func_ordmgg[c][2],func_ordmjj[c][0],func_ordmjj[c][1],func_ordmjj[c][2]);
+	 //cout<<func_ordmgg[c][0]<<"  "<<func_ordmgg[c][1]<<"  "<<func_ordmgg[c][2]<<"  "<<func_ordmjj[c][0]<<"  "<<func_ordmjj[c][1]<<"  "<<func_ordmjj[c][2]<<"  "<<endl;
+	 for(unsigned k=0; k<EnvFunc[c].size(); k++){
+	    cout<<EnvFunc[c][k]<<"  ";
+	    //printf("%s  \n",EnvFunc[c][k].Data());
+	    if(k>4) break;
+	 }
+	 cout<<endl;
+
+      }
+      
+   }
+   if (_verbLvl>1) std::cout << "[BkgMultiPDFModelFit] Starting cat loop " << std::endl;
+  //for (unsigned int i = 0; i < function.size() ; i++){
+
+   for (int c = 0; c < _NCAT; ++c) { // to each category
+      data[c] = (RooDataSet*) _w->data(TString::Format("Data_cat%d",c));
+      wBias->import(*data[c]);
+
+      RooRealVar norm(TString::Format("roomultipdf_cat%d_norm",c),"Number of background events",0,10000);
+      RooArgList mypdfs;
+      
+      for(int mggfunc=0;mggfunc<NumOfFunc;mggfunc++){
+	 for(int mggfunc_ord=1; mggfunc_ord<=func_ordmgg[c][mggfunc]; mggfunc_ord++){
+
+	    if(mggfunc>0 && mggfunc_ord%2==0) continue; // only odd orders are allowed for Exp and Pow
+
+	    for(int mjjfunc=0;mjjfunc<NumOfFunc;mjjfunc++){
+	       for(int mjjfunc_ord=1; mjjfunc_ord<=func_ordmjj[c][mjjfunc]; mjjfunc_ord++){		  
+
+		  if(_fitStrategy == 1 && !(mjjfunc==0 && mjjfunc_ord==1)) continue;
+		  if(mjjfunc>0 && mjjfunc_ord%2==0)  continue;
+
+		  bool stoploop=true;
+		  if(EnvFunc[c].size()>0){		       
+		     for(unsigned k=0; k<EnvFunc[c].size(); k++){
+			TString s1,s2;
+			if(_fitStrategy == 2){			     
+			   s1 = TString::Format("%s%d_%s%d",label[mggfunc],mggfunc_ord,label[mjjfunc],mjjfunc_ord);
+			   s2 = EnvFunc[c][k];
+			}
+			else if(_fitStrategy == 1){
+			   s1 = TString::Format("%s%d",label[mggfunc],mggfunc_ord);
+			   s2 = EnvFunc[c][k]; s2 = s2(0,s2.First("_"));
+			}
+			
+			   if( s1==s2 || allorders[c])
+			     stoploop=false;
+			
+		     }
+		  }
+		  else{
+		     stoploop=false;
+		  }		  
+		  
+		  if(stoploop) continue;
+		  
+		  //		  printf("%s%d_%s%d_cat%d\n",label[mggfunc],mggfunc_ord,label[mjjfunc],mjjfunc_ord,c);
+
+		  if(_fitStrategy == 2){		       
+		     mggBkgTmp = getPdf(pdfsModel,function[mggfunc],mggfunc_ord, TString::Format("bkg_mgg_for%s%d_cat%d",label[mjjfunc],mjjfunc_ord,c));
+		     mjjBkgTmp = getPdf(pdfsModel_1,function[mjjfunc],mjjfunc_ord, TString::Format("bkg_mjj_for%s%d_cat%d",label[mggfunc],mggfunc_ord,c));
+		     BkgProdPdf = new RooProdPdf(TString::Format("pdf_%s%d_%s%d_cat%d",label[mggfunc],mggfunc_ord,label[mjjfunc],mjjfunc_ord,c), "", RooArgList(*mggBkgTmp, *mjjBkgTmp));
+		     BkgExtPdf = new RooExtendPdf(TString::Format("ext_pdf_%s%d_%s%d_cat%d",label[mggfunc],mggfunc_ord,label[mjjfunc],mjjfunc_ord,c),"", *BkgProdPdf,norm);
+		  }
+		  else if(_fitStrategy == 1){
+		     mggBkgTmp = getPdf(pdfsModel,function[mggfunc],mggfunc_ord, TString::Format("bkg_mgg_cat%d",c));		     
+		     BkgExtPdf = new RooExtendPdf(TString::Format("ext_pdf_%s%d_cat%d",label[mggfunc],mggfunc_ord,c),"", *mggBkgTmp,norm);
+		  }
+		  
+		  RooArgSet *params_test = BkgExtPdf->getParameters(obsset);
+		  int ntries = 0;
+		  int stat = 1;		  
+		  while (stat!=0 && ntries < 100){
+
+		     fitresults = BkgExtPdf->fitTo(*data[c], Strategy(2),Minos(kFALSE), Range("BkgFitRange"), Save(kTRUE),PrintLevel(-1));		    
+		     stat = fitresults->status();
+		     if (stat!=0) params_test->assignValueOnly(fitresults->randomizePars());
+		     ntries++;
+		  }
+		  
+		  if(stat!=0){		     
+		     printf("Warning::Fit of background function pdf_%s%d_%s%d_cat%d is failed\n",label[mggfunc],mggfunc_ord,label[mjjfunc],mjjfunc_ord,c);
+		  }		  
+		  if(_fitStrategy == 2)
+		    mypdfs.add(*BkgProdPdf);
+		  else if(_fitStrategy == 1)
+		    mypdfs.add(*mggBkgTmp);
+	       }	       
+	    }
+	 }	 
+      }
+      
+      if(mypdfs.getSize() == 0){
+	 printf("[ERROR] BkgMultiModelFitAllOrders: There is no function in RooMultiPdf for cat %d\n",c);
+	 printf("Production of workspace with RooMultiPdf was aborted\n");
+	 return;
+      }
+
+    RooCategory category(TString::Format("pdf_index_cat%d",c),"Index of Pdf which is active");
+    RooMultiPdf multipdf(TString::Format("roomultipdf_cat%d",c),"All Pdfs",category,mypdfs);
+    wBias->import(category);
+    wBias->import(norm);
+    wBias->import(multipdf);
+     
+   }
+
+   if (_verbLvl>1) std::cout << "[BkgMultiPDFModelFit] Finish cat loop " << std::endl;
+   wBias->Print("v");
 
   TString wsDir = TString::Format("%s/",_folder_name.data());
   TString filename(wsDir+fileBaseName+".root");
