@@ -129,6 +129,59 @@ def DataCardMaker_wHiggs(Folder, nCats, signalExp, observed, higgsExp, log):
   os.system("sed -i 's|"+strReplace+"||g' "+combCard)
   # print strReplace
 
+def DataCardMaker_wHiggs_bias(Folder, nCats, signalExp, observed, higgsExp, log):
+  # Need to loop over categories here
+
+  for n in range(nCats):
+    # print "Making card for cat", n
+    inputDatacardName = os.getenv("CMSSW_BASE")+'/src/HiggsAnalysis/bbggLimits2018/templates/NonResDatacardTemplate_wHiggs_bias_cat'+str(n)+'.txt'
+
+    outToWrite=''
+    with open(inputDatacardName, 'r') as cardTemp:
+      outToWrite = cardTemp.read()
+
+      outToWrite = outToWrite.replace("INPUTBKGMULTLOC", str(Folder + '/ws_hhbbgg.data_bkg_multipdf.root'))
+      outToWrite = outToWrite.replace("INPUTBKGLOC", str(Folder + '/ws_hhbbgg.data_bkg.root'))
+      outToWrite = outToWrite.replace("INPUTSIGLOC", str(Folder + '/ws_hhbbgg.HH.sig.mH125_13TeV.root'))
+
+      ##observed
+      outToWrite = outToWrite.replace("OBS_CAT"+str(n), '%.1f' % observed[n])
+      #print outToWrite
+      ##expected signal
+      outToWrite = outToWrite.replace("SIG_CAT"+str(n), '%.5f' % signalExp[n])
+      ## higgs
+      # print higgsExp
+      for hty in higgsExp:
+        upper_hty = hty.upper()
+        #location
+        outToWrite = outToWrite.replace("INPUT"+upper_hty+"LOC", Folder + '/ws_hhbbgg.'+hty+'.root')
+        #exp
+        outToWrite = outToWrite.replace(upper_hty+"_CAT"+str(n), '%.5f'%float(higgsExp[hty][n]))
+
+      with open(Folder+'/hhbbgg_13TeV_DataCard_envelope_cat'+str(n)+'.txt', 'w') as outputDatacard:
+        outputDatacard.write(outToWrite)
+        
+  # print "Combining the cards"
+  combCard = Folder+'/hhbbgg_13TeV_DataCard_envelope.txt'
+
+  combo="combineCards.py "
+
+  for n in range(nCats):
+    combo = combo + "cat"+str(n)+"="+Folder+"/hhbbgg_13TeV_DataCard_envelope_cat"+str(n)+".txt "
+
+  combo = combo + " > " + combCard
+
+#  log.info("========= ", combo)
+  
+  os.system(combo)
+
+  # Now we actually need to fix the combined card
+  strReplace = ' '+Folder+'/'
+#  strReplace = Folder+'/'+os.getenv("CMSSW_BASE")+'/src/HiggsAnalysis/bbggLimits2018/'
+  os.system("sed -i 's|"+strReplace+"||g' "+combCard)
+  # print strReplace
+
+
 def DataCardMaker_bias(Folder, nCats, signalExp, observed, log):
   # Need to loop over categories here
 
