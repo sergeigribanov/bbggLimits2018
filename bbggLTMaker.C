@@ -19,8 +19,19 @@ const Float_t boundary_MVA_tagger2017_HM[3] = {0.226, 0.6195, 1.0};
 //const Float_t boundary_MX_2017[5]  = {250, 341.4, 426.1, 544, 35000};
 
 //// upating the categrisation number according to this part of 2017 analysis code https://github.com/michelif/flashgg/blob/hh_tag_94X_20180601/Taggers/python/flashggDoubleHTag_cfi.py#L31-L34
-const Float_t boundary_MVA_2017[4]   = {0.29, 0.441, 0.724, 1.0}; // category boundaries for MVA
-const Float_t boundary_MX_2017[5]   = {250., 354., 478., 560., 35000};// .. and MX
+//eth categorisation - std!
+//const Float_t boundary_MVA_2017[4]   = {0.29, 0.441, 0.724, 1.0}; // category boundaries for MVA ###boundaries before 29/10/2019
+//const Float_t boundary_MX_2017[5]   = {250., 354., 478., 560., 35000};// .. and MX
+//eth categorisation - new boundaries for extra variables
+//const Float_t boundary_MVA_2017[4]   = {0.283, 0.504, 0.775, 1.0}; 
+//const Float_t boundary_MX_2017[5]   = {250., 370., 481., 521., 35000};
+//eth categorisation for Mjj 
+//const Float_t boundary_MVA_2017[4]   = {0.23, 0.455, 0.709, 1.0}; // category boundaries for MVA
+//const Float_t boundary_MX_2017[5]   = {250., 336., 411., 556., 35000};// .. and MX
+//New categorisation - new boundaries for extra variables
+const Float_t boundary_MVA_2017[4]   = {0.243, 0.413, 0.644, 1.0}; 
+const Float_t boundary_MX_2017[5]   = {250., 355., 486., 515., 35000};
+
 
 //const Float_t MjjCuts_Low[] = {97.,95.,95.,95.,99.,100.,95.,95.,95.,95.,95.,108.};
 

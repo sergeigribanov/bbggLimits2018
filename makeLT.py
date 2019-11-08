@@ -13,7 +13,8 @@ parser.add_argument('-x', nargs='+', choices=['res', 'nonres'], required=True, d
                     help = "Choose which samlples to create the trees from.")
 parser.add_argument("-v", "--verbosity",  dest="verb", action="store_true", default=False,
                     help="Print out more stuff")
-parser.add_argument("-l", "--lumi", dest="lumi", default=41.5,
+#parser.add_argument("-l", "--lumi", dest="lumi", default=41.5,  #2017 year
+parser.add_argument("-l", "--lumi", dest="lumi", default=35.9,   #2016 year
                     help="Integrated lumi to scale signal")
 parser.add_argument('-o', '--outDir', dest="outDir", type=str, default=None,
                     required=True, help="Output directory (will be created).")
@@ -40,7 +41,8 @@ if __name__ == "__main__":
     for n in nodes:
       if n[0]!="SM": continue # Only do SM node for now
 
-      fChain = TChain("tagsDumper/trees/bbggtrees")
+#      fChain = TChain("tagsDumper/trees/bbggtrees")
+      fChain = TChain("bbggSelectionTree")
       fname = opt.indir+"/output_GluGluToHHTo2B2G_node_"+str(n[0])+"_13TeV-madgraph.root"
       fChain.Add(fname)
       ttHkiller = fChain.GetListOfBranches().FindObject("ttHScore");
@@ -57,7 +59,8 @@ if __name__ == "__main__":
     print "Doing Single Higgs samples"
     for n in SMHiggsNodes:
       if opt.verb: print n
-      fChain = TChain("tagsDumper/trees/bbggtrees")
+#      fChain = TChain("tagsDumper/trees/bbggtrees")
+      fChain = TChain("bbggSelectionTree")
       fname = opt.indir+n[0]
       fChain.Add(fname)
       outFileName = opt.outDir+"/LT_"+n[0]
@@ -68,9 +71,11 @@ if __name__ == "__main__":
 
     print "Done with Single Higgs"
 
-    fChain = TChain("tagsDumper/trees/bbggtrees")
-    # fname = opt.indir+'/DoubleEG.root'
-    fname = opt.indir+'/FakeData/DoubleEG.root'
+#    fChain = TChain("tagsDumper/trees/bbggtrees")
+    fChain = TChain("bbggSelectionTree")
+    ## fname = opt.indir+'/DoubleEG.root'
+#    fname = opt.indir+'/FakeData/DoubleEG.root'
+    fname = opt.indir+'/DoubleEG.root'
     fChain.Add(fname)
     outFileName = opt.outDir+"/LT_DoubleEG.root"
     

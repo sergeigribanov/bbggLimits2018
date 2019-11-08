@@ -78,6 +78,7 @@ public :
    Float_t         sigmaMJets;
    Float_t         PhoJetMinDr;
    Float_t         HHbbggMVA;
+   Float_t         MVAOutputTransformed;
    Float_t         MX;
    Float_t         Mjj;
    Float_t         dijet_pt;
@@ -147,6 +148,7 @@ public :
    TBranch        *b_isSignal;   //!
 
    TBranch        *b_HHbbggMVA;   //!
+   TBranch        *b_MVAOutputTransformed;   //!
    TBranch        *b_HHTagger_LM;   //!
    TBranch        *b_HHTagger_HM;   //!
 
@@ -216,7 +218,8 @@ void bbggLTMaker::Init(TTree *tree)
    //fChain->SetBranchAddress("subleadingJet_DeepCSV", &subleadingJet_DeepCSV, &b_subleadingJet_bDis);
    fChain->SetBranchAddress("MX", &MX, &b_MX);
    fChain->SetBranchAddress("event", &event, &b_event);
-   fChain->SetBranchAddress("HHbbggMVA", &HHbbggMVA, &b_HHbbggMVA);
+   //fChain->SetBranchAddress("HHbbggMVA", &HHbbggMVA, &b_HHbbggMVA);
+   fChain->SetBranchAddress("MVAOutputTransformed", &HHbbggMVA, &b_HHbbggMVA);
    fChain->SetBranchAddress("run", &run, &b_run);
    fChain->SetBranchAddress("Mjj", &Mjj, &b_Mjj);
    fChain->SetBranchAddress("CMS_hgg_mass", &CMS_hgg_mass, &b_Mgg);
