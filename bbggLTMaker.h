@@ -48,7 +48,7 @@ public :
    TH3F* striggerHist;
 
    Int_t _phoVariation, _trigVariation;
-
+   Float_t F_2016,F_2017,F_2018,F_year;
 
    
    //Variables from the input tree:
@@ -56,6 +56,7 @@ public :
    typedef ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<double> > LorentzVector;
    Int_t           candidate_id;
    Float_t         weight;
+   Float_t         reweight;
    Int_t           isSignal;
    Double_t        genTotalWeight;
    Float_t         ttHScore;
@@ -166,6 +167,7 @@ public :
    TBranch        *b_Mgg;
    TBranch        *b_mbbgg;
    TBranch        *b_evWeight;
+   TBranch        *b_reWeight;
 
    bbggLTMaker(TTree * /*tree*/ =0) : fChain(0) { }
    virtual ~bbggLTMaker() { }
@@ -222,9 +224,12 @@ void bbggLTMaker::Init(TTree *tree)
    fChain->SetBranchAddress("MVAOutputTransformed", &HHbbggMVA, &b_HHbbggMVA);
    fChain->SetBranchAddress("run", &run, &b_run);
    fChain->SetBranchAddress("Mjj", &Mjj, &b_Mjj);
+   //fChain->SetBranchAddress("MjjReg_mjj", &Mjj, &b_Mjj);
    fChain->SetBranchAddress("CMS_hgg_mass", &CMS_hgg_mass, &b_Mgg);
    fChain->SetBranchAddress("diHiggs_mass", &diHiggs_mass, &b_mbbgg);
    fChain->SetBranchAddress("weight", &weight, &b_evWeight);
+   fChain->SetBranchAddress("benchmark_reweight_SM", &reweight, &b_reWeight);
+   //fChain->SetBranchAddress("benchmark_reweight_2017fake", &reweight, &b_reWeight);
    fChain->SetBranchAddress("ttHScore", &ttHScore, &b_ttHTagger);
 }
 

@@ -14,31 +14,18 @@ const Float_t boundary_MVA_tagger2016_HM[3] = {0.600, 0.970, 1.0};
 const Float_t boundary_MVA_tagger2017_LM[3] = {0.115, 0.597, 1.0};
 const Float_t boundary_MVA_tagger2017_HM[3] = {0.226, 0.6195, 1.0};
 
+// using 2019 optimized categorization (_which==4):
+//Flashgg, categorisation Tatyana - dev_legacy - 2016-17-18 - reweight - for 2D!!! 
+const Float_t boundary_MVA_2019[4]   = {0.249, 0.450, 0.729, 1.0};
+const Float_t boundary_MX_2019[15]   = {250., 383., 461., 514., 35000., 250., 343., 437., 563., 35000., 250., 342., 470., 553., 35000};
+//
 // Cuts for 2017 tagger, using 2017 optimized categorization (_which==2):
-//const Float_t boundary_MVA_tagger2017[4] = {0.271, 0.543, 0.740, 1.05};
-//const Float_t boundary_MX_2017[5]  = {250, 341.4, 426.1, 544, 35000};
+const Float_t boundary_MVA_2017[4]   = {0.248, 0.450, 0.728, 1.0};
+const Float_t boundary_MX_2017[5]   = {250., 376., 521., 603., 35000};
 
-//// upating the categrisation number according to this part of 2017 analysis code https://github.com/michelif/flashgg/blob/hh_tag_94X_20180601/Taggers/python/flashggDoubleHTag_cfi.py#L31-L34
-//eth categorisation - std!
-//const Float_t boundary_MVA_2017[4]   = {0.29, 0.441, 0.724, 1.0}; // category boundaries for MVA ###boundaries before 29/10/2019
-//const Float_t boundary_MX_2017[5]   = {250., 354., 478., 560., 35000};// .. and MX
-//eth categorisation - new boundaries for extra variables
-//const Float_t boundary_MVA_2017[4]   = {0.283, 0.504, 0.775, 1.0}; 
-//const Float_t boundary_MX_2017[5]   = {250., 370., 481., 521., 35000};
-//eth categorisation for Mjj 
-//const Float_t boundary_MVA_2017[4]   = {0.23, 0.455, 0.709, 1.0}; // category boundaries for MVA
-//const Float_t boundary_MX_2017[5]   = {250., 336., 411., 556., 35000};// .. and MX
-//New categorisation - new boundaries for extra variables
-const Float_t boundary_MVA_2017[4]   = {0.243, 0.413, 0.644, 1.0}; 
-const Float_t boundary_MX_2017[5]   = {250., 355., 486., 515., 35000};
+const Float_t MjjCuts_Low[] = {97.,95.,95.,95.,99.,100.,95.,95.,95.,95.,95.,108.};
+const Float_t MjjCuts_High[] = {146.,153.,150.,155.,150.,147.,154.,151.,155.,155.,155.,148.};
 
-
-//const Float_t MjjCuts_Low[] = {97.,95.,95.,95.,99.,100.,95.,95.,95.,95.,95.,108.};
-
-//const Float_t MjjCuts_High[] = {146.,153.,150.,155.,150.,147.,154.,151.,155.,155.,155.,148.};
-
-const Float_t MjjCuts_Low[] = {98.0,95.0,97.0,96.0,95.0,95.0,95.0,95.0,95.0,95.0,95.0,95.0};
-const Float_t MjjCuts_High[] = {150.0,150.0,143.0,150.0,150.0,150.0,150.0,145.0,155.0,142.0,146.0,152.0};
 
 void bbggLTMaker::Begin(TTree * /*tree*/)
 {
@@ -100,7 +87,18 @@ Bool_t bbggLTMaker::Process(Long64_t entry)
   o_run = run;
   o_evt = event;
 
+  //For SM 
+  F_2016 = 57.32398753;
+  F_2017 = 7.666672541;
+  F_2018 = 7.719390612;
+
   o_weight = weight*_normalization;
+  
+  if (_normalization == 35.9) F_year=F_2016;
+  if (_normalization == 41.5) F_year=F_2017;
+  if (_normalization == 59.4) F_year=F_2018;
+  if( _normalization!=1 && _genDiPhotonFilter==0) o_weight=o_weight*reweight/F_year;
+  
   //o_weight = 1;
   o_mgg = CMS_hgg_mass;
   o_mjj = Mjj;
@@ -266,6 +264,72 @@ Bool_t bbggLTMaker::Process(Long64_t entry)
       return kTRUE;
     }
   }
+
+  else if (_whichCategorization==4){    
+    if (o_MX > boundary_MX_2019[0] && o_MX <= boundary_MX_2019[14]){
+    if (HHbbggMVA > boundary_MVA_2019[0] && HHbbggMVA <= boundary_MVA_2019[1]){
+      if (o_MX > boundary_MX_2019[0] && o_MX <= boundary_MX_2019[1]){
+        o_catID = 11;
+      }
+      else if (o_MX > boundary_MX_2019[1] && o_MX <= boundary_MX_2019[2]){
+        o_catID = 10;
+      }
+      else if (o_MX > boundary_MX_2019[2] && o_MX <= boundary_MX_2019[3]){
+        o_catID = 9;
+      }
+      else if (o_MX > boundary_MX_2019[3] && o_MX <= boundary_MX_2019[4]){
+        o_catID = 8;
+      }
+      else {
+        return kTRUE;
+      }
+    }
+
+    else if (HHbbggMVA > boundary_MVA_2019[1] && HHbbggMVA <= boundary_MVA_2019[2]){
+      if (o_MX > boundary_MX_2019[5] && o_MX <= boundary_MX_2019[6]){
+        o_catID = 7;
+      }
+      else if (o_MX > boundary_MX_2019[6] && o_MX <= boundary_MX_2019[7]){
+        o_catID = 6;
+      }
+      else if (o_MX > boundary_MX_2019[7] && o_MX <= boundary_MX_2019[8]){
+        o_catID = 5;
+      }
+      else if (o_MX > boundary_MX_2019[8] && o_MX <= boundary_MX_2019[9]){
+        o_catID = 4;
+      }
+      else {
+        return kTRUE;
+      }
+    }
+
+    else if (HHbbggMVA > boundary_MVA_2019[2] && HHbbggMVA <= boundary_MVA_2019[3]){
+      if (o_MX > boundary_MX_2019[10] && o_MX <= boundary_MX_2019[11]){
+        o_catID = 3;
+      }
+      else if (o_MX > boundary_MX_2019[11] && o_MX <= boundary_MX_2019[12]){
+        o_catID = 2;
+      }
+      else if (o_MX > boundary_MX_2019[12] && o_MX <= boundary_MX_2019[13]){
+        o_catID = 1;
+      }
+      else if (o_MX > boundary_MX_2019[13] && o_MX <= boundary_MX_2019[14]){
+        o_catID = 0;
+      }
+      else {
+        return kTRUE;
+      }
+    }
+    else  { 
+      return kTRUE;
+    }
+    }
+    else  {
+      std::cout<<"MX is out of bounds!  MX="<<o_MX<<"\t"<<"MVA="<<HHbbggMVA<<std::endl;
+      return kTRUE;
+    }
+  }
+
   else {
     std::cout<<"This categorization is not supported: "<<_whichCategorization<<std::endl;
     return kTRUE;

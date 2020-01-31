@@ -13,13 +13,15 @@ parser.add_argument('-x', nargs='+', choices=['res', 'nonres'], required=True, d
                     help = "Choose which samlples to create the trees from.")
 parser.add_argument("-v", "--verbosity",  dest="verb", action="store_true", default=False,
                     help="Print out more stuff")
+parser.add_argument("-l", "--lumi", dest="lumi", type=float, default=0.,
+#parser.add_argument("-l", "--lumi", dest="lumi", default=59.4,  #2018 year
 #parser.add_argument("-l", "--lumi", dest="lumi", default=41.5,  #2017 year
-parser.add_argument("-l", "--lumi", dest="lumi", default=35.9,   #2016 year
+#parser.add_argument("-l", "--lumi", dest="lumi", default=35.9,   #2016 year
                     help="Integrated lumi to scale signal")
 parser.add_argument('-o', '--outDir', dest="outDir", type=str, default=None,
                     required=True, help="Output directory (will be created).")
 parser.add_argument('-c', '--categ', dest="categ", type=int, default=0,
-                    choices = [0,1,2,3], help="Which categorization to use. 0 - 2016 tagger; 1 - 2017 ETH tagger, using 2016 style categorization; 2 - 2017 ETH tagger, with optimized categorization; 3 - 2017 tagger with mjj cuts.")
+                    choices = [0,1,2,3,4], help="Which categorization to use. 0 - 2016 tagger; 1 - 2017 ETH tagger, using 2016 style categorization; 2 - 2017 ETH tagger, with optimized categorization; 3 - 2017 tagger with mjj cuts; 4 - 2019 tagger with Mjj in train.")
 
 opt = parser.parse_args()
 
@@ -39,18 +41,20 @@ if __name__ == "__main__":
 
     print "Doing signal"
     for n in nodes:
-      if n[0]!="SM": continue # Only do SM node for now
+      if n[0]!="SM": continue # Only do SM node for now             
 
 #      fChain = TChain("tagsDumper/trees/bbggtrees")
       fChain = TChain("bbggSelectionTree")
-      fname = opt.indir+"/output_GluGluToHHTo2B2G_node_"+str(n[0])+"_13TeV-madgraph.root"
+      #fname = opt.indir+"/output_GluGluToHHTo2B2G_node_"+str(n[0])+"_13TeV-madgraph.root"  
+      fname = opt.indir+"/output_GluGluToHHTo2B2G_allnodes_no_unit_norm.root"
       fChain.Add(fname)
       ttHkiller = fChain.GetListOfBranches().FindObject("ttHScore");
       if ttHkiller: _ttHTagger=1
       rootName = fname[fname.rfind('/')+1:]
       if opt.verb: print rootName
 
-      outFileName = opt.outDir+"/LT_"+rootName
+      #outFileName = opt.outDir+"/LT_"+rootName
+      outFileName = opt.outDir+"/LT_output_GluGluToHHTo2B2G_node_SM_13TeV-madgraph.root"
 
       fChain.Process("bbggLTMaker.C+", "%.10f %s %i %i %i" % ( opt.lumi, outFileName, 0, opt.categ, _ttHTagger) )
 
@@ -73,9 +77,7 @@ if __name__ == "__main__":
 
 #    fChain = TChain("tagsDumper/trees/bbggtrees")
     fChain = TChain("bbggSelectionTree")
-    ## fname = opt.indir+'/DoubleEG.root'
-#    fname = opt.indir+'/FakeData/DoubleEG.root'
-    fname = opt.indir+'/DoubleEG.root'
+    fname = opt.indir+'/Data.root'
     fChain.Add(fname)
     outFileName = opt.outDir+"/LT_DoubleEG.root"
     
