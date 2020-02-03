@@ -16,15 +16,23 @@ scramv1 b clean; scramv1 b
 Get this repository code:
 ```
 cd ../
-git clone git@github.com:panwarlsweet/bbggLimits2018.git -b ForPAS
+git clone git@github.com:ivovtin/bbggLimits2018.git -b run2_analysis 
 cd bbggLimits2018
 scramv1 b
 ```
+## 1. You should use samples without categorisation obtained from the default branch of flashgg ([link](https://github.com/cms-analysis/flashgg)) 
 
-## Limit trees
+## 2. Limit trees
 
-* Run the limit tree maker like so:
+* Run the limit tree maker:
 
+```
+. run1.sh
+```
+
+### Notes on limit trees
+
+Example for run:
 ```
 ./makeLT.py /eos/cms/store/group/phys_higgs/resonant_HH/RunII/FlatTrees/2016/2018_05_04_HHTaggerETH/ -x nonres -o LT_OutDir [-c Y]
 ```
@@ -42,8 +50,6 @@ The recommended option is Y = 2:
  Y = 3: 2017 ETH tagger, with optimized categorization and mjj cuts (12 categories);
 ```
 
-
-### Notes on limit trees
 * The scale factors for b-tagging are not included in this code. This is because a) the
   method we used in 2016 is outdated; and b) it requires compilation together with some
   CMSSW packages which is not trivial in TSelector code. For the reference,
@@ -53,7 +59,39 @@ The recommended option is Y = 2:
   [here](https://github.com/ResonantHbbHgg/bbggLimits2018/blob/f031e57c6e938be983b006fc1f81a01ec53ea61a/bbggLTMaker.C#L268)
   in _bbggLTMaker_ code, following the structure for already implemented categorizations.
 
-## Fits and limits
+## 3. Fits and limits
+
+* 1. The prepare file ([Envelopejson](https://github.com/ivovtin/bbggLimits2018/blob/run2_analysis/jsonsForEnvelope/Env_json_2D_ttHon0.26_31012020.dat)) with single orders (for *mgg* and *mjj* proections) and without indicate best functions for each category. The path to file indicate here ([link](https://github.com/ivovtin/bbggLimits2018/blob/227d17cf267e3520ee8f9830a2849ce370b34d54/runLimit.py#L300))
+
+* 2. Create workspace on the produced LTs:
+```
+. run2.sh
+```
+* 3. Run the FTest on the workspace ([link](https://github.com/ivovtin/Envelop#ftest))
+
+* 4. Write the orders in the file ([Envelopejson](https://github.com/ivovtin/bbggLimits2018/blob/run2_analysis/jsonsForEnvelope/Env_json_2D_ttHon0.26_31012020.dat)) 
+
+* 5. Create new workspace with received orders from FTEST:
+```
+. run2.sh
+```
+
+* 6. Search best functions for Envelope ([link](https://github.com/ivovtin/Envelop#ftest))
+
+* 7. Write the best functions in the file ([Envelopejson](https://github.com/ivovtin/bbggLimits2018/blob/run2_analysis/jsonsForEnvelope/Env_json_2D_ttHon0.26_31012020.dat)) in line after orders
+
+* 8. Create new workspace with received functions:
+```
+. run2.sh
+```
+
+* 9. Extraction limit: 
+```
+. run3.sh
+```
+
+### Notes on datacards and limits
+
 * Run the fits and limits on the produced LTs:
 
 ```
@@ -74,9 +112,6 @@ The config file `conf_default.json` can be edited to provide needed parameters. 
 
 The results of the limit will be in `LIMS_OutDir/Node_SM/result_1.log`. In case of problems,
 the logfile _mainLog_data-time.log[.bbgg2D]_ can be useful
-
-
-### Notes on datacards and limits
 
 * Systematic uncertainties are not real (especially the ones for b-tagging and JEC) for
   the case of 2017 categorization (the older numbers are used). Once proper systematics
