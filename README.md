@@ -1,6 +1,6 @@
 # Instuctions how to run 
 
-* Get latest combine tools ([link](https://cms-hcomb.gitbooks.io/combine/content/part1/#for-end-users-that-dont-need-to-commit-or-do-any-development)):
+* Get latest combine tools:
 
 ```
 export SCRAM_ARCH=slc6_amd64_gcc530
