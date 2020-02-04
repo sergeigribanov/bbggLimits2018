@@ -1,4 +1,4 @@
-# Instuctions how to run 
+# How to run the code for limits extraction
 
 * Get combine tools:
 
@@ -13,19 +13,16 @@ git fetch origin
 git checkout v7.0.9
 scramv1 b clean; scramv1 b
 ```
-Get this repository code:
+Get a stable version of the code:
 ```
 cd ../
 git clone git@github.com:ivovtin/bbggLimits2018.git -b run2_analysis 
 cd bbggLimits2018
 scramv1 b
 ```
-## 1. You should use samples without categorisation obtained from the default branch of flashgg ([link](https://github.com/cms-analysis/flashgg)) 
+## 1. NOTE: Use samples obtained from the default branch of flashgg ([link](https://github.com/cms-analysis/flashgg)) WITHOUT categorization applied.
 
-## 2. Limit trees
-
-* Run the limit tree maker (makeLT.py):
-
+## 2. Making limit trees (LT)
 ```
 . run1.sh
 ```
@@ -45,50 +42,52 @@ The recommended option is Y = 2:
  Y = 3: HIG-19-018 tagger, with optimized categorization and mjj cuts (12 categories);
 ```
 
-## 3. Fits and limits
+## 3. Performing fit and extraction of limits
 
- 1. The prepare file ([Envelopejson](https://github.com/ivovtin/bbggLimits2018/blob/run2_analysis/jsonsForEnvelope/Env_json_2D_ttHon0.26_31012020_emplty.dat)) with single orders (for *mgg* and *mjj* proections) and without indicate best functions for each category. The path to file indicate here ([link](https://github.com/ivovtin/bbggLimits2018/blob/227d17cf267e3520ee8f9830a2849ce370b34d54/runLimit.py#L300))
+ 1. Prepare a template file of the following structure: ([Envelopejson](https://github.com/ivovtin/bbggLimits2018/blob/run2_analysis/jsonsForEnvelope/Env_json_2D_ttHon0.26_31012020_emplty.dat)) for *mgg* and *mjj* proections without indicating of the best functions for each category. Put a link to the created files here: [link](https://github.com/ivovtin/bbggLimits2018/blob/227d17cf267e3520ee8f9830a2849ce370b34d54/runLimit.py#L300)
 
- 2. Create workspace on the produced LTs:
+ 2. Create a workspace using the produced LTs:
 ```
 . run2.sh
 ```
 
-The config file `json/conf_default.json` can be edited to provide needed parameters. Some of them are:
+Edit the config file `json/conf_default.json`. Put the path to the LTs there:
 ```
- LTDIR: location of the input Limit Trees (expected to be in the local diractory, after running previous step)
- ncat: number of categories. This should much the number of categories produced in limit tries (currently, should be 4 or 12)
- fitStrategy: 2 - for 2D fit of (mgg, mjj); 1 - for 1D fit of mgg, in which case a cut is set to 100<mjj<150 somewhere in runLimit.py script.
+LTDIR: location of the input Limit Trees (expected to be in the local diractory, after running previous step)
+```
+To choose the number of categories and fit strategy edit the following parameters:
+```
+ncat: number of categories. This should much the number of categories produced in limit tries (currently, should be 4 or 12)
+fitStrategy: 2 - for 2D fit of (mgg, mjj); 1 - for 1D fit of mgg
 ```
 
-The results of the limit will be in `LIMS_OutDir/Node_SM/result_1.log`. In case of problems,
-the logfile _mainLog_data-time.log[.bbgg2D]_ can be useful
+The results of the limit will be put at `LIMS_OutDir/Node_SM/result_1.log`.
 
 
  3. Run the FTest on the workspace ([link](https://github.com/ivovtin/Envelop#ftest))
 
- 4. Write the orders in the file from step 1 how here ([Envelopejson](https://github.com/ivovtin/bbggLimits2018/blob/run2_analysis/jsonsForEnvelope/Env_json_2D_ttHon0.26_31012020.dat)) 
+ 4. Write the orders obtaing from the step 3 to the file from step 1. Example here: [Envelopejson](https://github.com/ivovtin/bbggLimits2018/blob/run2_analysis/jsonsForEnvelope/Env_json_2D_ttHon0.26_31012020.dat)
 
- 5. Create new workspace with received orders from FTEST:
+ 5. Create a new workspace with the received orders from FTest:
 ```
 . run2.sh
 ```
 
- 6. Search best functions for Envelope ([link](https://github.com/ivovtin/Envelop#ftest))
+ 6. Choose the best function for each category using the code below: [link](https://github.com/ivovtin/Envelop#ftest)
 
- 7. Write the best functions in the file from step 1 how here ([Envelopejson](https://github.com/ivovtin/bbggLimits2018/blob/run2_analysis/jsonsForEnvelope/Env_json_2D_ttHon0.26_31012020.dat)) in line after orders
+ 7. Write the best functions to the file from the step 1 like here: [Envelopejson](https://github.com/ivovtin/bbggLimits2018/blob/run2_analysis/jsonsForEnvelope/Env_json_2D_ttHon0.26_31012020.dat) for each category at the column after order numbers. Use comma for separation.
 
  8. Create new workspace with received functions:
 ```
 . run2.sh
 ```
 
- 9. Extraction limit: 
+ 9. Extract the limit: 
 ```
 . run3.sh
 ```
 
-The process may take a while to complete, especially when running with many categories (about 30 minuts for 2D method).  
+The process may take a while to complete, especially when running with many categories (about 30 minuts for 2D method and 12 categories).
 
 
 
