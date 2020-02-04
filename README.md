@@ -29,6 +29,7 @@ scramv1 b
 ```
 . run1.sh
 ```
+The goal of this code is to categorize events and make a new tree which *catID* variable, as well as *mgg* and *mjj*. 
 
 ### Notes on limit trees
 
@@ -40,8 +41,7 @@ Example for run:
 The core code that makes the trees is `bbggLTMaker.C`. It is based on
 [TSelector](https://root.cern.ch/developing-tselector) and does not depend on CMSSW, just
 the ROOT.  
-The goal of this code is to categorize events and make a new tree which *catID* variable,
-as well as *mgg* and *mjj*. Different type of categorizations can be done chosen by option `-c Y`
+Different type of categorizations can be done chosen by option `-c Y`
 The recommended option is Y = 2:  
 ```
  Y = 0: 2016 tagger with categorization used in 2016 analysis (4 categories)
@@ -61,31 +61,31 @@ The recommended option is Y = 2:
 
 ## 3. Fits and limits
 
-* 1. The prepare file ([Envelopejson](https://github.com/ivovtin/bbggLimits2018/blob/run2_analysis/jsonsForEnvelope/Env_json_2D_ttHon0.26_31012020.dat)) with single orders (for *mgg* and *mjj* proections) and without indicate best functions for each category. The path to file indicate here ([link](https://github.com/ivovtin/bbggLimits2018/blob/227d17cf267e3520ee8f9830a2849ce370b34d54/runLimit.py#L300))
+ 1. The prepare file ([Envelopejson](https://github.com/ivovtin/bbggLimits2018/blob/run2_analysis/jsonsForEnvelope/Env_json_2D_ttHon0.26_31012020.dat)) with single orders (for *mgg* and *mjj* proections) and without indicate best functions for each category. The path to file indicate here ([link](https://github.com/ivovtin/bbggLimits2018/blob/227d17cf267e3520ee8f9830a2849ce370b34d54/runLimit.py#L300))
 
-* 2. Create workspace on the produced LTs:
+ 2. Create workspace on the produced LTs:
 ```
 . run2.sh
 ```
-* 3. Run the FTest on the workspace ([link](https://github.com/ivovtin/Envelop#ftest))
+ 3. Run the FTest on the workspace ([link](https://github.com/ivovtin/Envelop#ftest))
 
-* 4. Write the orders in the file ([Envelopejson](https://github.com/ivovtin/bbggLimits2018/blob/run2_analysis/jsonsForEnvelope/Env_json_2D_ttHon0.26_31012020.dat)) 
+ 4. Write the orders in the file ([Envelopejson](https://github.com/ivovtin/bbggLimits2018/blob/run2_analysis/jsonsForEnvelope/Env_json_2D_ttHon0.26_31012020.dat)) 
 
-* 5. Create new workspace with received orders from FTEST:
-```
-. run2.sh
-```
-
-* 6. Search best functions for Envelope ([link](https://github.com/ivovtin/Envelop#ftest))
-
-* 7. Write the best functions in the file ([Envelopejson](https://github.com/ivovtin/bbggLimits2018/blob/run2_analysis/jsonsForEnvelope/Env_json_2D_ttHon0.26_31012020.dat)) in line after orders
-
-* 8. Create new workspace with received functions:
+ 5. Create new workspace with received orders from FTEST:
 ```
 . run2.sh
 ```
 
-* 9. Extraction limit: 
+ 6. Search best functions for Envelope ([link](https://github.com/ivovtin/Envelop#ftest))
+
+ 7. Write the best functions in the file ([Envelopejson](https://github.com/ivovtin/bbggLimits2018/blob/run2_analysis/jsonsForEnvelope/Env_json_2D_ttHon0.26_31012020.dat)) in line after orders
+
+ 8. Create new workspace with received functions:
+```
+. run2.sh
+```
+
+ 9. Extraction limit: 
 ```
 . run3.sh
 ```
