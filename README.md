@@ -1,6 +1,6 @@
 # Instuctions how to run 
 
-* Get latest combine tools:
+* Get combine tools:
 
 ```
 export SCRAM_ARCH=slc6_amd64_gcc530
