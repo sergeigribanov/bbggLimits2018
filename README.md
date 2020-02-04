@@ -61,7 +61,7 @@ The recommended option is Y = 2:
 
 ## 3. Fits and limits
 
- 1. The prepare file ([Envelopejson](https://github.com/ivovtin/bbggLimits2018/blob/run2_analysis/jsonsForEnvelope/Env_json_2D_ttHon0.26_31012020.dat)) with single orders (for *mgg* and *mjj* proections) and without indicate best functions for each category. The path to file indicate here ([link](https://github.com/ivovtin/bbggLimits2018/blob/227d17cf267e3520ee8f9830a2849ce370b34d54/runLimit.py#L300))
+ 1. The prepare file ([Envelopejson](https://github.com/ivovtin/bbggLimits2018/blob/run2_analysis/jsonsForEnvelope/Env_json_2D_ttHon0.26_31012020_emplty.dat)) with single orders (for *mgg* and *mjj* proections) and without indicate best functions for each category. The path to file indicate here ([link](https://github.com/ivovtin/bbggLimits2018/blob/227d17cf267e3520ee8f9830a2849ce370b34d54/runLimit.py#L300))
 
  2. Create workspace on the produced LTs:
 ```
@@ -81,7 +81,7 @@ the logfile _mainLog_data-time.log[.bbgg2D]_ can be useful
 
  3. Run the FTest on the workspace ([link](https://github.com/ivovtin/Envelop#ftest))
 
- 4. Write the orders in the file ([Envelopejson](https://github.com/ivovtin/bbggLimits2018/blob/run2_analysis/jsonsForEnvelope/Env_json_2D_ttHon0.26_31012020.dat)) 
+ 4. Write the orders in the file from step 1 how here ([Envelopejson](https://github.com/ivovtin/bbggLimits2018/blob/run2_analysis/jsonsForEnvelope/Env_json_2D_ttHon0.26_31012020.dat)) 
 
  5. Create new workspace with received orders from FTEST:
 ```
@@ -90,7 +90,7 @@ the logfile _mainLog_data-time.log[.bbgg2D]_ can be useful
 
  6. Search best functions for Envelope ([link](https://github.com/ivovtin/Envelop#ftest))
 
- 7. Write the best functions in the file ([Envelopejson](https://github.com/ivovtin/bbggLimits2018/blob/run2_analysis/jsonsForEnvelope/Env_json_2D_ttHon0.26_31012020.dat)) in line after orders
+ 7. Write the best functions in the file from step 1 how here ([Envelopejson](https://github.com/ivovtin/bbggLimits2018/blob/run2_analysis/jsonsForEnvelope/Env_json_2D_ttHon0.26_31012020.dat)) in line after orders
 
  8. Create new workspace with received functions:
 ```
@@ -102,7 +102,7 @@ the logfile _mainLog_data-time.log[.bbgg2D]_ can be useful
 . run3.sh
 ```
 
-The process may take a while to complete, especially when running with many categories.  
+The process may take a while to complete, especially when running with many categories (about 30 minuts for 2D method).  
 
 ### Notes on datacards and limits
 
