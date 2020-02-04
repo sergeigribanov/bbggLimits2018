@@ -1,4 +1,4 @@
-# How to
+# Instuctions how to run 
 
 * Get latest combine tools ([link](https://cms-hcomb.gitbooks.io/combine/content/part1/#for-end-users-that-dont-need-to-commit-or-do-any-development)):
 
@@ -24,7 +24,7 @@ scramv1 b
 
 ## 2. Limit trees
 
-* Run the limit tree maker:
+* Run the limit tree maker (makeLT.py):
 
 ```
 . run1.sh
@@ -67,6 +67,18 @@ The recommended option is Y = 2:
 ```
 . run2.sh
 ```
+
+The config file `json/conf_default.json` can be edited to provide needed parameters. Some of them are:
+```
+ LTDIR: location of the input Limit Trees (expected to be in the local diractory, after running previous step)
+ ncat: number of categories. This should much the number of categories produced in limit tries (currently, should be 4 or 12)
+ fitStrategy: 2 - for 2D fit of (mgg, mjj); 1 - for 1D fit of mgg, in which case a cut is set to 100<mjj<150 somewhere in runLimit.py script.
+```
+
+The results of the limit will be in `LIMS_OutDir/Node_SM/result_1.log`. In case of problems,
+the logfile _mainLog_data-time.log[.bbgg2D]_ can be useful
+
+
  3. Run the FTest on the workspace ([link](https://github.com/ivovtin/Envelop#ftest))
 
  4. Write the orders in the file ([Envelopejson](https://github.com/ivovtin/bbggLimits2018/blob/run2_analysis/jsonsForEnvelope/Env_json_2D_ttHon0.26_31012020.dat)) 
@@ -90,6 +102,8 @@ The recommended option is Y = 2:
 . run3.sh
 ```
 
+The process may take a while to complete, especially when running with many categories.  
+
 ### Notes on datacards and limits
 
 * Run the fits and limits on the produced LTs:
@@ -102,16 +116,6 @@ sh scripts/Analyzer.sh TEST 13
 sh scripts/MakeSMHHFullBkgPlots.sh TEST #### To get background plots in TEST/Node_SM/Background
 sh scripts/MakeSMHHSignalPlots.sh TEST #### To get signal plots test/Node_SM/SignalShapes
 ```  
-The process may take a while to complete, especially when running with many categories.  
-The config file `conf_default.json` can be edited to provide needed parameters. Some of them are:  
-```
- LTDIR: location of the input Limit Trees (expected to be in the local diractory, after running previous step)
- ncat: number of categories. This should much the number of categories produced in limit tries (currently, should be 4 or 12)
- fitStrategy: 2 - for 2D fit of (mgg, mjj); 1 - for 1D fit of mgg, in which case a cut is set to 100<mjj<150 somewhere in runLimit.py script.
-```
-
-The results of the limit will be in `LIMS_OutDir/Node_SM/result_1.log`. In case of problems,
-the logfile _mainLog_data-time.log[.bbgg2D]_ can be useful
 
 * Systematic uncertainties are not real (especially the ones for b-tagging and JEC) for
   the case of 2017 categorization (the older numbers are used). Once proper systematics
