@@ -1,0 +1,13 @@
+#orders Ber_mgg Exp_mgg Pow_mgg Ber_mjj Exp_mjj Pow_mjj
+cat0: 1 1 1 1 1 1 Pow1_,Ber1_  
+cat1: 1 1 1 1 1 1 Exp1_,Pow1_
+cat2: 1 1 1 1 1 1 Pow1_,Ber1_
+cat3: 1 1 1 1 1 1 Exp1_
+cat4: 1 1 1 1 1 1 Ber1_
+cat5: 1 1 1 1 1 1 Pow1_,Ber1_
+cat6: 1 1 1 1 1 1 Exp1_,Pow1_
+cat7: 1 1 1 1 1 1 Exp1_
+cat8: 1 1 1 1 1 1 Ber1_
+cat9: 2 3 1 1 1 1 Exp3_
+cat10: 2 1 1 1 1 1 Pow1_
+cat11: 2 1 1 1 1 1 Pow1_
