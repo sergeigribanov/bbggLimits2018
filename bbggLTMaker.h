@@ -49,7 +49,7 @@ public :
 
    Int_t _phoVariation, _trigVariation;
    Float_t F_2016,F_2017,F_2018,F_year;
-
+   Float_t btagnorm;
    
    //Variables from the input tree:
    
@@ -78,7 +78,8 @@ public :
    Float_t         sigmaMOverMDecorr;
    Float_t         sigmaMJets;
    Float_t         PhoJetMinDr;
-   Float_t         HHbbggMVA;
+   //Float_t        HHbbggMVA;
+   Double_t        HHbbggMVA;
    Float_t         MVAOutputTransformed;
    Float_t         MX;
    Float_t         Mjj;
@@ -164,6 +165,7 @@ public :
    //TBranch        *b_processIndex;   //!
    TBranch        *b_run;   //!
    TBranch        *b_Mjj;
+   TBranch        *b_leadingJet_pt;
    TBranch        *b_Mgg;
    TBranch        *b_mbbgg;
    TBranch        *b_evWeight;
@@ -221,15 +223,23 @@ void bbggLTMaker::Init(TTree *tree)
    fChain->SetBranchAddress("MX", &MX, &b_MX);
    fChain->SetBranchAddress("event", &event, &b_event);
    //fChain->SetBranchAddress("HHbbggMVA", &HHbbggMVA, &b_HHbbggMVA);
-   fChain->SetBranchAddress("MVAOutputTransformed", &HHbbggMVA, &b_HHbbggMVA);
+   fChain->SetBranchAddress("MVAwoMjj", &HHbbggMVA, &b_HHbbggMVA);                     //MVA training w/o include Mjj
+   //fChain->SetBranchAddress("MVAwithMjj", &HHbbggMVA, &b_HHbbggMVA);                 //MVA training with include Mjj   
+   //fChain->SetBranchAddress("MVAOutputTransformed", &HHbbggMVA, &b_HHbbggMVA);
+   //fChain->SetBranchAddress("xmlMVAtransf", &HHbbggMVA, &b_HHbbggMVA);
    fChain->SetBranchAddress("run", &run, &b_run);
    fChain->SetBranchAddress("Mjj", &Mjj, &b_Mjj);
+   fChain->SetBranchAddress("leadingJet_pt", &leadingJet_pt, &b_leadingJet_pt);
    //fChain->SetBranchAddress("MjjReg_mjj", &Mjj, &b_Mjj);
    fChain->SetBranchAddress("CMS_hgg_mass", &CMS_hgg_mass, &b_Mgg);
    fChain->SetBranchAddress("diHiggs_mass", &diHiggs_mass, &b_mbbgg);
    fChain->SetBranchAddress("weight", &weight, &b_evWeight);
+   if(fChain->GetBranch("benchmark_reweight_SM")) {
+   //if(fChain->GetBranch("KL1")) {
    fChain->SetBranchAddress("benchmark_reweight_SM", &reweight, &b_reWeight);
+   //fChain->SetBranchAddress("KL1", &reweight, &b_reWeight);
    //fChain->SetBranchAddress("benchmark_reweight_2017fake", &reweight, &b_reWeight);
+   }
    fChain->SetBranchAddress("ttHScore", &ttHScore, &b_ttHTagger);
 }
 

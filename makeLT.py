@@ -21,7 +21,7 @@ parser.add_argument("-l", "--lumi", dest="lumi", type=float, default=0.,
 parser.add_argument('-o', '--outDir', dest="outDir", type=str, default=None,
                     required=True, help="Output directory (will be created).")
 parser.add_argument('-c', '--categ', dest="categ", type=int, default=0,
-                    choices = [0,1,2,3,4], help="Which categorization to use. 0 - 2016 tagger; 1 - 2017 ETH tagger, using 2016 style categorization; 2 - 2017 ETH tagger, with optimized categorization; 3 - 2017 tagger with mjj cuts; 4 - 2019 tagger with Mjj in train.")
+                    choices = [0,1,2,3,4,5], help="Which categorization to use. 0 - 2016 tagger; 1 - 2017 ETH tagger, using 2016 style categorization; 2 - 2017 ETH tagger, with optimized categorization; 3 - 2017 tagger with mjj cuts; 4 - 2019 tagger with Mjj in train; 5 - 15 categories")
 
 opt = parser.parse_args()
 
@@ -43,7 +43,7 @@ if __name__ == "__main__":
     for n in nodes:
       if n[0]!="SM": continue # Only do SM node for now             
 
-#      fChain = TChain("tagsDumper/trees/bbggtrees")
+#      fChain = TChain("tagsDumper/trees/bbggSelectionTree")
       fChain = TChain("bbggSelectionTree")
       #fname = opt.indir+"/output_GluGluToHHTo2B2G_node_"+str(n[0])+"_13TeV-madgraph.root"  
       fname = opt.indir+"/output_GluGluToHHTo2B2G_allnodes_no_unit_norm.root"
@@ -63,9 +63,10 @@ if __name__ == "__main__":
     print "Doing Single Higgs samples"
     for n in SMHiggsNodes:
       if opt.verb: print n
-#      fChain = TChain("tagsDumper/trees/bbggtrees")
+#      fChain = TChain("tagsDumper/trees/bbggSelectionTree")
       fChain = TChain("bbggSelectionTree")
       fname = opt.indir+n[0]
+#     
       fChain.Add(fname)
       outFileName = opt.outDir+"/LT_"+n[0]
 
@@ -75,9 +76,11 @@ if __name__ == "__main__":
 
     print "Done with Single Higgs"
 
-#    fChain = TChain("tagsDumper/trees/bbggtrees")
     fChain = TChain("bbggSelectionTree")
     fname = opt.indir+'/Data.root'
+#    fname = opt.indir+'/DiPhotBenriched_GJet.root'
+#    fname = opt.indir+'/DiPhot_GJet.root'
+#    fname = opt.indir+'/DiPhot_GJet_L2reg.root'
     fChain.Add(fname)
     outFileName = opt.outDir+"/LT_DoubleEG.root"
     

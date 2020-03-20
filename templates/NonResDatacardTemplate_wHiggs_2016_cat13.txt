@@ -1,0 +1,43 @@
+imax 1 number of bins
+jmax 6 number of processes minus 1
+kmax * number of nuisance parameters
+----------------------------------------------------------------------------------------------------------------------------------
+
+shapes data_obs cat13 INPUTBKGLOC w_all:data_obs_cat13
+shapes Bkg cat13 INPUTBKGLOC w_all:CMS_bkg_cat13
+shapes Sig cat13 INPUTSIGLOC w_all:CMS_sig_cat13
+shapes ggh cat13 INPUTGGHLOC w_all:CMS_hig_ggh_cat13
+shapes tth cat13 INPUTTTHLOC w_all:CMS_hig_tth_cat13
+shapes vh  cat13 INPUTVHLOC w_all:CMS_hig_vh_cat13
+shapes bbh cat13 INPUTBBHLOC w_all:CMS_hig_bbh_cat13
+shapes vbf cat13 INPUTVBFLOC w_all:CMS_hig_vbf_cat13
+
+----------------------------------------------------------------------------------------------------------------------------------
+bin          cat13
+observation  OBS_CAT13
+----------------------------------------------------------------------------------------------------------------------------------
+bin                                   cat13	     cat13	    cat13           cat13           cat13           cat13           cat13
+process                               Sig            Bkg            vbf            bbh            vh             tth            ggh
+process                               0              1              2              3              4              5              6
+rate				      SIG_CAT13	     1		    VBF_CAT13	   BBH_CAT13	  VH_CAT13	 TTH_CAT13	GGH_CAT13
+
+----------------------------------------------------------------------------------------------------------------------------------
+CMS_eff_DiphoTrig       lnN           0.998/1.002    -              0.998/1.002    0.998/1.002    0.998/1.002    0.998/1.002    0.998/1.002
+CMS_eff_Gamma           lnN           1.02           -              1.02           1.02           1.02           1.02           1.02
+CMS_eff_Jet             lnN           0.984/1.016    -              0.984/1.016    0.984/1.016    0.984/1.016    0.984/1.016    0.984/1.016
+CMS_btag                lnN           1.0032         -              1.0032         1.0032         1.0032         1.0032         1.0032
+QCDscale_tth            lnN           -              -              -              -              -              0.908/1.058    -
+QCDscale_vbf            lnN           -              -              0.997/1.004    -              -              -              -
+QCDscale_vh             lnN           -              -              -              -              0.969/1.038    -              -
+lumi_13TeV              lnN           1.025          -              1.025          1.025          1.025          1.025          1.025
+pdf                     lnN           1.030          -              1.021      	   1.021          1.025          1.036          1.031
+theory_bbH_scale        lnN           -              -              -              0.76/1.2	  -              -              -
+theory_ggHN3LO          lnN           -              -              -              -              -              -              1.039
+QCDscale_hh	        lnN           0.950/1.022    -              -              -              -              -              -
+
+CMS_hbb_sig_m0_absShift  param  1 0.012
+CMS_hbb_sig_sigmaScale   param  1 0.055
+CMS_hgg_sig_sigmaScale   param  1 0.01
+CMS_hgg_sig_m0_absShift  param  1 0.0003
+
+CMS_bkg_cat13_norm  flatParam
