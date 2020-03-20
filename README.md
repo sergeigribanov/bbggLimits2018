@@ -40,6 +40,8 @@ The recommended option is Y = 2:
  Y = 1: HIG-19-018 tagger, using 2016 style categorization (4 categories);
  Y = 2: HIG-19-018 tagger, with optimized categorization without mjj cut (12 categories);
  Y = 3: HIG-19-018 tagger, with optimized categorization and mjj cuts (12 categories);
+ Y = 4: HIG-19-018 tagger, with optimized categorization without mjj cut (12 categories), new style;
+ Y = 5: HIG-19-018 tagger, with optimized categorization without mjj cut (15 categories);
 ```
 
 ## 3. Performing fit and extraction of limits
