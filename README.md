@@ -75,7 +75,7 @@ The results of the limit will be put at `LIMS_OutDir/Node_SM/result_1.log`.
 . run2.sh
 ```
 
-### Importance: You can use CombinedLimit v8.0.1 for release CMSSW_10_2_X - recommended version for extraction limits (https://cms-analysis.github.io/HiggsAnalysis-CombinedLimit/) and skip 6-8.
+### Importance: You can use CombinedLimit v8.0.1 for release CMSSW_10_2_X - recommended version for extraction limits (https://cms-analysis.github.io/HiggsAnalysis-CombinedLimit/) and skip next 6-8 steps.
 
  6. Choose the best function for each category using the code below: [link](https://github.com/ivovtin/Envelop#ftest)
 
