@@ -16,7 +16,7 @@ scramv1 b clean; scramv1 b
 Get a stable version of the code:
 ```
 cd ../
-git clone git@github.com:ivovtin/bbggLimits2018.git -b run2_analysis 
+git clone git@github.com:ivovtin/bbggLimits2018.git -b run2_analysis_15cat 
 cd bbggLimits2018
 scramv1 b
 ```
