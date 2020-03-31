@@ -585,6 +585,100 @@ void bbgg2DFitter::MakeSigWS(std::string fileBaseName)
 } // close make signal WP
 
 
+void bbgg2DFitter::MakeSigVBFWS(std::string fileBaseName)
+{
+  //**********************************************************************//
+  // Write pdfs and datasets into the workspace for running limits
+  //**********************************************************************//
+  
+  TString wsDir = TString::Format("%s/",_folder_name.data());
+  std::vector<RooAbsPdf*> SigPdf(_NCAT,nullptr);
+  RooWorkspace *wAll = new RooWorkspace("w_all","w_all");
+
+  for (int c = 0; c < _NCAT; ++c)
+    {
+
+      _w->factory(TString::Format("CMS_hgg_sig_m0_absShift[1,1,1]"));
+      _w->factory(TString::Format("CMS_hgg_sig_sigmaScale[1,1,1]"));
+
+      if (_fitStrategy==2){
+	_w->factory(TString::Format("CMS_hbb_sig_sigmaScale[1,1,1]"));
+	_w->factory(TString::Format("CMS_hbb_sig_m0_absShift[1,1,1]"));
+      }
+      
+
+      SigPdf[c] = (RooAbsPdf*) _w->pdf(TString::Format("SigPdf_cat%d",c));
+      
+      RooArgSet *sigParams = (RooArgSet*) SigPdf[c]->getParameters(RooArgSet(*_w->var("mgg"), *_w->var("mjj")));
+                 
+      TIterator* paramIter = (TIterator*) sigParams->createIterator();
+      TObject* tempObj = nullptr;
+      std::vector<std::pair<TString,TString>> varsToChange;
+      while( (tempObj = paramIter->Next()) ) {
+	if ( (TString(tempObj->GetName()).EqualTo("mjj")) || (TString(tempObj->GetName()).EqualTo("mgg"))) continue;
+        TString thisVarName(tempObj->GetName());
+        TString newVarName = TString(thisVarName);
+        if ( !newVarName.Contains("m0") && !newVarName.Contains("sigma") ) {
+          if ( newVarName.Contains("mgg") ) newVarName.ReplaceAll("mgg_", "CMS_hgg_");
+          if ( newVarName.Contains("mjj") ) newVarName.ReplaceAll("mjj_", "CMS_hbb_");
+          varsToChange.push_back(std::make_pair(thisVarName, newVarName));
+        }
+        std::cout << "Importing variable with new name: old - " << thisVarName << " new - " << newVarName << std::endl;
+        _w->import( *_w->var( tempObj->GetName() ), RenameVariable( thisVarName, newVarName));
+        wAll->import( *_w->var( tempObj->GetName() ), RenameVariable( thisVarName, newVarName));
+      }
+      //Shifts and smearings
+      _w->factory(TString::Format("prod::CMS_hgg_sigVBF_m0_cat%d(mgg_sig_m0_cat%d, CMS_hgg_sig_m0_absShift)", c, c));
+      _w->factory(TString::Format("prod::CMS_hgg_sigVBF_sigma_cat%d(mgg_sig_sigma_cat%d, CMS_hgg_sig_sigmaScale)", c, c));
+      if (_fitStrategy==2){
+	_w->factory(TString::Format("prod::CMS_hbb_sigVBF_m0_cat%d(mjj_sig_m0_cat%d, CMS_hbb_sig_m0_absShift)", c, c));
+	_w->factory(TString::Format("prod::CMS_hbb_sigVBF_sigma_cat%d(mjj_sig_sigma_cat%d, CMS_hbb_sig_sigmaScale)", c, c));
+      }
+      if(!_useDSCB) {
+        _w->factory(TString::Format("prod::CMS_hgg_gsigma_cat%d(mgg_sig_gsigma_cat%d, CMS_hgg_sig_sigmaScale)", c, c));
+	if (_fitStrategy==2)
+	  _w->factory(TString::Format("prod::CMS_hbb_gsigma_cat%d(mjj_sig_gsigma_cat%d, CMS_hbb_sig_sigmaScale)", c, c));
+      }
+
+      TString EditPDF = TString::Format("EDIT::CMS_sig_vbfhh_cat%d(SigPdf_cat%d,", c, c);
+      for (unsigned int iv = 0; iv < varsToChange.size(); iv++)
+        EditPDF += TString::Format("%s=%s,", varsToChange[iv].first.Data(), varsToChange[iv].second.Data());
+      //Shifted and smeared vars
+      if(!_useDSCB) {
+        EditPDF += TString::Format("mgg_sig_gsigma_cat%d=CMS_hgg_sig_gsigma_cat%d", c, c);
+	if (_fitStrategy==2)
+	  EditPDF += TString::Format(",mjj_sig_gsigma_cat%d=CMS_hbb_sig_gsigma_cat%d)", c, c);
+	else
+	  EditPDF += (")");
+
+      }
+      EditPDF += TString::Format("mgg_sig_m0_cat%d=CMS_hgg_sigVBF_m0_cat%d,", c, c);
+      EditPDF += TString::Format("mgg_sig_sigma_cat%d=CMS_hgg_sigVBF_sigma_cat%d", c, c);
+      if (_fitStrategy==2){
+	EditPDF += TString::Format(",mjj_sig_m0_cat%d=CMS_hbb_sigVBF_m0_cat%d,", c, c);
+	EditPDF += TString::Format("mjj_sig_sigma_cat%d=CMS_hbb_sigVBF_sigma_cat%d)", c, c);
+      }
+      else
+	EditPDF += (")");
+      
+      std::cout << "STRINGTOCHANGE   ---  " << EditPDF << std::endl;
+      _w->factory(EditPDF);
+
+      wAll->import(*_w->pdf(TString::Format("CMS_sig_vbfhh_cat%d",c)));
+      wAll->import(*_w->data(TString::Format("Sig_cat%d",c)), Rename(TString::Format("Sig_cat%d", c)));
+      //if (_fitStrategy==1)
+      //wAll->import(*_w->pdf(TString::Format("mggSig_cat%d",c)), Rename(TString::Format("mggSig_cat%d", c)));
+    }
+  wAll->Print("v");
+  //TString filename(wsDir+TString(fileBaseName)+".root");
+  TString filename(wsDir+TString(fileBaseName)+".root");
+  wAll->writeToFile(filename);
+  if (_verbLvl>1) std::cout << "Write signal workspace in: " << filename << " file" << std::endl;
+  return;
+} // close make signal WP
+
+
+
 void bbgg2DFitter::MakeHigWS(std::string fileHiggsName,int higgschannel, TString higName)
 {
   TString wsDir = TString::Format("%s/",_folder_name.data());

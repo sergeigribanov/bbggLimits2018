@@ -1,0 +1,25 @@
+imax 1 number of bins
+jmax 1 number of processes minus 1
+kmax * number of nuisance parameters
+----------------------------------------------------------------------------------------------------------------------------------
+
+shapes data_obs cat7 ws_hhbbgg.data_bkg.root w_all:data_obs_cat7
+shapes Bkg cat7 ws_hhbbgg.data_bkg_multipdf.root w_bias:roomultipdf_cat7
+shapes Sig cat7 ws_hhbbgg.HH.sig.mH125_13TeV.root w_all:CMS_sig_cat7
+shapes vbfhh cat7 ws_hhbbgg.HH.sigVBF.mH125_13TeV.root w_all:CMS_sig_vbfhh_cat7
+
+----------------------------------------------------------------------------------------------------------------------------------
+bin          cat7
+observation  -1.0
+----------------------------------------------------------------------------------------------------------------------------------
+bin                                   cat7	     cat7         cat7
+process                               Sig            vbfhh        Bkg 
+process                               0              -1           1   
+rate				      1.66523	     1.66523        1	
+
+----------------------------------------------------------------------------------------------------------------------------------
+CMS_eff_PhoID           lnN           1.01           1.01         -  
+
+roomultipdf_cat7_norm  flatParam
+
+pdf_index_cat7 discrete

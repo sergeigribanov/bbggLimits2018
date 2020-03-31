@@ -6,18 +6,19 @@ kmax * number of nuisance parameters
 shapes data_obs ICAT INPUTBKGLOC w_all:data_obs_ICAT
 shapes Bkg ICAT INPUTBKGLOC w_bias:roomultipdf_ICAT
 shapes Sig ICAT INPUTSIGLOC w_all:CMS_sig_ICAT
+shapes vbfhh ICAT INPUTSIGVBFHHLOC w_all:CMS_sig_vbfhh_ICAT
 
 ----------------------------------------------------------------------------------------------------------------------------------
 bin          ICAT
 observation  OBS
 ----------------------------------------------------------------------------------------------------------------------------------
-bin                                   ICAT	     ICAT
-process                               Sig            Bkg 
-process                               0              1   
-rate				      SIG	     1	
+bin                                   ICAT	     ICAT          ICAT
+process                               Sig            vbfhh         Bkg 
+process                               0              -1            1   
+rate				      SIG	     VBFHH         1	
 
 ----------------------------------------------------------------------------------------------------------------------------------
-CMS_eff_PhoID           lnN           1.01           -  
+CMS_eff_PhoID           lnN           1.01           1.01          -  
 
 roomultipdf_ICAT_norm  flatParam
 

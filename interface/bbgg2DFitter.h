@@ -125,6 +125,7 @@ class bbgg2DFitter {
    //     return BkgModelFit();} 
    void SetFitStrategy( int st) { _fitStrategy = st; }
    void MakeSigWS(std::string filename); 
+   void MakeSigVBFWS(std::string filename); 
    void MakeHigWS(std::string filename, int higgschannel, TString higName); 
    void MakeBkgWS(std::string filename); 
    void DoARW() {_doARW = 1;}

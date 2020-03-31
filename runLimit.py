@@ -172,6 +172,7 @@ def runFullChain(opt, Params, point=None, NRgridPoint=-1, extraLabel=''):
   # ParamsForFits = {'SM': massCuts, 'box': massCuts}
 
   SignalFile = "/LT_output_GluGluToHHTo2B2G_node_"+str(point)+"_13TeV-madgraph.root"
+  VBFHHSignalFile = "/LT_output_GluGluToHHTo2B2G_node_"+str(point)+"_13TeV-madgraph.root"
   if "LT_StrikeBack" in LTDir or "MadMax" in LTDir or "ttH" in LTDir:
       SignalFile = "/LT_output_GluGluToHHTo2B2G_node_"+str(point)+"_13TeV-madgraph.root"
   if isRes:
@@ -187,6 +188,7 @@ def runFullChain(opt, Params, point=None, NRgridPoint=-1, extraLabel=''):
     SignalFile="/LT_NR_Nodes_All_merged_"+pointStr+".root"
 
   mainLog.debug('%s', SignalFile)
+  mainLog.debug('%s', VBFHHSignalFile)
 
   newFolder = baseFolder+ str('/'+Label)
 
@@ -238,9 +240,14 @@ def runFullChain(opt, Params, point=None, NRgridPoint=-1, extraLabel=''):
   mass = 125.0
   if opt.verb>0:
     mainLog.info('Signal File:\n'+LTDir+SignalFile)
+    mainLog.info('VBFHH Signal File:\n'+LTDir+VBFHHSignalFile)
 
   if not os.path.isfile(LTDir+SignalFile):
     print 'File does not exist: ', LTDir+SignalFile
+    return __BAD__
+
+  if not os.path.isfile(LTDir+VBFHHSignalFile):
+    print 'VBFHH file does not exist: ', LTDir+VBFHHSignalFile
     return __BAD__
 
   openStatus = theFitter.AddSigData( mass, str(LTDir+SignalFile))
@@ -260,6 +267,26 @@ def runFullChain(opt, Params, point=None, NRgridPoint=-1, extraLabel=''):
   fileBaseName = "ws_hhbbgg.HH.sig.mH"+str(mass)[0:3]+"_13TeV"
   theFitter.MakeSigWS(fileBaseName)
   mainLog.info("\t SIGNAL'S WORKSPACE DONE. Node=%r, GridPoint=%r", point,NRgridPoint)
+  if opt.verb>0: p3 = printTime(p2,start,mainLog)
+
+  openStatus = theFitter.AddSigData( mass, str(LTDir+VBFHHSignalFile))
+  if openStatus==-1:
+    mainLog.error('There is a problem with openStatus')
+    return __BAD__
+  mainLog.info("\t VBFHH SIGNAL ADDED. Node=%r, GridPoint=%r", point,NRgridPoint)
+  if opt.verb>0: p1 = printTime(start, start, mainLog)
+
+  if opt.verb>1:
+    theFitter.PrintWorkspace();
+
+  theFitter.SigModelFit(mass)
+  mainLog.info("\t VBFHH SIGNAL FITTED. Node=%r, GridPoint=%r", point,NRgridPoint)
+  if opt.verb>0: p2 = printTime(p1,start, mainLog)
+
+  fileBaseName = "ws_hhbbgg.HH.sigVBF.mH"+str(mass)[0:3]+"_13TeV"
+  #theFitter.MakeSigWS(fileBaseName)
+  theFitter.MakeSigVBFWS(fileBaseName)
+  mainLog.info("\t VBFHH SIGNAL'S WORKSPACE DONE. Node=%r, GridPoint=%r", point,NRgridPoint)
   if opt.verb>0: p3 = printTime(p2,start,mainLog)
 
   if addHiggs:

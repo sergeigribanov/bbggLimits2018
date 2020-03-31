@@ -1,38 +1,39 @@
 imax 1 number of bins
-jmax 6 number of processes minus 1
+jmax 7 number of processes minus 1
 kmax * number of nuisance parameters
-----------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------------------------
 
 shapes data_obs cat0 INPUTBKGLOC w_all:data_obs_cat0
 shapes Bkg cat0 INPUTBKGMULTLOC w_bias:roomultipdf_cat0
 shapes Sig cat0 INPUTSIGLOC w_all:CMS_sig_cat0
+shapes vbfhh cat0 INPUTSIGVBFHHLOC w_all:CMS_sig_vbfhh_cat0
 shapes ggh cat0 INPUTGGHLOC w_all:CMS_hig_ggh_cat0
 shapes tth cat0 INPUTTTHLOC w_all:CMS_hig_tth_cat0
 shapes vh  cat0 INPUTVHLOC w_all:CMS_hig_vh_cat0
 shapes bbh cat0 INPUTBBHLOC w_all:CMS_hig_bbh_cat0
 shapes vbf cat0 INPUTVBFLOC w_all:CMS_hig_vbf_cat0
 
-----------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------------------------
 bin          cat0
 observation  OBS_CAT0
-----------------------------------------------------------------------------------------------------------------------------------
-bin                                   cat0	     cat0	    cat0           cat0           cat0           cat0           cat0
-process                               Sig            Bkg            vbf            bbh            vh             tth            ggh
-process                               0              1              2              3              4              5              6
-rate				      SIG_CAT0	     1		    VBF_CAT0	   BBH_CAT0	  VH_CAT0	 TTH_CAT0	GGH_CAT0
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+bin                                   cat0	     cat0           cat0	   cat0           cat0           cat0           cat0           cat0
+process                               Sig            vbfhh          Bkg            vbf            bbh            vh             tth            ggh
+process                               0              -1             1              2              3              4              5              6
+rate				      SIG_CAT0	     VBFHH_CAT0     1		   VBF_CAT0	  BBH_CAT0	 VH_CAT0	TTH_CAT0       GGH_CAT0
 
-----------------------------------------------------------------------------------------------------------------------------------
-CMS_eff_DiphoTrig       lnN           0.998/1.002    -              0.998/1.002    0.998/1.002    0.998/1.002    0.998/1.002    0.998/1.002
-CMS_eff_PhoID           lnN           1.02           -              1.02           1.02           1.02           1.02           1.02
-CMS_eff_mxCat           lnN           0.984/1.016    -              0.984/1.016    0.984/1.016    0.984/1.016    0.984/1.016    0.984/1.016
-CMS_btag                lnN           1.0032         -              1.0032         1.0032         1.0032         1.0032         1.0032
-QCDscale_tth            lnN           -              -              -              -              -              0.908/1.058    -
-QCDscale_vbf            lnN           -              -              0.997/1.004    -              -              -              -
-QCDscale_vh             lnN           -              -              -              -              0.969/1.038    -              -
-lumi_13TeV              lnN           1.025          -              1.025          1.025          1.025          1.025          1.025
-pdf                     lnN           1.030          -              1.021          1.021          1.025          1.036          1.031
-theory_bbH_scale        lnN           -              -              -              0.76/1.2       -              -              -
-theory_ggHN3LO          lnN           -              -              -              -              -              -              1.039
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+CMS_eff_DiphoTrig       lnN           0.998/1.002    0.998/1.002    -              0.998/1.002    0.998/1.002    0.998/1.002    0.998/1.002    0.998/1.002
+CMS_eff_PhoID           lnN           1.02           1.02           -              1.02           1.02           1.02           1.02           1.02
+CMS_eff_mxCat           lnN           0.984/1.016    0.984/1.016    -              0.984/1.016    0.984/1.016    0.984/1.016    0.984/1.016    0.984/1.016
+CMS_btag                lnN           1.0032         1.0032         -              1.0032         1.0032         1.0032         1.0032         1.0032
+QCDscale_tth            lnN           -              -              -              -              -              -              0.908/1.058    -
+QCDscale_vbf            lnN           -              -              -              0.997/1.004    -              -              -              -
+QCDscale_vh             lnN           -              -              -              -              -              0.969/1.038    -              -
+lumi_13TeV              lnN           1.025          1.025          -              1.025          1.025          1.025          1.025          1.025
+pdf                     lnN           1.030          1.030          -              1.021          1.021          1.025          1.036          1.031
+theory_bbH_scale        lnN           -              -              -              -              0.76/1.2       -              -              -
+theory_ggHN3LO          lnN           -              -              -              -              -              -              -              1.039
 
 CMS_hbb_sig_m0_absShift  param  1 0.012
 CMS_hbb_sig_sigmaScale   param  1 0.055

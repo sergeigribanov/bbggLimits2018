@@ -91,12 +91,15 @@ def DataCardMaker_wHiggs(Folder, nCats, signalExp, observed, higgsExp, log):
 
       outToWrite = outToWrite.replace("INPUTBKGLOC", str(Folder + '/ws_hhbbgg.data_bkg.root'))
       outToWrite = outToWrite.replace("INPUTSIGLOC", str(Folder + '/ws_hhbbgg.HH.sig.mH125_13TeV.root'))
+      outToWrite = outToWrite.replace("INPUTSIGVBFHHLOC", str(Folder + '/ws_hhbbgg.HH.sigVBF.mH125_13TeV.root'))
 
       ##observed
       outToWrite = outToWrite.replace("OBS_CAT"+str(n), '%.1f' % observed[n])
       #print outToWrite
       ##expected signal
       outToWrite = outToWrite.replace("SIG_CAT"+str(n), '%.5f' % signalExp[n])
+      #VBFHH -signal
+      outToWrite = outToWrite.replace("VBFHH_CAT"+str(n), '%.5f' % signalExp[n])
       ## higgs
       # print higgsExp
       for hty in higgsExp:
@@ -143,12 +146,15 @@ def DataCardMaker_wHiggs_bias(Folder, nCats, signalExp, observed, higgsExp, log)
       outToWrite = outToWrite.replace("INPUTBKGMULTLOC", str(Folder + '/ws_hhbbgg.data_bkg_multipdf.root'))
       outToWrite = outToWrite.replace("INPUTBKGLOC", str(Folder + '/ws_hhbbgg.data_bkg.root'))
       outToWrite = outToWrite.replace("INPUTSIGLOC", str(Folder + '/ws_hhbbgg.HH.sig.mH125_13TeV.root'))
+      outToWrite = outToWrite.replace("INPUTSIGVBFHHLOC", str(Folder + '/ws_hhbbgg.HH.sigVBF.mH125_13TeV.root'))
 
       ##observed
       outToWrite = outToWrite.replace("OBS_CAT"+str(n), '%.1f' % observed[n])
       #print outToWrite
       ##expected signal
       outToWrite = outToWrite.replace("SIG_CAT"+str(n), '%.5f' % signalExp[n])
+      #VBFHH -signal
+      outToWrite = outToWrite.replace("VBFHH_CAT"+str(n), '%.5f' % signalExp[n])
       ## higgs
       # print higgsExp
       for hty in higgsExp:
@@ -196,12 +202,14 @@ def DataCardMaker_bias(Folder, nCats, signalExp, observed, log):
       outToWrite = outToWrite.replace("INPUTBKGLOC", 'ws_hhbbgg.data_bkg.root')
       outToWrite = outToWrite.replace("INPUTBKGMULTLOC", 'ws_hhbbgg.data_bkg_multipdf.root')
       outToWrite = outToWrite.replace("INPUTSIGLOC", 'ws_hhbbgg.HH.sig.mH125_13TeV.root')
+      outToWrite = outToWrite.replace("INPUTSIGVBFHHLOC", 'ws_hhbbgg.HH.sigVBF.mH125_13TeV.root')
 
       ##observed
       outToWrite = outToWrite.replace("OBS", '%.1f' % observed[n])
       #print outToWrite
       ##expected signal
       outToWrite = outToWrite.replace("SIG", '%.5f' % signalExp[n])
+      outToWrite = outToWrite.replace("VBFHH", '%.5f' % signalExp[n])
       outToWrite = outToWrite.replace("ICAT", 'cat%d' % n)
 
       with open(Folder+'/hhbbgg_13TeV_DataCard_bias_cat'+str(n)+'.txt', 'w') as outputDatacard:
