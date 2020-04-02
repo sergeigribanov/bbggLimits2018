@@ -21,7 +21,7 @@ parser.add_argument("-l", "--lumi", dest="lumi", type=float, default=0.,
 parser.add_argument('-o', '--outDir', dest="outDir", type=str, default=None,
                     required=True, help="Output directory (will be created).")
 parser.add_argument('-c', '--categ', dest="categ", type=int, default=0,
-                    choices = [0,1,2,3,4,5], help="Which categorization to use. 0 - 2016 tagger; 1 - 2017 ETH tagger, using 2016 style categorization; 2 - 2017 ETH tagger, with optimized categorization; 3 - 2017 tagger with mjj cuts; 4 - 2019 tagger with Mjj in train; 5 - 15 categories")
+                    choices = [0,1,2,3,4,5,6], help="Which categorization to use. 0 - 2016 tagger; 1 - 2017 ETH tagger, using 2016 style categorization; 2 - 2017 ETH tagger, with optimized categorization; 3 - 2017 tagger with mjj cuts; 4 - 2019 tagger with Mjj in train; 5 - 15 categories; 6 - 12 categories + 1 VBFHH")
 
 opt = parser.parse_args()
 
