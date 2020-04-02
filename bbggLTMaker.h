@@ -79,8 +79,8 @@ public :
    Float_t         sigmaMOverMDecorr;
    Float_t         sigmaMJets;
    Float_t         PhoJetMinDr;
-   //Float_t        HHbbggMVA;
-   Double_t        HHbbggMVA;
+   Float_t        HHbbggMVA;
+   //Double_t        HHbbggMVA;
    Float_t         MVAOutputTransformed;
    Int_t           vbf_Cat;
    Int_t           vbf_Cat_Selected;
@@ -227,8 +227,8 @@ void bbggLTMaker::Init(TTree *tree)
    //fChain->SetBranchAddress("subleadingJet_DeepCSV", &subleadingJet_DeepCSV, &b_subleadingJet_bDis);
    fChain->SetBranchAddress("MX", &MX, &b_MX);
    fChain->SetBranchAddress("event", &event, &b_event);
-   //fChain->SetBranchAddress("HHbbggMVA", &HHbbggMVA, &b_HHbbggMVA);
-   fChain->SetBranchAddress("MVAwoMjj", &HHbbggMVA, &b_HHbbggMVA);                     //MVA training w/o include Mjj
+   fChain->SetBranchAddress("HHbbggMVA", &HHbbggMVA, &b_HHbbggMVA);
+   //fChain->SetBranchAddress("MVAwoMjj", &HHbbggMVA, &b_HHbbggMVA);                     //MVA training w/o include Mjj
    //fChain->SetBranchAddress("MVAwithMjj", &HHbbggMVA, &b_HHbbggMVA);                 //MVA training with include Mjj   
    //fChain->SetBranchAddress("MVAOutputTransformed", &HHbbggMVA, &b_HHbbggMVA);
    //fChain->SetBranchAddress("xmlMVAtransf", &HHbbggMVA, &b_HHbbggMVA);
