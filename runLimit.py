@@ -172,7 +172,8 @@ def runFullChain(opt, Params, point=None, NRgridPoint=-1, extraLabel=''):
   # ParamsForFits = {'SM': massCuts, 'box': massCuts}
 
   SignalFile = "/LT_output_GluGluToHHTo2B2G_node_"+str(point)+"_13TeV-madgraph.root"
-  VBFHHSignalFile = "/LT_output_GluGluToHHTo2B2G_node_"+str(point)+"_13TeV-madgraph.root"
+  #VBFHHSignalFile = "/LT_output_GluGluToHHTo2B2G_node_"+str(point)+"_13TeV-madgraph.root"
+  VBFHHSignalFile = "/LT_output_VBFHHTo2B2G_CV_1_C2V_1_C3_1_TuneCP5_PSWeights_13TeV-madgraph-pythia8.root"
   if "LT_StrikeBack" in LTDir or "MadMax" in LTDir or "ttH" in LTDir:
       SignalFile = "/LT_output_GluGluToHHTo2B2G_node_"+str(point)+"_13TeV-madgraph.root"
   if isRes:

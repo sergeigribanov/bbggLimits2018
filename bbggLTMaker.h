@@ -81,6 +81,8 @@ public :
    //Float_t        HHbbggMVA;
    Double_t        HHbbggMVA;
    Float_t         MVAOutputTransformed;
+   Int_t           vbf_Cat;
+   Int_t           vbf_Cat_Selected;
    Float_t         MX;
    Float_t         Mjj;
    Float_t         dijet_pt;
@@ -165,6 +167,8 @@ public :
    //TBranch        *b_processIndex;   //!
    TBranch        *b_run;   //!
    TBranch        *b_Mjj;
+   TBranch        *b_vbf_Cat;
+   TBranch        *b_vbf_Cat_Selected;
    TBranch        *b_leadingJet_pt;
    TBranch        *b_Mgg;
    TBranch        *b_mbbgg;
@@ -231,6 +235,8 @@ void bbggLTMaker::Init(TTree *tree)
    fChain->SetBranchAddress("Mjj", &Mjj, &b_Mjj);
    fChain->SetBranchAddress("leadingJet_pt", &leadingJet_pt, &b_leadingJet_pt);
    //fChain->SetBranchAddress("MjjReg_mjj", &Mjj, &b_Mjj);
+   fChain->SetBranchAddress("vbf_Cat", &vbf_Cat, &b_vbf_Cat);
+   fChain->SetBranchAddress("vbf_Cat_Selected", &vbf_Cat_Selected, &b_vbf_Cat_Selected);
    fChain->SetBranchAddress("CMS_hgg_mass", &CMS_hgg_mass, &b_Mgg);
    fChain->SetBranchAddress("diHiggs_mass", &diHiggs_mass, &b_mbbgg);
    fChain->SetBranchAddress("weight", &weight, &b_evWeight);

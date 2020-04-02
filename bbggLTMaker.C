@@ -156,6 +156,8 @@ void bbggLTMaker::Begin(TTree * /*tree*/)
   _outTree->Branch("catID", &o_catID, "o_catID/I");
   _outTree->Branch("ttHTagger", &o_ttHTagger, "ttHTagger/D");
 
+  _outTree->Branch("vbf_Cat", &o_vbf_Cat, "o_vbf_Cat/I");
+  _outTree->Branch("vbf_Cat_Selected", &o_vbf_Cat_Selected, "o_vbf_Cat_Selected/I");
 
   TString phoSFID_file = TString(std::getenv("CMSSW_BASE")) + TString("/src/HiggsAnalysis/bbggLimits2018/Weights/MVAID/egammaEffi.txt_EGM2D.root");
   if (DEBUG) cout << "phoSFsID file: " << phoSFID_file << endl;
@@ -194,7 +196,8 @@ Bool_t bbggLTMaker::Process(Long64_t entry)
   if (_normalization == 35.9) { F_year=F_2016; btagnorm=1.01171; }
   if (_normalization == 41.5) { F_year=F_2017; btagnorm=1.008805; }
   if (_normalization == 59.4) { F_year=F_2018; btagnorm=1.001397; }
-  if ( _normalization!=1 && _genDiPhotonFilter==0) o_weight=o_weight*btagnorm*reweight/(F_year/1.06);
+  //if ( _normalization!=1 && _genDiPhotonFilter==0) o_weight=o_weight*btagnorm*reweight/(F_year/1.06);
+  if ( _normalization!=1 && _genDiPhotonFilter==0) o_weight=weight;
   
   
   //===========FIXME for extraction limits on MC - indicate right path to out LT
@@ -223,6 +226,9 @@ Bool_t bbggLTMaker::Process(Long64_t entry)
   o_MX = MX;
 
   o_catID = -1;
+
+  o_vbf_Cat = vbf_Cat;
+  o_vbf_Cat_Selected = vbf_Cat_Selected;
 
   if(_ttHTagger)
     o_ttHTagger = ttHScore;
@@ -551,7 +557,77 @@ Bool_t bbggLTMaker::Process(Long64_t entry)
       return kTRUE;
     }
   }
+//=========with cut =========================
+  //Categorisation for boundaries from flashgg. VBFHH categories
+  else if (_whichCategorization==6){
+    if( o_vbf_Cat_Selected==1 ) { o_catID = 12; }    
+    if (o_MX > boundary_MX_2019[0] && o_MX <= boundary_MX_2019[14] ){
+    if (HHbbggMVA > boundary_MVA_2019[0] && HHbbggMVA <= boundary_MVA_2019[1] && leadingJet_pt/Mjj > 0.55 ){
+      if (o_MX > boundary_MX_2019[0] && o_MX <= boundary_MX_2019[1]){
+        o_catID = 11;
+      }
+      else if (o_MX > boundary_MX_2019[1] && o_MX <= boundary_MX_2019[2]){
+        o_catID = 10;
+      }
+      else if (o_MX > boundary_MX_2019[2] && o_MX <= boundary_MX_2019[3]){
+        o_catID = 9;
+      }
+      else if (o_MX > boundary_MX_2019[3] && o_MX <= boundary_MX_2019[4]){
+        o_catID = 8;
+      }
+      else {
+        return kTRUE;
+      }
+    }
+
+    else if (HHbbggMVA > boundary_MVA_2019[1] && HHbbggMVA <= boundary_MVA_2019[2] && leadingJet_pt/Mjj > 0.55 ){
+      if (o_MX > boundary_MX_2019[5] && o_MX <= boundary_MX_2019[6]){
+        o_catID = 7;
+      }
+      else if (o_MX > boundary_MX_2019[6] && o_MX <= boundary_MX_2019[7]){
+        o_catID = 6;
+      }
+      else if (o_MX > boundary_MX_2019[7] && o_MX <= boundary_MX_2019[8]){
+        o_catID = 5;
+      }
+      else if (o_MX > boundary_MX_2019[8] && o_MX <= boundary_MX_2019[9]){
+        o_catID = 4;
+      }
+      else {
+        return kTRUE;
+      }
+    }
+
+    else if (HHbbggMVA > boundary_MVA_2019[2] && HHbbggMVA <= boundary_MVA_2019[3] && leadingJet_pt/Mjj > 0.55 ){
+      if (o_MX > boundary_MX_2019[10] && o_MX <= boundary_MX_2019[11]){
+        o_catID = 3;
+      }
+      else if (o_MX > boundary_MX_2019[11] && o_MX <= boundary_MX_2019[12]){
+        o_catID = 2;
+      }
+      else if (o_MX > boundary_MX_2019[12] && o_MX <= boundary_MX_2019[13]){
+        o_catID = 1;
+      }
+      else if (o_MX > boundary_MX_2019[13] && o_MX <= boundary_MX_2019[14]){
+        o_catID = 0;
+      }
+      else {
+        return kTRUE;
+      }
+    }
+    else  { 
+      return kTRUE;
+    }
+    }
+    else  {
+      std::cout<<"MX is out of bounds!  MX="<<o_MX<<"\t"<<"MVA="<<HHbbggMVA<<std::endl;
+      return kTRUE;
+    }
+  }
+ 
   //=============================================================================================================
+ 
+
   else {
     std::cout<<"This categorization is not supported: "<<_whichCategorization<<std::endl;
     return kTRUE;
