@@ -560,7 +560,12 @@ Bool_t bbggLTMaker::Process(Long64_t entry)
 //=========with cut =========================
   //Categorisation for boundaries from flashgg. VBFHH categories
   else if (_whichCategorization==6){
-    if( o_vbf_Cat_Selected==1 ) { o_catID = 12; }    
+    //std::cout<<"o_vbf_Cat="<<o_vbf_Cat_Selected<<"\t"<<"o_vbf_Cat_Selected="<<o_vbf_Cat_Selected<<std::endl;
+    if( o_vbf_Cat_Selected!=0 ) {  
+    	std::cout<<"o_vbf_Cat="<<o_vbf_Cat_Selected<<"\t"<<"o_vbf_Cat_Selected="<<o_vbf_Cat_Selected<<"\t"<<"Mjj="<<Mjj<<std::endl;
+	o_catID = 12; 
+    } 
+    else{   
     if (o_MX > boundary_MX_2019[0] && o_MX <= boundary_MX_2019[14] ){
     if (HHbbggMVA > boundary_MVA_2019[0] && HHbbggMVA <= boundary_MVA_2019[1] && leadingJet_pt/Mjj > 0.55 ){
       if (o_MX > boundary_MX_2019[0] && o_MX <= boundary_MX_2019[1]){
@@ -623,6 +628,7 @@ Bool_t bbggLTMaker::Process(Long64_t entry)
       std::cout<<"MX is out of bounds!  MX="<<o_MX<<"\t"<<"MVA="<<HHbbggMVA<<std::endl;
       return kTRUE;
     }
+   }
   }
  
   //=============================================================================================================
