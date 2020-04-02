@@ -30,6 +30,7 @@ public :
    Int_t o_catID;
    UInt_t o_run;
    ULong64_t o_evt;
+   Int_t o_vbf_Cat, o_vbf_Cat_Selected; 
 
    // Some external variables:
    Double_t _normalization;
