@@ -95,7 +95,7 @@ if __name__ == "__main__":
     fChain.Add(fname)
     outFileName = opt.outDir+"/LT_output_VBFHHTo2B2G_CV_1_C2V_1_C3_1_TuneCP5_PSWeights_13TeV-madgraph-pythia8.root"
     
-    fChain.Process("bbggLTMaker.C+", "%f %s %i %i %i" % ( opt.lumi, outFileName, 0, opt.categ, _ttHTagger) )
+    fChain.Process("bbggLTMaker.C+", "%f %s %i %i %i" % ( opt.lumi, outFileName, 1, opt.categ, _ttHTagger) )
     
     print "Done with VBFHH Signal"
     

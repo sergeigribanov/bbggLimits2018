@@ -188,6 +188,7 @@ Bool_t bbggLTMaker::Process(Long64_t entry)
   F_2018 = 8.360941357;
 
   o_weight = weight*_normalization;
+  o_weight_SM = weight_SM*_normalization; //for ggHH signal
  
   if (o_evt<20) cout<<"event="<<event<<"\t"<<"weight="<<weight<<"\t"<<"Mjj="<<Mjj<<"\t"<<"CMS_hgg_mass="<<CMS_hgg_mass<<endl;
   if (o_evt<20) cout<<"_normalization="<<_normalization<<endl;
@@ -196,10 +197,9 @@ Bool_t bbggLTMaker::Process(Long64_t entry)
   if (_normalization == 35.9) { F_year=F_2016; btagnorm=1.01171; }
   if (_normalization == 41.5) { F_year=F_2017; btagnorm=1.008805; }
   if (_normalization == 59.4) { F_year=F_2018; btagnorm=1.001397; }
-  //if ( _normalization!=1 && _genDiPhotonFilter==0) o_weight=o_weight*btagnorm*reweight/(F_year/1.06);
-  if ( _normalization!=1 && _genDiPhotonFilter==0) o_weight=weight;
-  
-  
+  if ( _normalization!=1 && _genDiPhotonFilter==0) o_weight=o_weight_SM*btagnorm*reweight/(F_year/1.06); //ggHH signal
+ 
+ 
   //===========FIXME for extraction limits on MC - indicate right path to out LT
 /*
   TString option = GetOption(); 
@@ -560,8 +560,7 @@ Bool_t bbggLTMaker::Process(Long64_t entry)
 //=========with cut =========================
   //Categorisation for boundaries from flashgg. VBFHH categories
   else if (_whichCategorization==6){
-    //std::cout<<"o_vbf_Cat="<<o_vbf_Cat_Selected<<"\t"<<"o_vbf_Cat_Selected="<<o_vbf_Cat_Selected<<std::endl;
-    if( o_vbf_Cat_Selected!=0 ) {  
+    if( o_vbf_Cat_Selected==1 || o_vbf_Cat_Selected==2) {  
     	std::cout<<"o_vbf_Cat="<<o_vbf_Cat_Selected<<"\t"<<"o_vbf_Cat_Selected="<<o_vbf_Cat_Selected<<"\t"<<"Mjj="<<Mjj<<std::endl;
 	o_catID = 12; 
     } 
