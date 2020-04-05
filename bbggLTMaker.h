@@ -26,7 +26,6 @@ public :
    TTree *_outTree;
 
    Double_t o_weight;
-   Double_t o_weight_SM;
    Double_t o_mgg, o_mjj, o_bbggMass, o_MX, o_ttHTagger;
    Int_t o_catID;
    UInt_t o_run;
@@ -58,7 +57,6 @@ public :
    typedef ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<double> > LorentzVector;
    Int_t           candidate_id;
    Float_t         weight;
-   Float_t         weight_SM;
    Float_t         reweight;
    Int_t           isSignal;
    Double_t        genTotalWeight;
@@ -176,7 +174,6 @@ public :
    TBranch        *b_Mgg;
    TBranch        *b_mbbgg;
    TBranch        *b_evWeight;
-   TBranch        *b_evWeight_SM;
    TBranch        *b_reWeight;
 
    bbggLTMaker(TTree * /*tree*/ =0) : fChain(0) { }
@@ -244,7 +241,6 @@ void bbggLTMaker::Init(TTree *tree)
    fChain->SetBranchAddress("CMS_hgg_mass", &CMS_hgg_mass, &b_Mgg);
    fChain->SetBranchAddress("diHiggs_mass", &diHiggs_mass, &b_mbbgg);
    fChain->SetBranchAddress("weight", &weight, &b_evWeight);
-   fChain->SetBranchAddress("weight_SM", &weight_SM, &b_evWeight_SM);
    if(fChain->GetBranch("benchmark_reweight_SM")) {
    //if(fChain->GetBranch("KL1")) {
    fChain->SetBranchAddress("benchmark_reweight_SM", &reweight, &b_reWeight);
