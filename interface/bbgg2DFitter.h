@@ -90,6 +90,7 @@ class bbgg2DFitter {
   bool _useDSCB = 0;
   bool _doARW = 0;
   std::map<int,float> sigExpec;
+  std::map<int,float> sigVBFHHExpec;
   std::vector<std::map<TString,float>> higExpec;
   std::map<int,float> bkgExpec;
   std::map<int,float> dataObs;
@@ -136,6 +137,8 @@ class bbgg2DFitter {
 
    void SetSigExpectedCats(int cat, float expec) {
      if(sigExpec.find(cat) != sigExpec.end() ){std::cout << "[SetSigExpectedCats] Cat already set!" << std::endl;} else { sigExpec[cat] = expec; }}
+   void SetSigVBFHHExpectedCats(int cat, float expec) {
+     if(sigVBFHHExpec.find(cat) != sigVBFHHExpec.end() ){std::cout << "[SetSigVBFHHExpectedCats] Cat already set!" << std::endl;} else { sigVBFHHExpec[cat] = expec; }}
    void SetBkgExpectedCats(int cat, float expec) {
      if(bkgExpec.find(cat) != bkgExpec.end() ){std::cout << "[SetBkgExpectedCats] Cat already set!" << std::endl;} else { bkgExpec[cat] = expec; }}
    void SetObservedCats(int cat, float observ) {
@@ -144,6 +147,9 @@ class bbgg2DFitter {
    float GetSigExpectedCats(int cat) {
      if(sigExpec.find(cat) == sigExpec.end() ){std::cout << "[GetSigExpectedCats] Cat not found! Cat=" <<cat<< std::endl; return -1;}
      else { return sigExpec[cat]; }}
+   float GetSigVBFHHExpectedCats(int cat) {
+     if(sigVBFHHExpec.find(cat) == sigVBFHHExpec.end() ){std::cout << "[GetSigVBFHHExpectedCats] Cat not found! Cat=" <<cat<< std::endl; return -1;}
+     else { return sigVBFHHExpec[cat]; }}
    float GetBkgExpectedCats(int cat) {
      if(bkgExpec.find(cat) == bkgExpec.end() ){std::cout << "[GetBkgExpectedCats] Cat not found! Cat="<<cat<< std::endl; return -1;}
      else { return bkgExpec[cat]; }}

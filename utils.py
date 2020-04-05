@@ -78,7 +78,7 @@ def runCombine(inDir, doBlind, log, combineOpt = 1, Label = None, scaleSingleHig
   return combExitCode
 
 
-def DataCardMaker_wHiggs(Folder, nCats, signalExp, observed, higgsExp, log):
+def DataCardMaker_wHiggs(Folder, nCats, signalExp, signalVBFHHExp, observed, higgsExp, log):
   # Need to loop over categories here
 
   for n in range(nCats):
@@ -99,7 +99,7 @@ def DataCardMaker_wHiggs(Folder, nCats, signalExp, observed, higgsExp, log):
       ##expected signal
       outToWrite = outToWrite.replace("SIG_CAT"+str(n), '%.5f' % signalExp[n])
       #VBFHH -signal
-      outToWrite = outToWrite.replace("VBFHH_CAT"+str(n), '%.5f' % signalExp[n])
+      outToWrite = outToWrite.replace("VBFHH_CAT"+str(n), '%.5f' % signalVBFHHExp[n])
       ## higgs
       # print higgsExp
       for hty in higgsExp:
@@ -132,7 +132,7 @@ def DataCardMaker_wHiggs(Folder, nCats, signalExp, observed, higgsExp, log):
   os.system("sed -i 's|"+strReplace+"||g' "+combCard)
   # print strReplace
 
-def DataCardMaker_wHiggs_bias(Folder, nCats, signalExp, observed, higgsExp, log):
+def DataCardMaker_wHiggs_bias(Folder, nCats, signalExp, signalVBFHHExp, observed, higgsExp, log):
   # Need to loop over categories here
 
   for n in range(nCats):
@@ -154,7 +154,7 @@ def DataCardMaker_wHiggs_bias(Folder, nCats, signalExp, observed, higgsExp, log)
       ##expected signal
       outToWrite = outToWrite.replace("SIG_CAT"+str(n), '%.5f' % signalExp[n])
       #VBFHH -signal
-      outToWrite = outToWrite.replace("VBFHH_CAT"+str(n), '%.5f' % signalExp[n])
+      outToWrite = outToWrite.replace("VBFHH_CAT"+str(n), '%.5f' % signalVBFHHExp[n])
       ## higgs
       # print higgsExp
       for hty in higgsExp:
@@ -188,7 +188,7 @@ def DataCardMaker_wHiggs_bias(Folder, nCats, signalExp, observed, higgsExp, log)
   # print strReplace
 
 
-def DataCardMaker_bias(Folder, nCats, signalExp, observed, log):
+def DataCardMaker_bias(Folder, nCats, signalExp, signalVBFHHExp, observed, log):
   # Need to loop over categories here
 
   for n in range(nCats):
@@ -209,7 +209,7 @@ def DataCardMaker_bias(Folder, nCats, signalExp, observed, log):
       #print outToWrite
       ##expected signal
       outToWrite = outToWrite.replace("SIG", '%.5f' % signalExp[n])
-      outToWrite = outToWrite.replace("VBFHH", '%.5f' % signalExp[n])
+      outToWrite = outToWrite.replace("VBFHH", '%.5f' % signalVBFHHExp[n])
       outToWrite = outToWrite.replace("ICAT", 'cat%d' % n)
 
       with open(Folder+'/hhbbgg_13TeV_DataCard_bias_cat'+str(n)+'.txt', 'w') as outputDatacard:

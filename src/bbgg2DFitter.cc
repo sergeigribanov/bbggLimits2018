@@ -262,7 +262,7 @@ int bbgg2DFitter::AddSigVBFHHData(float mass, TString signalfile)
       
       sigToFit[i] = (RooDataSet*) sigScaled.reduce(myArgList,_cut+TString::Format(" && catID==%d ",i)+cut0);
 
-      this->SetSigExpectedCats(i, sigToFit[i]->sumEntries());
+      this->SetSigVBFHHExpectedCats(i, sigToFit[i]->sumEntries());
 
       if (_verbLvl>0) {
 	std::cout << "======================================================================" <<std::endl;
@@ -492,14 +492,14 @@ void bbgg2DFitter::SigVBFHHModelFit(float mass)
   //******************************************//
   // Fit signal with model pdfs
   //******************************************//
-  if (_verbLvl>1) std::cout << "Doing signal model fit for M = " <<mass<<std::endl;
+  if (_verbLvl>1) std::cout << "Doing VBFHH signal model fit for M = " <<mass<<std::endl;
   
   // four categories to fit
-  RooDataSet* sigToFit[_NCAT];
+  RooDataSet* sigVBFHHToFit[_NCAT];
   RooAbsPdf* mggSig[_NCAT];
   RooAbsPdf* mjjSig[_NCAT];
-  RooProdPdf* SigPdf[_NCAT];
-  RooAbsPdf* SigPdf1[_NCAT];
+  RooProdPdf* SigVBFHHPdf[_NCAT];
+  RooAbsPdf* SigVBFHHPdf1[_NCAT];
 
   RooRealVar* mgg = _w->var("mgg");
   RooRealVar* mjj = _w->var("mjj");
@@ -510,7 +510,7 @@ void bbgg2DFitter::SigVBFHHModelFit(float mass)
 
       if (_verbLvl>1) std::cout << " Started with cat="<<c<<std::endl;
       
-      sigToFit[c] = (RooDataSet*) _w->data(TString::Format("Sig_vbfhh_cat%d",c));
+      sigVBFHHToFit[c] = (RooDataSet*) _w->data(TString::Format("Sig_vbfhh_cat%d",c));
       mggSig[c] = (RooAbsPdf*) _w->pdf(TString::Format("mggSig_cat%d",c));
       mjjSig[c] = (RooAbsPdf*) _w->pdf(TString::Format("mjjSig_cat%d",c));
 
@@ -518,27 +518,27 @@ void bbgg2DFitter::SigVBFHHModelFit(float mass)
       mggSig[c]->Print();
       mjjSig[c]->Print();
       
-      if(_fitStrategy == 2) SigPdf[c] = new RooProdPdf(TString::Format("SigPdf_cat%d",c),"",RooArgSet(*mggSig[c], *mjjSig[c]));
+      if(_fitStrategy == 2) SigVBFHHPdf[c] = new RooProdPdf(TString::Format("SigVBFHHPdf_cat%d",c),"",RooArgSet(*mggSig[c], *mjjSig[c]));
       if (_verbLvl>1) std::cout << " DBG point 2 cat="<<c<<std::endl;
-      if(_fitStrategy == 1) SigPdf1[c] = (RooAbsPdf*) mggSig[c]->Clone(TString::Format("SigPdf_cat%d",c));
+      if(_fitStrategy == 1) SigVBFHHPdf1[c] = (RooAbsPdf*) mggSig[c]->Clone(TString::Format("SigVBFHHPdf_cat%d",c));
       if (_verbLvl>1) std::cout << " DBG point 3 cat="<<c<<std::endl;
       
       ((RooRealVar*) _w->var(TString::Format("mgg_sig_m0_cat%d",c)))->setVal(mass);
 
       if (_verbLvl>1) std::cout << "OK up to now... Mass point: " <<mass<<"  cat="<<c<<std::endl;
-      if(_fitStrategy == 2) SigPdf[c]->fitTo(*sigToFit[c],Range("SigFitRange"),SumW2Error(kTRUE),PrintLevel(-1));
-      if(_fitStrategy == 1) SigPdf1[c]->fitTo(*sigToFit[c],Range("SigFitRange"),SumW2Error(kTRUE),PrintLevel(-1));
+      if(_fitStrategy == 2) SigVBFHHPdf[c]->fitTo(*sigVBFHHToFit[c],Range("SigFitRange"),SumW2Error(kTRUE),PrintLevel(-1));
+      if(_fitStrategy == 1) SigVBFHHPdf1[c]->fitTo(*sigVBFHHToFit[c],Range("SigFitRange"),SumW2Error(kTRUE),PrintLevel(-1));
       if (_verbLvl>1) std::cout << "How is the Fit? Mass point: " <<mass<<"  cat="<<c<<std::endl;
 
       RooArgSet *sigParams = 0;
       if (_fitStrategy==2)
-	sigParams = (RooArgSet*) SigPdf[c]->getParameters(RooArgSet(*mgg, *mjj));
+	sigParams = (RooArgSet*) SigVBFHHPdf[c]->getParameters(RooArgSet(*mgg, *mjj));
       if (_fitStrategy==1)
-	sigParams = (RooArgSet*) SigPdf1[c]->getParameters(RooArgSet(*mgg));
+	sigParams = (RooArgSet*) SigVBFHHPdf1[c]->getParameters(RooArgSet(*mgg));
       
-      _w->defineSet(TString::Format("SigPdfParam_cat%d",c), *sigParams);
-      _w->set(TString::Format("SigPdfParam_cat%d",c))->Print("v");
-      SetConstantParams(_w->set(TString::Format("SigPdfParam_cat%d",c)));
+      _w->defineSet(TString::Format("SigVBFHHPdfParam_cat%d",c), *sigParams);
+      _w->set(TString::Format("SigVBFHHPdfParam_cat%d",c))->Print("v");
+      SetConstantParams(_w->set(TString::Format("SigVBFHHPdfParam_cat%d",c)));
       
       if (_verbLvl>1){
 	std::cout << "Print out the parameters of the fit" << std::endl;
@@ -552,16 +552,16 @@ void bbgg2DFitter::SigVBFHHModelFit(float mass)
       }
       
       if(_fitStrategy == 1) {
-	_w->import(*SigPdf1[c]);
+	_w->import(*SigVBFHHPdf1[c]);
 	//_w->import(*mggSig[c]);
       }
       if(_fitStrategy == 2)
-	_w->import(*SigPdf[c]);
+	_w->import(*SigVBFHHPdf[c]);
 
       if (_verbLvl>1) std::cout<<std::endl;
     }
 
-  if (_verbLvl>1) std::cout << "Signal fit is done and imported to WS. M = " <<mass<<std::endl;
+  if (_verbLvl>1) std::cout << "Signal VBFH Hfit is done and imported to WS. M = " <<mass<<std::endl;
 
 }
 
@@ -768,7 +768,7 @@ void bbgg2DFitter::MakeSigVBFWS(std::string fileBaseName)
   //**********************************************************************//
   
   TString wsDir = TString::Format("%s/",_folder_name.data());
-  std::vector<RooAbsPdf*> SigPdf(_NCAT,nullptr);
+  std::vector<RooAbsPdf*> SigVBFHHPdf(_NCAT,nullptr);
   RooWorkspace *wAll = new RooWorkspace("w_all","w_all");
 
   for (int c = 0; c < _NCAT; ++c)
@@ -783,9 +783,9 @@ void bbgg2DFitter::MakeSigVBFWS(std::string fileBaseName)
       }
       
 
-      SigPdf[c] = (RooAbsPdf*) _w->pdf(TString::Format("SigPdf_cat%d",c));
+      SigVBFHHPdf[c] = (RooAbsPdf*) _w->pdf(TString::Format("SigVBFHHPdf_cat%d",c));
       
-      RooArgSet *sigParams = (RooArgSet*) SigPdf[c]->getParameters(RooArgSet(*_w->var("mgg"), *_w->var("mjj")));
+      RooArgSet *sigParams = (RooArgSet*) SigVBFHHPdf[c]->getParameters(RooArgSet(*_w->var("mgg"), *_w->var("mjj")));
                  
       TIterator* paramIter = (TIterator*) sigParams->createIterator();
       TObject* tempObj = nullptr;
@@ -816,7 +816,7 @@ void bbgg2DFitter::MakeSigVBFWS(std::string fileBaseName)
 	  _w->factory(TString::Format("prod::CMS_hbb_gsigma_cat%d(mjj_sig_gsigma_cat%d, CMS_hbb_sig_sigmaScale)", c, c));
       }
 
-      TString EditPDF = TString::Format("EDIT::CMS_sig_vbfhh_cat%d(SigPdf_cat%d,", c, c);
+      TString EditPDF = TString::Format("EDIT::CMS_sig_vbfhh_cat%d(SigVBFHHPdf_cat%d,", c, c);
       for (unsigned int iv = 0; iv < varsToChange.size(); iv++)
         EditPDF += TString::Format("%s=%s,", varsToChange[iv].first.Data(), varsToChange[iv].second.Data());
       //Shifted and smeared vars
@@ -841,7 +841,7 @@ void bbgg2DFitter::MakeSigVBFWS(std::string fileBaseName)
       _w->factory(EditPDF);
 
       wAll->import(*_w->pdf(TString::Format("CMS_sig_vbfhh_cat%d",c)));
-      wAll->import(*_w->data(TString::Format("Sig_vbfhh_cat%d",c)), Rename(TString::Format("Sig_cat%d", c)));
+      wAll->import(*_w->data(TString::Format("Sig_vbfhh_cat%d",c)), Rename(TString::Format("Sig_vbfhh_cat%d", c)));
       //if (_fitStrategy==1)
       //wAll->import(*_w->pdf(TString::Format("mggSig_cat%d",c)), Rename(TString::Format("mggSig_cat%d", c)));
     }

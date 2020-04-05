@@ -172,6 +172,7 @@ def runFullChain(opt, Params, point=None, NRgridPoint=-1, extraLabel=''):
   # ParamsForFits = {'SM': massCuts, 'box': massCuts}
 
   SignalFile = "/LT_output_GluGluToHHTo2B2G_node_"+str(point)+"_13TeV-madgraph.root"
+  #SignalFile = "/LT_output_VBFHHTo2B2G_CV_1_C2V_1_C3_1_TuneCP5_PSWeights_13TeV-madgraph-pythia8.root"
   #VBFHHSignalFile = "/LT_output_GluGluToHHTo2B2G_node_"+str(point)+"_13TeV-madgraph.root"
   VBFHHSignalFile = "/LT_output_VBFHHTo2B2G_CV_1_C2V_1_C3_1_TuneCP5_PSWeights_13TeV-madgraph-pythia8.root"
   if "LT_StrikeBack" in LTDir or "MadMax" in LTDir or "ttH" in LTDir:
@@ -347,20 +348,24 @@ def runFullChain(opt, Params, point=None, NRgridPoint=-1, extraLabel=''):
   # print PID, "IM HERE"
 
   sigExp = []
+  sigVBFHHExp = []
   bkgObs = []
   for cc in xrange(NCAT):
     sigExp.append(-1)
+    sigVBFHHExp.append(-1)
     bkgObs.append(-1)
 
   sigExpStr = ''
+  sigVBFHHExpStr = ''
   bkgObsStr = ''
   for cc in xrange(NCAT):
     sigExp[cc] = theFitter.GetSigExpectedCats(cc);
+    sigVBFHHExp[cc] = theFitter.GetSigVBFHHExpectedCats(cc);
     if not doBlinding:
       bkgObs[cc] = theFitter.GetObservedCats(cc);
 
     if opt.verb>1:
-      mainLog.debug('SIG events in cat %r: %r,  OBS (BKG): %r' % (sigExp[cc], cc, bkgObs[cc]))
+      mainLog.debug('SIG events in cat %r: %r, %r  OBS (BKG): %r' % (sigExp[cc], sigVBFHHExp[cc], cc, bkgObs[cc]))
 
   # Make datacards:
   myLoc = os.getenv("CMSSW_BASE") + '/src/HiggsAnalysis/bbggLimits2018/'+newFolder
@@ -369,9 +374,9 @@ def runFullChain(opt, Params, point=None, NRgridPoint=-1, extraLabel=''):
   elif addHiggs == 0:
     DataCardMaker(str(myLoc), NCAT, sigExp, bkgObs, isRes)
   else:
-    DataCardMaker_wHiggs(str(myLoc), NCAT, sigExp, bkgObs, higgsExp, mainLog)
-    DataCardMaker_bias(str(myLoc), NCAT, sigExp, bkgObs, mainLog)
-    DataCardMaker_wHiggs_bias(str(myLoc), NCAT, sigExp, bkgObs, higgsExp, mainLog)
+    DataCardMaker_wHiggs(str(myLoc), NCAT, sigExp, sigVBFHHExp, bkgObs, higgsExp, mainLog)
+    DataCardMaker_bias(str(myLoc), NCAT, sigExp, sigVBFHHExp, bkgObs, mainLog)
+    DataCardMaker_wHiggs_bias(str(myLoc), NCAT, sigExp, sigVBFHHExp, bkgObs, higgsExp, mainLog)
 
   mainLog.info("\t DATACARD DONE. Node/Mass=%r, GridPoint=%r", point,NRgridPoint)
   if opt.verb>0: p7 = printTime(p6,start,mainLog)
