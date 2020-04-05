@@ -114,9 +114,11 @@ class bbgg2DFitter {
    RooAbsPdf* getPdf(PdfModelBuilder pdfsModel,string type, int order, const char* ext);
    RooArgSet* defineVariables(bool s);
    int AddSigData(float mass, TString signalfile); 
+   int AddSigVBFHHData(float mass, TString signalfile); 
    std::vector<float> AddHigData(float mass, TString signalfile, int higgschannel, TString higName); 
    void AddBkgData(TString datafile); 
    void SigModelFit(float mass); 
+   void SigVBFHHModelFit(float mass); 
    void HigModelFit(float mass, int higgschannel, TString higName); 
    RooFitResult* BkgModelFit(std::string);  
    void BkgMultiModelFit(std::string fileBaseName); 

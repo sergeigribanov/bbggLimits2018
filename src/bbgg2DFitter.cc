@@ -208,6 +208,102 @@ int bbgg2DFitter::AddSigData(float mass, TString signalfile)
   return 0;
 }
 
+
+int bbgg2DFitter::AddSigVBFHHData(float mass, TString signalfile)
+{
+  if (_verbLvl>1) std::cout << "================= Add Signal========================== " << _wName.c_str() << " " << _doARW << " " << _nonResWeightIndex << std::endl;
+  if (_verbLvl>1) std::cout << " File to open:"<<signalfile  << std::endl;
+  TFile *sigFile = TFile::Open(signalfile);
+  bool opened=sigFile->IsOpen();
+  if(opened==false) return -1;
+  if (_verbLvl>1) std::cout << " TFile opened:"<<signalfile  << std::endl;
+
+  TTree* sigTree = (TTree*)sigFile->Get("LT");
+
+  //Luminosity
+  RooRealVar lumi("lumi","lumi", _lumi);
+  _w->import(lumi);
+  //Define variables
+  RooArgSet* ntplVars = bbgg2DFitter::defineVariables();
+  if(sigTree==nullptr)
+    {
+      if (_verbLvl>1) std::cout<<"LT tree for AddSigData not found."<<std::endl;
+      std::exit(1);
+    }
+
+  if (_verbLvl>0) {
+    std::cout<<"[DBG]  Prining ntplVars from sig"<<std::endl;
+    ntplVars->Print();
+  }
+
+  RooDataSet sigScaled("sigScaled", "dataset", sigTree, *ntplVars, _cut, _wName.c_str());
+  //  if(_doARW) sigScaled = RooDataSet("sigScaled","dataset",sigTree,*ntplVars,_cut, "new_evWeight");
+  //  else sigScaled = RooDataSet("sigScaled","dataset",sigTree,*ntplVars,_cut, _wName.c_str());
+
+  RooDataSet* sigToFit[_NCAT];
+  TString cut0 = " && 1>0";
+
+  RooArgList myArgList(*_w->var("mgg"));
+  myArgList.add(*_w->var("mjj"));
+
+  if (_nonResWeightIndex>=-1)
+    myArgList.add(*_w->var("mtot"));
+  
+
+  myArgList.Print();
+
+  for ( int i=0; i<_NCAT; ++i)
+    {
+
+      if (_verbLvl>0) {
+	std::cout << "-- Reducing category " << i << std::endl;
+	std::cout << "Including the _cut: " << _cut << std::endl;
+      }
+      
+      sigToFit[i] = (RooDataSet*) sigScaled.reduce(myArgList,_cut+TString::Format(" && catID==%d ",i)+cut0);
+
+      this->SetSigExpectedCats(i, sigToFit[i]->sumEntries());
+
+      if (_verbLvl>0) {
+	std::cout << "======================================================================" <<std::endl;
+	std::cout<<"[DBG]  Cat="<<i<< "\t Sig sumEntries="<<sigToFit[i]->sumEntries()<<std::endl;
+	std::cout<<"mGG:  Mean = "<<sigToFit[i]->mean(*_w->var("mgg"))<<"  sigma = "<<sigToFit[i]->sigma(*_w->var("mgg"))<<std::endl;
+	if (_fitStrategy != 1)
+	  std::cout<<"mJJ:  Mean = "<<sigToFit[i]->mean(*_w->var("mjj"))<<"  sigma = "<<sigToFit[i]->sigma(*_w->var("mjj"))<<std::endl;
+
+	if (_nonResWeightIndex>=-1)
+	  std::cout<<"mTot: Mean = "<<sigToFit[i]->mean(*_w->var("mtot"))<<"  sigma = "<<sigToFit[i]->sigma(*_w->var("mtot"))<<std::endl;
+      }
+
+      /*This defines each category*/
+      std::cout << "-- Importing cat " << i << std::endl;
+      _w->import(*sigToFit[i],Rename(TString::Format("Sig_vbfhh_cat%d",i)));
+    }
+  
+  // Create full signal data set without categorization
+  std::cout << "-- Reducing all signal, no cat" << std::endl;
+  RooDataSet* sigToFitAll = (RooDataSet*) sigScaled.reduce(myArgList,_cut+cut0);
+
+  _w->import(*sigToFitAll,Rename("Sig_vbfhh"));
+
+  // here we print the number of entries on the different categories
+  if (_verbLvl>1) {
+    std::cout << "======================================================================" <<std::endl;
+    std::cout << "========= the number of entries on the different categories ==========" <<std::endl;
+    std::cout << "---- one channel: " << sigScaled.sumEntries() <<std::endl;
+    for (int c = 0; c < _NCAT; ++c)
+      {
+	Float_t nExpEvt = sigToFit[c]->sumEntries();
+	std::cout<<TString::Format("nEvt exp. cat%d : ",c)<<nExpEvt<<TString::Format(" eff x Acc cat%d : ",c)<<std::endl;
+    } // close ncat
+    std::cout << "======================================================================" <<std::endl;
+    sigScaled.Print("v");
+    std::cout << "----- DONE With Adding VBFHH Signal! \n\n"<< std::endl;
+  }
+  return 0;
+}
+
+
 std::vector<float> bbgg2DFitter::AddHigData(float mass, TString signalfile, int higgschannel, TString higName)
 {
   if (_verbLvl>1) {
@@ -389,6 +485,86 @@ void bbgg2DFitter::SigModelFit(float mass)
   if (_verbLvl>1) std::cout << "Signal fit is done and imported to WS. M = " <<mass<<std::endl;
 
 }
+
+
+void bbgg2DFitter::SigVBFHHModelFit(float mass)
+{
+  //******************************************//
+  // Fit signal with model pdfs
+  //******************************************//
+  if (_verbLvl>1) std::cout << "Doing signal model fit for M = " <<mass<<std::endl;
+  
+  // four categories to fit
+  RooDataSet* sigToFit[_NCAT];
+  RooAbsPdf* mggSig[_NCAT];
+  RooAbsPdf* mjjSig[_NCAT];
+  RooProdPdf* SigPdf[_NCAT];
+  RooAbsPdf* SigPdf1[_NCAT];
+
+  RooRealVar* mgg = _w->var("mgg");
+  RooRealVar* mjj = _w->var("mjj");
+  mgg->setRange("SigFitRange",_minSigFitMgg,_maxSigFitMgg);
+  mjj->setRange("SigFitRange",_minSigFitMjj,_maxSigFitMjj);
+  for (int c = 0; c < _NCAT; ++c)
+    {
+
+      if (_verbLvl>1) std::cout << " Started with cat="<<c<<std::endl;
+      
+      sigToFit[c] = (RooDataSet*) _w->data(TString::Format("Sig_vbfhh_cat%d",c));
+      mggSig[c] = (RooAbsPdf*) _w->pdf(TString::Format("mggSig_cat%d",c));
+      mjjSig[c] = (RooAbsPdf*) _w->pdf(TString::Format("mjjSig_cat%d",c));
+
+      if (_verbLvl>1) std::cout << " DBG point 1 cat="<<c<<std::endl;
+      mggSig[c]->Print();
+      mjjSig[c]->Print();
+      
+      if(_fitStrategy == 2) SigPdf[c] = new RooProdPdf(TString::Format("SigPdf_cat%d",c),"",RooArgSet(*mggSig[c], *mjjSig[c]));
+      if (_verbLvl>1) std::cout << " DBG point 2 cat="<<c<<std::endl;
+      if(_fitStrategy == 1) SigPdf1[c] = (RooAbsPdf*) mggSig[c]->Clone(TString::Format("SigPdf_cat%d",c));
+      if (_verbLvl>1) std::cout << " DBG point 3 cat="<<c<<std::endl;
+      
+      ((RooRealVar*) _w->var(TString::Format("mgg_sig_m0_cat%d",c)))->setVal(mass);
+
+      if (_verbLvl>1) std::cout << "OK up to now... Mass point: " <<mass<<"  cat="<<c<<std::endl;
+      if(_fitStrategy == 2) SigPdf[c]->fitTo(*sigToFit[c],Range("SigFitRange"),SumW2Error(kTRUE),PrintLevel(-1));
+      if(_fitStrategy == 1) SigPdf1[c]->fitTo(*sigToFit[c],Range("SigFitRange"),SumW2Error(kTRUE),PrintLevel(-1));
+      if (_verbLvl>1) std::cout << "How is the Fit? Mass point: " <<mass<<"  cat="<<c<<std::endl;
+
+      RooArgSet *sigParams = 0;
+      if (_fitStrategy==2)
+	sigParams = (RooArgSet*) SigPdf[c]->getParameters(RooArgSet(*mgg, *mjj));
+      if (_fitStrategy==1)
+	sigParams = (RooArgSet*) SigPdf1[c]->getParameters(RooArgSet(*mgg));
+      
+      _w->defineSet(TString::Format("SigPdfParam_cat%d",c), *sigParams);
+      _w->set(TString::Format("SigPdfParam_cat%d",c))->Print("v");
+      SetConstantParams(_w->set(TString::Format("SigPdfParam_cat%d",c)));
+      
+      if (_verbLvl>1){
+	std::cout << "Print out the parameters of the fit" << std::endl;
+	TIterator* paramIter = (TIterator*) sigParams->createIterator();
+	TObject* tempObj = nullptr;
+	while( (tempObj = paramIter->Next()) ) {
+	  if ( (TString(tempObj->GetName()).EqualTo("mjj")) || (TString(tempObj->GetName()).EqualTo("mgg"))) continue;
+	  std::cout << "Signal variables: " << tempObj->GetName() << std::endl;
+	}
+       	sigParams->Print("v");
+      }
+      
+      if(_fitStrategy == 1) {
+	_w->import(*SigPdf1[c]);
+	//_w->import(*mggSig[c]);
+      }
+      if(_fitStrategy == 2)
+	_w->import(*SigPdf[c]);
+
+      if (_verbLvl>1) std::cout<<std::endl;
+    }
+
+  if (_verbLvl>1) std::cout << "Signal fit is done and imported to WS. M = " <<mass<<std::endl;
+
+}
+
 
 void bbgg2DFitter::HigModelFit(float mass, int higgschannel, TString higName)
 {
@@ -665,15 +841,14 @@ void bbgg2DFitter::MakeSigVBFWS(std::string fileBaseName)
       _w->factory(EditPDF);
 
       wAll->import(*_w->pdf(TString::Format("CMS_sig_vbfhh_cat%d",c)));
-      wAll->import(*_w->data(TString::Format("Sig_cat%d",c)), Rename(TString::Format("Sig_cat%d", c)));
+      wAll->import(*_w->data(TString::Format("Sig_vbfhh_cat%d",c)), Rename(TString::Format("Sig_cat%d", c)));
       //if (_fitStrategy==1)
       //wAll->import(*_w->pdf(TString::Format("mggSig_cat%d",c)), Rename(TString::Format("mggSig_cat%d", c)));
     }
   wAll->Print("v");
-  //TString filename(wsDir+TString(fileBaseName)+".root");
   TString filename(wsDir+TString(fileBaseName)+".root");
   wAll->writeToFile(filename);
-  if (_verbLvl>1) std::cout << "Write signal workspace in: " << filename << " file" << std::endl;
+  if (_verbLvl>1) std::cout << "Write VBFHH signal workspace in: " << filename << " file" << std::endl;
   return;
 } // close make signal WP
 

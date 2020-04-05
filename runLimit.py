@@ -270,7 +270,7 @@ def runFullChain(opt, Params, point=None, NRgridPoint=-1, extraLabel=''):
   mainLog.info("\t SIGNAL'S WORKSPACE DONE. Node=%r, GridPoint=%r", point,NRgridPoint)
   if opt.verb>0: p3 = printTime(p2,start,mainLog)
 
-  openStatus = theFitter.AddSigData( mass, str(LTDir+VBFHHSignalFile))
+  openStatus = theFitter.AddSigVBFHHData( mass, str(LTDir+VBFHHSignalFile))
   if openStatus==-1:
     mainLog.error('There is a problem with openStatus')
     return __BAD__
@@ -280,7 +280,7 @@ def runFullChain(opt, Params, point=None, NRgridPoint=-1, extraLabel=''):
   if opt.verb>1:
     theFitter.PrintWorkspace();
 
-  theFitter.SigModelFit(mass)
+  theFitter.SigVBFHHModelFit(mass)
   mainLog.info("\t VBFHH SIGNAL FITTED. Node=%r, GridPoint=%r", point,NRgridPoint)
   if opt.verb>0: p2 = printTime(p1,start, mainLog)
 
@@ -326,7 +326,7 @@ def runFullChain(opt, Params, point=None, NRgridPoint=-1, extraLabel=''):
     theFitter.PrintWorkspace();
 
   #JsonForEnvelop = "/afs/cern.ch/user/i/ivovtin/HHggbb/CMSSW_8_1_0/src/HiggsAnalysis/bbggLimits2018/jsonsForEnvelope/Env_json_2D_Data_18032020_15cat_withcut.dat"
-  JsonForEnvelop = "jsonsForEnvelope/Env_json_2D_Data_18032020_15cat_withcut.dat"
+  JsonForEnvelop = "jsonsForEnvelope/Env_json_2D_Data_02042020_13cat_withcut.dat"
   fitresults = theFitter.BkgModelFit(JsonForEnvelop)
   wsMultipdfFileBkgName = "ws_hhbbgg.data_bkg_multipdf"
   theFitter.BkgMultiModelFitAllOrders(wsMultipdfFileBkgName, JsonForEnvelop)
