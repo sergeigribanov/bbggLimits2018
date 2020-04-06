@@ -42,4 +42,8 @@ CMS_hgg_sig_m0_absShift  param  1 0.0003
 
 roomultipdf_cat4_norm  flatParam 
 
-pdf_index_cat4 discrete
+pdf_index_cat4 discrete 
+yield_norm    rateParam cat4 Sig 0.080730000
+yield_norm    rateParam cat4 vbfhh 0.0044980000
+nuisance edit  freeze yield_norm
+

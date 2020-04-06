@@ -23,3 +23,7 @@ CMS_eff_PhoID           lnN           1.01           1.01         -
 roomultipdf_ICAT_norm  flatParam
 
 pdf_index_ICAT discrete
+yield_norm    rateParam ICAT Sig 0.080730000
+yield_norm    rateParam ICAT vbfhh 0.0044980000
+nuisance edit  freeze yield_norm
+
