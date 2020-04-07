@@ -43,8 +43,8 @@ CMS_hgg_sig_m0_absShift  param  1 0.0003
 roomultipdf_cat14_norm  flatParam 
 
 pdf_index_cat14 discrete
-yield_norm_Sig    rateParam cat14 Sig 0.080730000
-yield_norm_VBF    rateParam cat14 vbfhh 0.0044980000
+yield_norm_Sig    rateParam cat14 Sig 0.947224
+yield_norm_VBF    rateParam cat14 vbfhh 0.0527761
 nuisance edit  freeze yield_norm_Sig
 nuisance edit  freeze yield_norm_VBF
 

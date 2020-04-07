@@ -42,8 +42,8 @@ CMS_hgg_sig_sigmaScale   param  1 0.01
 CMS_hgg_sig_m0_absShift  param  1 0.0003
 
 CMS_bkg_cat10_norm  flatParam
-yield_norm_Sig    rateParam cat10 Sig 0.080730000
-yield_norm_VBF    rateParam cat10 vbfhh 0.0044980000
+yield_norm_Sig    rateParam cat10 Sig 0.947224
+yield_norm_VBF    rateParam cat10 vbfhh 0.0527761
 nuisance edit  freeze yield_norm_Sig
 nuisance edit  freeze yield_norm_VBF
 
