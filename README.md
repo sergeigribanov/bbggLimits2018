@@ -16,7 +16,7 @@ scramv1 b clean; scramv1 b
 Get a stable version of the code:
 ```
 cd ../
-git clone git@github.com:ivovtin/bbggLimits2018.git -b run2_analysis_15cat 
+git clone git@github.com:ivovtin/bbggLimits2018.git -b run2_analysis_vbfhh 
 cd bbggLimits2018
 scramv1 b
 ```
@@ -24,7 +24,7 @@ scramv1 b
 
 ## 2. Making limit trees (LT)
 ```
-. run1.sh
+. runvbfhhLT.sh
 ```
 The goal of this code is to categorize events and make a new tree which *catID* variable, as well as *mgg* and *mjj*. 
 
@@ -42,6 +42,7 @@ The recommended option is Y = 2:
  Y = 3: HIG-19-018 tagger, with optimized categorization and mjj cuts (12 categories);
  Y = 4: HIG-19-018 tagger, with optimized categorization without mjj cut (12 categories), new style;
  Y = 5: HIG-19-018 tagger, with optimized categorization without mjj cut (15 categories);
+ Y = 6: HIG-19-018 tagger, with optimized categorization without mjj cut, 12 ggHH categories + VBFHH category (13 categories);
 ```
 
 ## 3. Performing fit and extraction of limits
