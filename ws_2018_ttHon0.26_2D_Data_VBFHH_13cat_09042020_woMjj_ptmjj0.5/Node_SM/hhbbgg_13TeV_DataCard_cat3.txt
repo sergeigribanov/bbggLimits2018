@@ -1,0 +1,49 @@
+imax 1 number of bins
+jmax 7 number of processes minus 1
+kmax * number of nuisance parameters
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+shapes data_obs cat3 /afs/cern.ch/work/i/ivovtin/Hggbb/CMSSW_8_1_0/src/HiggsAnalysis/bbggLimits2018/ws_2018_ttHon0.26_2D_Data_VBFHH_13cat_09042020_woMjj_ptmjj0.5/Node_SM/ws_hhbbgg.data_bkg.root w_all:data_obs_cat3
+shapes Bkg cat3 /afs/cern.ch/work/i/ivovtin/Hggbb/CMSSW_8_1_0/src/HiggsAnalysis/bbggLimits2018/ws_2018_ttHon0.26_2D_Data_VBFHH_13cat_09042020_woMjj_ptmjj0.5/Node_SM/ws_hhbbgg.data_bkg.root w_all:CMS_bkg_cat3
+shapes Sig cat3 /afs/cern.ch/work/i/ivovtin/Hggbb/CMSSW_8_1_0/src/HiggsAnalysis/bbggLimits2018/ws_2018_ttHon0.26_2D_Data_VBFHH_13cat_09042020_woMjj_ptmjj0.5/Node_SM/ws_hhbbgg.HH.sig.mH125_13TeV.root w_all:CMS_sig_cat3
+shapes vbfhh cat3 /afs/cern.ch/work/i/ivovtin/Hggbb/CMSSW_8_1_0/src/HiggsAnalysis/bbggLimits2018/ws_2018_ttHon0.26_2D_Data_VBFHH_13cat_09042020_woMjj_ptmjj0.5/Node_SM/ws_hhbbgg.HH.sigVBF.mH125_13TeV.root w_all:CMS_sig_vbfhh_cat3
+shapes ggh cat3 /afs/cern.ch/work/i/ivovtin/Hggbb/CMSSW_8_1_0/src/HiggsAnalysis/bbggLimits2018/ws_2018_ttHon0.26_2D_Data_VBFHH_13cat_09042020_woMjj_ptmjj0.5/Node_SM/ws_hhbbgg.ggh.root w_all:CMS_hig_ggh_cat3
+shapes tth cat3 /afs/cern.ch/work/i/ivovtin/Hggbb/CMSSW_8_1_0/src/HiggsAnalysis/bbggLimits2018/ws_2018_ttHon0.26_2D_Data_VBFHH_13cat_09042020_woMjj_ptmjj0.5/Node_SM/ws_hhbbgg.tth.root w_all:CMS_hig_tth_cat3
+shapes vh  cat3 /afs/cern.ch/work/i/ivovtin/Hggbb/CMSSW_8_1_0/src/HiggsAnalysis/bbggLimits2018/ws_2018_ttHon0.26_2D_Data_VBFHH_13cat_09042020_woMjj_ptmjj0.5/Node_SM/ws_hhbbgg.vh.root w_all:CMS_hig_vh_cat3
+shapes bbh cat3 /afs/cern.ch/work/i/ivovtin/Hggbb/CMSSW_8_1_0/src/HiggsAnalysis/bbggLimits2018/ws_2018_ttHon0.26_2D_Data_VBFHH_13cat_09042020_woMjj_ptmjj0.5/Node_SM/ws_hhbbgg.bbh.root w_all:CMS_hig_bbh_cat3
+shapes vbf cat3 /afs/cern.ch/work/i/ivovtin/Hggbb/CMSSW_8_1_0/src/HiggsAnalysis/bbggLimits2018/ws_2018_ttHon0.26_2D_Data_VBFHH_13cat_09042020_woMjj_ptmjj0.5/Node_SM/ws_hhbbgg.vbf.root w_all:CMS_hig_vbf_cat3
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+bin          cat3
+observation  -1.0
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+bin                                   cat3	     cat3           cat3	    cat3           cat3           cat3           cat3           cat3
+process                               Sig            vbfhh          Bkg            vbf            bbh            vh             tth            ggh
+process                               0              -1             1              2              3              4              5              6
+rate				      0.28123	     0.04597     1		    0.00094	   0.00042	  0.01712	 0.02684	0.01737
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+CMS_eff_DiphoTrig       lnN           0.998/1.002    0.998/1.002    -              0.998/1.002    0.998/1.002    0.998/1.002    0.998/1.002    0.998/1.002
+CMS_eff_Gamma           lnN           1.02           1.02           -              1.02           1.02           1.02           1.02           1.02
+CMS_eff_Jet             lnN           0.984/1.016    0.984/1.016    -              0.984/1.016    0.984/1.016    0.984/1.016    0.984/1.016    0.984/1.016
+CMS_btag                lnN           1.0032         1.0032         -              1.0032         1.0032         1.0032         1.0032         1.0032
+QCDscale_tth            lnN           -              -              -              -              -              -              0.908/1.058    -
+QCDscale_vbf            lnN           -              -              -              0.997/1.004    -              -              -              -
+QCDscale_vh             lnN           -              -              -              -              -              0.969/1.038    -              -
+lumi_13TeV              lnN           1.025          1.025          -              1.025          1.025          1.025          1.025          1.025
+pdf                     lnN           1.030          1.030          -              1.021      	   1.021          1.025          1.036          1.031
+theory_bbH_scale        lnN           -              -              -              -              0.76/1.20	  -              -              -
+theory_ggHN3LO          lnN           -              -              -              -              -              -              -              1.039
+QCDscale_hh             lnN           0.950/1.022    0.950/1.022    -              -              -              -              -              -
+
+CMS_hbb_sig_m0_absShift  param  1 0.012
+CMS_hbb_sig_sigmaScale   param  1 0.055
+CMS_hgg_sig_sigmaScale   param  1 0.01
+CMS_hgg_sig_m0_absShift  param  1 0.0003
+
+CMS_bkg_cat3_norm  flatParam
+yield_norm_Sig    rateParam cat3 Sig 0.947224
+yield_norm_VBF    rateParam cat3 vbfhh 0.0527761
+nuisance edit  freeze yield_norm_Sig
+nuisance edit  freeze yield_norm_VBF
+
