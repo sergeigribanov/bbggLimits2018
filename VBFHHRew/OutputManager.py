@@ -70,7 +70,10 @@ class OutputManager:
                             
                         modeled_xs, coefficients = VBFreweighter.modelSignal(cv,c2v,kl,target_bf)
 
-                        print '\n ====== kl ',kl, ' c2v ', c2v, ' cv ', cv, ': sigma = ', "{0:.3f}".format(modeled_xs*1000), ' fb, sigma*BF = ',"{0:.3f}".format(modeled_xs*target_bf*1000) 
+                        print '\n ====== kl ',kl, " ikl, ", int((6+kl)/0.2+1),' and the branch weight name would be KL'+str(int((6+kl)/0.2+1)) + '\n c2v ', c2v, ' cv ', cv, ': sigma = ', "{0:.3f}".format(modeled_xs*1000), ' fb, sigma*BF = ',"{0:.3f}".format(modeled_xs*target_bf*1000) 
                         print 'coeffs ', "{0:.5f}".format(coefficients[0]*1000), ' ',"{0:.5f}".format(coefficients[1]*1000), "{0:.5f}".format(coefficients[2]*1000), "{0:.5f}".format(coefficients[3]*1000), "{0:.5f}".format(coefficients[4]*1000), "{0:.5f}".format(coefficients[5]*1000), " fb"
+
+                        print 'Norm coeffs ', "{0:.5f}".format(coefficients[0]/modeled_xs), ' ',"{0:.5f}".format(coefficients[1]/modeled_xs), "{0:.5f}".format(coefficients[2]/modeled_xs), "{0:.5f}".format(coefficients[3]/modeled_xs), "{0:.5f}".format(coefficients[4]/modeled_xs), "{0:.5f}".format(coefficients[5]/modeled_xs), " for 1 fb"
+
 #                        print 'total_xs ', modeled_xs
 #                        print 'total_xs*bf ', modeled_xs*target_bf
