@@ -258,7 +258,7 @@ class VBFReweight:
         for coeff in self.coefficients:
             eval_coeffs.append(coeff.evalf(subs={self.CV:t_cv, self.C2V:t_c2v, self.kl:t_kl}))
 
-        for i in range(0,5):
+        for i in range(0,6):
             eval_coeffs[i] = eval_coeffs[i]*self.sample_list[i].val_xs
 
 #        print "coeff0 = ", eval_coeffs[0]*self.sample_list[0].val_xs
