@@ -58,6 +58,7 @@ public :
    Int_t           candidate_id;
    Float_t         weight;
    Float_t         reweight;
+   Float_t         reweightvbfhh;
    Int_t           isSignal;
    Double_t        genTotalWeight;
    Float_t         ttHScore;
@@ -82,6 +83,7 @@ public :
    //Float_t        HHbbggMVA;
    Double_t        HHbbggMVA;
    Float_t         MVAOutputTransformed;
+   Float_t         MVAOutput_vbf_gg;
    Int_t           vbf_Cat;
    Int_t           vbf_Cat_Selected;
    Float_t         MX;
@@ -154,6 +156,7 @@ public :
 
    TBranch        *b_HHbbggMVA;   //!
    TBranch        *b_MVAOutputTransformed;   //!
+   TBranch        *b_MVAOutput_vbf_gg;   //!
    TBranch        *b_HHTagger_LM;   //!
    TBranch        *b_HHTagger_HM;   //!
 
@@ -175,6 +178,7 @@ public :
    TBranch        *b_mbbgg;
    TBranch        *b_evWeight;
    TBranch        *b_reWeight;
+   TBranch        *b_reWeightvbfhh;
 
    bbggLTMaker(TTree * /*tree*/ =0) : fChain(0) { }
    virtual ~bbggLTMaker() { }
@@ -231,7 +235,7 @@ void bbggLTMaker::Init(TTree *tree)
    fChain->SetBranchAddress("MVAwoMjj", &HHbbggMVA, &b_HHbbggMVA);                     //MVA training w/o include Mjj
    //fChain->SetBranchAddress("MVAwithMjj", &HHbbggMVA, &b_HHbbggMVA);                 //MVA training with include Mjj   
    //fChain->SetBranchAddress("MVAOutputTransformed", &HHbbggMVA, &b_HHbbggMVA);
-   //fChain->SetBranchAddress("xmlMVAtransf", &HHbbggMVA, &b_HHbbggMVA);
+   fChain->SetBranchAddress("MVAOutput_vbf_gg", &MVAOutput_vbf_gg, &b_MVAOutput_vbf_gg);
    fChain->SetBranchAddress("run", &run, &b_run);
    fChain->SetBranchAddress("Mjj", &Mjj, &b_Mjj);
    fChain->SetBranchAddress("leadingJet_pt", &leadingJet_pt, &b_leadingJet_pt);
@@ -242,10 +246,10 @@ void bbggLTMaker::Init(TTree *tree)
    fChain->SetBranchAddress("diHiggs_mass", &diHiggs_mass, &b_mbbgg);
    fChain->SetBranchAddress("weight", &weight, &b_evWeight);
    if(fChain->GetBranch("benchmark_reweight_SM")) {
-   //if(fChain->GetBranch("KL1")) {
-   fChain->SetBranchAddress("benchmark_reweight_SM", &reweight, &b_reWeight);
-   //fChain->SetBranchAddress("KL1", &reweight, &b_reWeight);
-   //fChain->SetBranchAddress("benchmark_reweight_2017fake", &reweight, &b_reWeight);
+      fChain->SetBranchAddress("benchmark_reweight_SM", &reweight, &b_reWeight);
+   }
+   if(fChain->GetBranch("KL20")) {
+      fChain->SetBranchAddress("KL20", &reweightvbfhh, &b_reWeightvbfhh);
    }
    fChain->SetBranchAddress("ttHScore", &ttHScore, &b_ttHTagger);
 }

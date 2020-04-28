@@ -128,7 +128,7 @@ void bbggLTMaker::Begin(TTree * /*tree*/)
   TObjArray *args = (TObjArray*)option.Tokenize(" ");
   _normalization = std::stod((string)((TObjString*)args->At(0))->GetString());
   _outFileName = (string)((TObjString*)args->At(1))->GetString();
-  _genDiPhotonFilter = (Bool_t) std::stoi( (string)((TObjString*)args->At(2))->GetString() );
+  _genDiPhotonFilter = (Int_t) std::stoi( (string)((TObjString*)args->At(2))->GetString() );
   _whichCategorization = (Int_t) std::stoi( (string)((TObjString*)args->At(3))->GetString() );
   _ttHTagger = (Bool_t) std::stoi( (string)((TObjString*)args->At(4))->GetString() );
   std::cout<<"Input paremeters:\n"
@@ -197,6 +197,7 @@ Bool_t bbggLTMaker::Process(Long64_t entry)
   if (_normalization == 41.5) { F_year=F_2017; btagnorm=1.008805; }
   if (_normalization == 59.4) { F_year=F_2018; btagnorm=1.001397; }
   if ( _normalization!=1 && _genDiPhotonFilter==0) o_weight=o_weight*btagnorm*reweight/(F_year/1.06); //ggHH signal
+  if ( _normalization!=1 && _genDiPhotonFilter==2) o_weight=o_weight*btagnorm*reweightvbfhh*1.06; //VBFHH signal
  
   //===========FIXME for extraction limits on MC - indicate right path to out LT
 /*
