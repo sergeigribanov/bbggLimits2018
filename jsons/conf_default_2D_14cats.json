@@ -1,5 +1,5 @@
 {
-    "LTDIR" : "/afs/cern.ch/work/i/ivovtin/Hggbb/LT_vbfhh_data_13cat",
+    "LTDIR" : "/afs/cern.ch/work/i/ivovtin/Hggbb/LT_vbfhh_data_13cat_0.5vbf_260420",
     "RooFitTemplateName" : "templates/models_2D_higgs_mjj70",
     "ncat" : 13,
     "doDoubleSidedCB": 1,

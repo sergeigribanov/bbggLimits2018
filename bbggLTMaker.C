@@ -558,9 +558,28 @@ Bool_t bbggLTMaker::Process(Long64_t entry)
 //=========with cut =========================
   //Categorisation for boundaries from flashgg. VBFHH categories
   else if (_whichCategorization==6){
-    if( o_vbf_Cat_Selected==1 || o_vbf_Cat_Selected==2) {  
+    if( (o_vbf_Cat_Selected==1 || o_vbf_Cat_Selected==2) && ttHScore>0.3 && MVAOutput_vbf_gg>0.99 && MVAOutput_vbf_gg <= 1.0 ) {  
     	std::cout<<"o_vbf_Cat="<<o_vbf_Cat_Selected<<"\t"<<"o_vbf_Cat_Selected="<<o_vbf_Cat_Selected<<"\t"<<"Mjj="<<Mjj<<std::endl;
-	o_catID = 12; 
+	o_catID = 12;
+
+     /*
+    if( MVAOutput_vbf_gg > 0.94 && MVAOutput_vbf_gg <= 0.992 && leadingJet_pt/Mjj > 0.55 ){
+        if(o_MX > 250. && o_MX <= 420. ){
+          o_catID = 15; 
+        }       
+        else if( o_MX > 420. && o_MX <= 35000. ){
+          o_catID = 14; 
+        }
+      }
+      else if ( MVAOutput_vbf_gg > 0.992 && MVAOutput_vbf_gg <= 1.0 && leadingJet_pt/Mjj > 0.55 ){
+        if(o_MX > 250. && o_MX <= 420. ){
+          o_catID = 13; 
+        }       
+        else if( o_MX > 420. && o_MX <= 35000. ){
+          o_catID = 12; 
+        }
+     }  
+     */ 
     } 
     else{   
     if (o_MX > boundary_MX_2019[0] && o_MX <= boundary_MX_2019[14] ){
