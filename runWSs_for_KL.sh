@@ -4,7 +4,8 @@ list=(10 15)
 for ext in ${list[@]}
 do
   echo "Processing KL=" $ext
-  sed -e 's/\(KL\)\([0-9][0-9]\)/\1'${ext}'/' conf_default_.json >conf_default.json
-  sed -e 's/\(KL\)\([0-9][0-9]\)/\1'${ext}'/' runWS_.sh >runWS.sh
-  . runWS.sh
+  sed -e 's/\(KL\)\([0-9][0-9]\)/\1'${ext}'/' conf_default_.json >conf_defaultKL${ext}.json
+  sed -e 's/\(KL\)\([0-9][0-9]\)/\1'${ext}'/g' runWS_.sh >runWS.sh
+  #. runWS.sh
+  condor_submit condor_job_runlimit.sub 
 done
