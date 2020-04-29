@@ -110,3 +110,18 @@ The process may take a while to complete, especially when running with many cate
 . run_extLimit_for_KL.sh
 ```
 
+# C2V scan
+1. Making limit trees (LTs) for list of C2V
+```
+. runLTs_for_C2V.sh
+```
+
+2. Create a workspace using the produced LTs on condor (1 task ~8 minutes):
+```
+. runWSs_for_C2V.sh
+```
+3. Extract the limit on condor (1 task ~45 minutes):
+```
+. run_extLimit_for_C2V.sh
+```
+
