@@ -200,7 +200,7 @@ Bool_t bbggLTMaker::Process(Long64_t entry)
   if ( _normalization!=1 && _genDiPhotonFilter==2) 
   {
     o_weight=o_weight*btagnorm*reweightvbfhh*1.06; //VBFHH signal
-    cout<<"vbfhh, o_weight="<<o_weight<<endl; 
+    //cout<<"vbfhh, o_weight="<<o_weight<<endl; 
   }
   //===========FIXME for extraction limits on MC - indicate right path to out LT
 /*
@@ -563,10 +563,10 @@ Bool_t bbggLTMaker::Process(Long64_t entry)
   //Categorisation for boundaries from flashgg. VBFHH categories
   else if (_whichCategorization==6){
     if( (o_vbf_Cat_Selected==1 || o_vbf_Cat_Selected==2) && ttHScore>0.3 && MVAOutput_vbf_gg>0.99 && MVAOutput_vbf_gg <= 1.0 ) {  
+    //if( (o_vbf_Cat_Selected==1 || o_vbf_Cat_Selected==2) && ttHScore>0.3 ) {  
     	//std::cout<<"o_vbf_Cat="<<o_vbf_Cat_Selected<<"\t"<<"o_vbf_Cat_Selected="<<o_vbf_Cat_Selected<<"\t"<<"Mjj="<<Mjj<<std::endl;
 	o_catID = 12;
-
-     /*
+    /* 
     if( MVAOutput_vbf_gg > 0.94 && MVAOutput_vbf_gg <= 0.992 && leadingJet_pt/Mjj > 0.55 ){
         if(o_MX > 250. && o_MX <= 420. ){
           o_catID = 15; 
