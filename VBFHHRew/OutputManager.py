@@ -90,7 +90,7 @@ class OutputManager:
                         print 'xsec ggHHH ', "{0:.5f}".format(xsec)  
 
  
-                        f.write("%f %f %f %f %f %f %f\n" % ( (6+kl)/0.2+1, coefficients[0]/modeled_xs, coefficients[1]/modeled_xs, coefficients[2]/modeled_xs, coefficients[3]/modeled_xs, coefficients[4]/modeled_xs, coefficients[5]/modeled_xs ))                         
+                        f.write("%f %f %f %f %f %f %f %f %f\n" % ( (6+kl)/0.2+1, (6+c2v)/0.2+1, cv, coefficients[0]/modeled_xs, coefficients[1]/modeled_xs, coefficients[2]/modeled_xs, coefficients[3]/modeled_xs, coefficients[4]/modeled_xs, coefficients[5]/modeled_xs ))                         
  
 #                        print 'total_xs ', modeled_xs
 #                        print 'total_xs*bf ', modeled_xs*target_bf
