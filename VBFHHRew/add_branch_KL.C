@@ -2,8 +2,8 @@ void add_branch_KL()
 {  
    TString indirFT = "/afs/cern.ch/work/i/ivovtin/public/legacy_branch_flattrees/vbfhh/2018/withMVA/";
    TString outdirFT;
-   bool KLscan=0;  
-   bool C2Vscan=1; 
+   bool KLscan=1;  
+   bool C2Vscan=0; 
 
    if ( KLscan ) outdirFT = "/afs/cern.ch/work/i/ivovtin/public/legacy_branch_flattrees/vbfhh/2018/withMVA/KL/";
    if ( C2Vscan ) outdirFT = "/afs/cern.ch/work/i/ivovtin/public/legacy_branch_flattrees/vbfhh/2018/withMVA/C2V/"; 
@@ -29,7 +29,7 @@ void add_branch_KL()
 
       char branchname[81];     
       float KL[81], C2V[81];
-      TBranch *brKL;     
+      TBranch *brKL[81];     
       TBranch *brC2V[81];     
       
       if ( KLscan )
@@ -37,7 +37,7 @@ void add_branch_KL()
          for (int n = 0; n < 81; n++) 
          {
            sprintf(branchname,"KL%d",n+1);
-           brKL = newtree->Branch(branchname, &KL[n]); 
+           brKL[n] = newtree->Branch(branchname, &KL[n]); 
          }
       }
        if ( C2Vscan )
@@ -49,8 +49,8 @@ void add_branch_KL()
          }
       }
      
-      //ifstream KLweightfile ("outKLweight.txt");
-      ifstream KLweightfile ("outC2Vweight.txt");
+      ifstream KLweightfile ("outKLweight.txt");
+      //ifstream KLweightfile ("outC2Vweight.txt");
 
       float inKL=0, inC2V=0, inCV=0,  weight1=0, weight2=0, weight3=0, weight4=0, weight5=0, weight6=0; 
       Long64_t nentries = newtree->GetEntries(); 
@@ -92,8 +92,8 @@ void add_branch_KL()
  
         }
        
-        //newtree->Fill();
-        for (int n = 0; n < 81; n++) brC2V[n]->Fill();
+        for (int n = 0; n < 81; n++) brKL[n]->Fill();
+        //for (int n = 0; n < 81; n++) brC2V[n]->Fill();
       }   
       KLweightfile.close ();   
       newtree->Print();       
