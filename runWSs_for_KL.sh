@@ -5,7 +5,8 @@ for ext in ${list[@]}
 do
   echo "Processing KL=" $ext
   sed -e 's/\(KL\)\([0-9][0-9]\)/\1'${ext}'/' conf_default_.json >conf_defaultKL${ext}.json
-  sed -e 's/\(KL\)\([0-9][0-9]\)/\1'${ext}'/g' runWS_.sh >runWS.sh
+  sed -e 's/\(KL\)\([0-9][0-9]\)/\1'${ext}'/g' runWS_.sh >runWSKL${ext}.sh
+  sed -e 's/\(KL\)\([0-9][0-9]\)/\1'${ext}'/g' condor_job_runlimit_.sub >condor_job_runlimitKL${ext}.sub
   #. runWS.sh
-  condor_submit condor_job_runlimit.sub 
+  condor_submit condor_job_runlimitKL${ext}.sub 
 done
