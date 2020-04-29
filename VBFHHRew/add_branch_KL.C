@@ -50,7 +50,8 @@ void add_branch_KL()
       }
     
       float inKL=0, inC2V=0, inCV=0,  weight1=0, weight2=0, weight3=0, weight4=0, weight5=0, weight6=0; 
-      ifstream KLweightfile ("outKLweight.txt");
+      //ifstream KLweightfile ("outKLweight.txt");
+      ifstream KLweightfile ("outC2Vweight.txt");
 
       Long64_t nentries = newtree->GetEntries(); 
       for (Long64_t i=0; i<nentries; i++) 
