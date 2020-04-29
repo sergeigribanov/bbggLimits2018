@@ -197,8 +197,11 @@ Bool_t bbggLTMaker::Process(Long64_t entry)
   if (_normalization == 41.5) { F_year=F_2017; btagnorm=1.008805; }
   if (_normalization == 59.4) { F_year=F_2018; btagnorm=1.001397; }
   if ( _normalization!=1 && _genDiPhotonFilter==0) o_weight=o_weight*btagnorm*reweight/(F_year/1.06); //ggHH signal
-  if ( _normalization!=1 && _genDiPhotonFilter==2) o_weight=o_weight*btagnorm*reweightvbfhh*1.06; //VBFHH signal
- 
+  if ( _normalization!=1 && _genDiPhotonFilter==2) 
+  {
+    o_weight=o_weight*btagnorm*reweightvbfhh*1.06; //VBFHH signal
+    cout<<"vbfhh, o_weight="<<o_weight<<endl; 
+  }
   //===========FIXME for extraction limits on MC - indicate right path to out LT
 /*
   TString option = GetOption(); 
