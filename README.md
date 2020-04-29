@@ -95,4 +95,18 @@ The results of the limit will be put at `LIMS_OutDir/Node_SM/result_1.log`.
 The process may take a while to complete, especially when running with many categories (about 30 minuts for 2D method and 12 categories).
 
 
+# KL scan
+1. Making limit trees (LTs) for list of KL
+```
+. runLTs_for_KL.sh
+```
+
+2. Create a workspace using the produced LTs on condor (1 task ~8 minutes):
+```
+. runWSs_for_KL.sh
+```
+3. Extract the limit on condor (1 task ~30 minutes):
+```
+. run_extLimit_for_KL.sh
+```
 

@@ -6,7 +6,7 @@ do
   echo "Processing KL=" $ext
   sed -e 's/\(KL\)\([0-9][0-9]\)/\1'${ext}'/' conf_default_.json >conf_defaultKL${ext}.json
   sed -e 's/\(KL\)\([0-9][0-9]\)/\1'${ext}'/g' runWS_.sh >runWSKL${ext}.sh
-  sed -e 's/\(KL\)\([0-9][0-9]\)/\1'${ext}'/g' condor_job_runlimit_.sub >condor_job_runlimitKL${ext}.sub
+  sed -e 's/\(KL\)\([0-9][0-9]\)/\1'${ext}'/g' condor_job_runWS_.sub >condor_job_runWSKL${ext}.sub
   #. runWS.sh
-  condor_submit condor_job_runlimitKL${ext}.sub 
+  condor_submit condor_job_runWSKL${ext}.sub 
 done

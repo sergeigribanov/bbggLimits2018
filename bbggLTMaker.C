@@ -189,9 +189,9 @@ Bool_t bbggLTMaker::Process(Long64_t entry)
 
   o_weight = weight*_normalization;
  
-  if (o_evt<20) cout<<"event="<<event<<"\t"<<"weight="<<weight<<"\t"<<"Mjj="<<Mjj<<"\t"<<"CMS_hgg_mass="<<CMS_hgg_mass<<endl;
-  if (o_evt<20) cout<<"_normalization="<<_normalization<<endl;
-  if (o_evt<20) cout<<"o_weight="<<o_weight<<endl;
+  //if (o_evt<20) cout<<"event="<<event<<"\t"<<"weight="<<weight<<"\t"<<"Mjj="<<Mjj<<"\t"<<"CMS_hgg_mass="<<CMS_hgg_mass<<endl;
+  //if (o_evt<20) cout<<"_normalization="<<_normalization<<endl;
+  //if (o_evt<20) cout<<"o_weight="<<o_weight<<endl;
     
   if (_normalization == 35.9) { F_year=F_2016; btagnorm=1.01171; }
   if (_normalization == 41.5) { F_year=F_2017; btagnorm=1.008805; }
@@ -560,7 +560,7 @@ Bool_t bbggLTMaker::Process(Long64_t entry)
   //Categorisation for boundaries from flashgg. VBFHH categories
   else if (_whichCategorization==6){
     if( (o_vbf_Cat_Selected==1 || o_vbf_Cat_Selected==2) && ttHScore>0.3 && MVAOutput_vbf_gg>0.99 && MVAOutput_vbf_gg <= 1.0 ) {  
-    	std::cout<<"o_vbf_Cat="<<o_vbf_Cat_Selected<<"\t"<<"o_vbf_Cat_Selected="<<o_vbf_Cat_Selected<<"\t"<<"Mjj="<<Mjj<<std::endl;
+    	//std::cout<<"o_vbf_Cat="<<o_vbf_Cat_Selected<<"\t"<<"o_vbf_Cat_Selected="<<o_vbf_Cat_Selected<<"\t"<<"Mjj="<<Mjj<<std::endl;
 	o_catID = 12;
 
      /*
