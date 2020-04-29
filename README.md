@@ -105,7 +105,7 @@ The process may take a while to complete, especially when running with many cate
 ```
 . runWSs_for_KL.sh
 ```
-3. Extract the limit on condor (1 task ~30 minutes):
+3. Extract the limit on condor (1 task ~45 minutes):
 ```
 . run_extLimit_for_KL.sh
 ```
