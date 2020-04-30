@@ -252,8 +252,8 @@ void bbggLTMaker::Init(TTree *tree)
    if(fChain->GetBranch("KL20")) {
       fChain->SetBranchAddress("KL20", &reweightvbfhh, &b_reWeightvbfhh);
    }
-   if(fChain->GetBranch("C2V20")) {
-      fChain->SetBranchAddress("C2V20", &reweightvbfhh, &b_reWeightvbfhh);
+   if(fChain->GetBranch("C2V1")) {
+      fChain->SetBranchAddress("C2V1", &reweightvbfhh, &b_reWeightvbfhh);
    }
    fChain->SetBranchAddress("ttHScore", &ttHScore, &b_ttHTagger);
 }

@@ -200,7 +200,7 @@ Bool_t bbggLTMaker::Process(Long64_t entry)
   if ( _normalization!=1 && _genDiPhotonFilter==2) 
   {
     o_weight=o_weight*btagnorm*reweightvbfhh*1.06; //VBFHH signal
-    //cout<<"vbfhh, o_weight="<<o_weight<<endl; 
+    //cout<<"vbfhh, o_weight="<<o_weight<<"\t"<<"reweightvbfhh="<<reweightvbfhh<<endl; 
   }
   //===========FIXME for extraction limits on MC - indicate right path to out LT
 /*

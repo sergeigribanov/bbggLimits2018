@@ -8,8 +8,8 @@ for ext in ${list[@]}
 do
   echo "Processing KL=" $ext
   sed -e 's/\(KL\)\([0-9][0-9]\)/\1'${ext}'/' runKL_.sh >runKL.sh
-  sed -e 's/\(KL\)\([0-9][0-9]\)/\1'${ext}'/' bbggLTMaker.h >bbggLTMaker_K.h
-  sed -e 's/KL/'${ext}'/' bbggLTMaker.C >bbggLTMaker_K.C
+  sed -i 's/\(KL\)\([0-9][0-9]\)/\1'${ext}'/' bbggLTMaker.h 
+  sed -i 's/KL/'${ext}'/' bbggLTMaker.C 
   . ./runKL.sh
   #sed -e 's/\(KL\)\([0-9][0-9]\)/\1'${ext}'/' merge.sh >mergeKL.sh
   #. ./mergeKL.sh
