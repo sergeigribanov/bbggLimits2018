@@ -120,7 +120,13 @@ The process may take a while to complete, especially when running with many cate
 ```
 . runWSs_for_C2V.sh
 ```
-3. Extract the limit on condor (1 task ~45 minutes):
+
+3. Set right xs-normalisation and ggHH signal to background:
+```
+. exchange_normWS_C2V.sh 
+``` 
+
+4. Extract the limit on condor (1 task ~45 minutes):
 ```
 . run_extLimit_for_C2V.sh
 ```
