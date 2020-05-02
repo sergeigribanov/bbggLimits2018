@@ -52,6 +52,7 @@ public :
    Int_t _phoVariation, _trigVariation;
    Float_t F_2016,F_2017,F_2018,F_year;
    Float_t btagnorm;
+   Double_t NF_2016[82],NF_2017[82],NF_2018[82];
    
    //Variables from the input tree:
    

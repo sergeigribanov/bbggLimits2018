@@ -169,6 +169,11 @@ void bbggLTMaker::Begin(TTree * /*tree*/)
   if (DEBUG) cout << "TriggSF file: " << trig_file << endl;
   bbggLTMaker::SetupTriggerSF(trig_file);
 
+  ifstream normfact;
+  normfact.open ("normalisation_numbers_forKL.txt");
+  for (int i=0;i<82;i++)
+      normfact>>NF_2016[i]>>NF_2017[i]>>NF_2018[i];
+
 }
 
 void bbggLTMaker::SlaveBegin(TTree * /*tree*/)
@@ -181,21 +186,30 @@ Bool_t bbggLTMaker::Process(Long64_t entry)
   GetEntry(entry);
   o_run = run;
   o_evt = event;
-
+  /*
   //For SM 
   F_2016 = 62.57257893;
   F_2017 = 8.27769036;
   F_2018 = 8.360941357;
-
+  //For KL36  -> kl=1    (6+kl)/0.2+1=36 
+  F_2016 = 61.2285468;
+  F_2017 = 8.196101254;
+  F_2018 = 8.268999711;
+  */
   o_weight = weight*_normalization;
  
   //if (o_evt<20) cout<<"event="<<event<<"\t"<<"weight="<<weight<<"\t"<<"Mjj="<<Mjj<<"\t"<<"CMS_hgg_mass="<<CMS_hgg_mass<<endl;
   //if (o_evt<20) cout<<"_normalization="<<_normalization<<endl;
   //if (o_evt<20) cout<<"o_weight="<<o_weight<<endl;
-    
+  /*  
   if (_normalization == 35.9) { F_year=F_2016; btagnorm=1.01171; }
   if (_normalization == 41.5) { F_year=F_2017; btagnorm=1.008805; }
   if (_normalization == 59.4) { F_year=F_2018; btagnorm=1.001397; }
+  */
+  if (_normalization == 35.9) {F_year=NF_2016[KL];btagnorm=1.01171;}
+  if (_normalization == 41.5) {F_year=NF_2017[KL];btagnorm=1.008805;}
+  if (_normalization == 59.4) {F_year=NF_2018[KL];btagnorm=1.001397;}
+
   if ( _normalization!=1 && _genDiPhotonFilter==0) o_weight=o_weight*btagnorm*reweight/(F_year/1.06); //ggHH signal
   if ( _normalization!=1 && _genDiPhotonFilter==2) 
   {
