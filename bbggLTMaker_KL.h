@@ -253,12 +253,12 @@ void bbggLTMaker::Init(TTree *tree)
    if(fChain->GetBranch("KL36")) {
       fChain->SetBranchAddress("KL36", &reweight, &b_reWeight);
    }
-   //if(fChain->GetBranch("KL80")) {
-   //   fChain->SetBranchAddress("KL80", &reweightvbfhh, &b_reWeightvbfhh);
-   //}
-   if(fChain->GetBranch("C2V26")) {
-      fChain->SetBranchAddress("C2V26", &reweightvbfhh, &b_reWeightvbfhh);
+   if(fChain->GetBranch("KL36")) {
+      fChain->SetBranchAddress("KL36", &reweightvbfhh, &b_reWeightvbfhh);
    }
+   //if(fChain->GetBranch("C2V80")) {
+   //   fChain->SetBranchAddress("C2V80", &reweightvbfhh, &b_reWeightvbfhh);
+   //}
    fChain->SetBranchAddress("ttHScore", &ttHScore, &b_ttHTagger);
 }
 

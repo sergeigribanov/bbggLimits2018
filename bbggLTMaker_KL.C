@@ -205,20 +205,21 @@ Bool_t bbggLTMaker::Process(Long64_t entry)
   //if (o_evt<20) cout<<"event="<<event<<"\t"<<"weight="<<weight<<"\t"<<"Mjj="<<Mjj<<"\t"<<"CMS_hgg_mass="<<CMS_hgg_mass<<endl;
   //if (o_evt<20) cout<<"_normalization="<<_normalization<<endl;
   //if (o_evt<20) cout<<"o_weight="<<o_weight<<endl;
-    
+  /*  
   if (_normalization == 35.9) { F_year=F_2016; btagnorm=1.01171; }
   if (_normalization == 41.5) { F_year=F_2017; btagnorm=1.008805; }
   if (_normalization == 59.4) { F_year=F_2018; btagnorm=1.001397; }
-  /*
-  if (_normalization == 35.9) {F_year=NF_2016[80];btagnorm=1.01171;}
-  if (_normalization == 41.5) {F_year=NF_2017[80];btagnorm=1.008805;}
-  if (_normalization == 59.4) {F_year=NF_2018[80];btagnorm=1.001397;}
-  */ 
+  */
+  
+  if (_normalization == 35.9) {F_year=NF_2016[KL];btagnorm=1.01171;}
+  if (_normalization == 41.5) {F_year=NF_2017[KL];btagnorm=1.008805;}
+  if (_normalization == 59.4) {F_year=NF_2018[KL];btagnorm=1.001397;}
+  
   if ( _normalization!=1 && _genDiPhotonFilter==0) o_weight=o_weight*btagnorm*reweight/(F_year/1.06); //ggHH signal
   if ( _normalization!=1 && _genDiPhotonFilter==2) 
   {
     o_weight=o_weight*btagnorm*reweightvbfhh*1.06; //VBFHH signal
-    cout<<"vbfhh, o_weight="<<o_weight<<"\t"<<"reweightvbfhh="<<reweightvbfhh<<endl; 
+    //cout<<"vbfhh, o_weight="<<o_weight<<"\t"<<"reweightvbfhh="<<reweightvbfhh<<endl; 
   }
   //===========FIXME for extraction limits on MC - indicate right path to out LT
 /*
