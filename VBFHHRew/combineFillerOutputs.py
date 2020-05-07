@@ -28,5 +28,7 @@ inputSigList = ['VBFHHTo2B2G_CV_1_C2V_1_C3_1', 'VBFHHTo2B2G_CV_1_C2V_1_C3_0', 'V
 
 omngr = omng.OutputManager()
 
-omngr.makeVBFrew(inputSigList, target_kl, target_cv, target_c2v, target_bf)
+makePlot = False
+
+omngr.makeVBFrew(inputSigList, target_kl, target_cv, target_c2v, target_bf, makePlot)
 
