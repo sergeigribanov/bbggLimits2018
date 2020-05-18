@@ -47,7 +47,7 @@ if __name__ == "__main__":
       fChain = TChain("bbggSelectionTree")
       #fname = opt.indir+"/output_GluGluToHHTo2B2G_node_"+str(n[0])+"_13TeV-madgraph.root"  
       #fname = opt.indir+"/output_GluGluToHHTo2B2G_allnodes_no_unit_norm.root"
-      fname = opt.indir+"/output_GluGluToHHTo2B2G_all_nodes.root"
+      fname = opt.indir+"/output_GluGluToHHTo2B2G_all_node.root"
       fChain.Add(fname)
       ttHkiller = fChain.GetListOfBranches().FindObject("ttHScore");
       if ttHkiller: _ttHTagger=1

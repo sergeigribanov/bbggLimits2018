@@ -189,17 +189,17 @@ Bool_t bbggLTMaker::Process(Long64_t entry)
   GetEntry(entry);
   o_run = run;
   o_evt = event;
-  /*
+  
   //For SM 
   F_2016 = 62.57257893;
   F_2017 = 8.27769036;
   F_2018 = 8.360941357;
-  */
+  /*
   //For 36  -> kl=1    (6+kl)/0.2+1=36 
   F_2016 = 61.2285468;
   F_2017 = 8.196101254;
   F_2018 = 8.268999711;
-  
+  */
   o_weight = weight*_normalization;
  
   //if (o_evt<20) cout<<"event="<<event<<"\t"<<"weight="<<weight<<"\t"<<"Mjj="<<Mjj<<"\t"<<"CMS_hgg_mass="<<CMS_hgg_mass<<endl;
@@ -218,7 +218,8 @@ Bool_t bbggLTMaker::Process(Long64_t entry)
   if ( _normalization!=1 && _genDiPhotonFilter==2) 
   {
     o_weight=o_weight*btagnorm*reweightvbfhh*1.06; //VBFHH signal
-    cout<<"vbfhh, o_weight="<<o_weight<<"\t"<<"reweightvbfhh="<<reweightvbfhh<<endl; 
+    //o_weight=o_weight*btagnorm*1.06; //VBFHH signal
+    //cout<<"vbfhh, o_weight="<<o_weight<<"\t"<<"reweightvbfhh="<<reweightvbfhh<<endl; 
   }
   //===========FIXME for extraction limits on MC - indicate right path to out LT
 /*
@@ -580,30 +581,69 @@ Bool_t bbggLTMaker::Process(Long64_t entry)
 //=========with cut =========================
   //Categorisation for boundaries from flashgg. VBFHH categories
   else if (_whichCategorization==6){
-    //if( (o_vbf_Cat_Selected==1 || o_vbf_Cat_Selected==2) && ttHScore>0.3 && MVAOutput_vbf_gg>0.99 && MVAOutput_vbf_gg <= 1.0 ) {  
-    if( (o_vbf_Cat_Selected!=0) && ttHScore>0.3 && MVAOutput_vbf_gg>0.99 && MVAOutput_vbf_gg <= 1.0 ) {  
-    //if( (o_vbf_Cat_Selected==1 || o_vbf_Cat_Selected==2) && ttHScore>0.3 ) {  
+    //if( (o_vbf_Cat_Selected!=0) && ttHScore>0.3 && MVAOutput_vbf_gg>0.99 && MVAOutput_vbf_gg <= 1.0 ) {  //sm, c2v2 
+    //if( (o_vbf_Cat_Selected!=0) && ttHScore>0.3 && MVAOutput_vbf_gg>0.98 && MVAOutput_vbf_gg <= 1.0 ) {    //c2vmix
+    //if( MVAOutput_vbf_gg>0.75 && ttHScore>0.3 ) { //c2v0 
     	//std::cout<<"o_vbf_Cat="<<o_vbf_Cat_Selected<<"\t"<<"o_vbf_Cat_Selected="<<o_vbf_Cat_Selected<<"\t"<<"Mjj="<<Mjj<<std::endl;
-	o_catID = 12;
-    /* 
-    if( MVAOutput_vbf_gg > 0.94 && MVAOutput_vbf_gg <= 0.992 && leadingJet_pt/Mjj > 0.55 ){
-        if(o_MX > 250. && o_MX <= 420. ){
+    //	o_catID = 12;
+    //} 
+    //=== 
+    //C2V2trainVBF2018C2V_16cats
+
+    if ( MVAOutput_vbf_ggf > 0.1 && ttHScore>0.3 ) {
+      if( o_MX > 1100 && MVAOutput_vbf_gg > 0.85 ){
           o_catID = 15; 
-        }       
-        else if( o_MX > 420. && o_MX <= 35000. ){
-          o_catID = 14; 
-        }
       }
-      else if ( MVAOutput_vbf_gg > 0.992 && MVAOutput_vbf_gg <= 1.0 && leadingJet_pt/Mjj > 0.55 ){
-        if(o_MX > 250. && o_MX <= 420. ){
+      else if ( o_MX > 650 && o_MX <= 1100 && MVAOutput_vbf_gg > 0.992 ){
+          o_catID = 14; 
+      }  
+      else if ( o_MX > 400 && o_MX <= 650 && MVAOutput_vbf_gg > 0.987 ){
           o_catID = 13; 
-        }       
-        else if( o_MX > 420. && o_MX <= 35000. ){
+      }  
+      else if ( o_MX <= 400 && MVAOutput_vbf_gg > 0.95 ){
           o_catID = 12; 
-        }
-     }  
-     */ 
-    } 
+      }  
+       else {
+        return kTRUE;
+      }
+    }
+    
+    //=== 
+    /*    
+    if ( o_vbf_Cat_Selected!=0 && ttHScore>0.3 ) {
+    if( MVAOutput_vbf_gg > 0.974 && MVAOutput_vbf_gg <= 0.99 && leadingJet_pt/Mjj > 0.55 ){
+          o_catID = 13; 
+    }
+    else if ( MVAOutput_vbf_gg > 0.99 && MVAOutput_vbf_gg <= 1.0 && leadingJet_pt/Mjj > 0.55 ){
+          o_catID = 12; 
+    }  
+    }
+    */
+    //=== 
+    /*    
+    //C2V2trainVBF2018C2V_14cats_v2 - best!
+    if( MVAOutput_vbf_gg > 0.992 && MVAOutput_vbf_gg < 0.9975 && MVAOutput_vbf_ggf > 0.1 && ttHScore > 0.3 && leadingJet_pt/Mjj > 0.55 ){
+          o_catID = 13; 
+    }
+    else if ( MVAOutput_vbf_gg > 0.9975 && MVAOutput_vbf_ggf > 0.1 && ttHScore > 0.3 && leadingJet_pt/Mjj > 0.55 ){
+          o_catID = 12; 
+    }
+    */  
+    //===     
+    /*     
+    if( (o_vbf_Cat_Selected==1) && ttHScore>0.3 ) {
+       o_catID = 12; 
+    }
+    else if( (o_vbf_Cat_Selected==2) && ttHScore>0.3 ) {
+       o_catID = 13; 
+    }
+    else if( (o_vbf_Cat_Selected==3) && ttHScore>0.3 ) {
+       o_catID = 14; 
+    }
+    else if( (o_vbf_Cat_Selected==4) && ttHScore>0.3 ) {
+       o_catID = 15; 
+    }    
+    */
     else{   
     if (o_MX > boundary_MX_2019[0] && o_MX <= boundary_MX_2019[14] ){
     if (HHbbggMVA > boundary_MVA_2019[0] && HHbbggMVA <= boundary_MVA_2019[1] && leadingJet_pt/Mjj > 0.55 ){
