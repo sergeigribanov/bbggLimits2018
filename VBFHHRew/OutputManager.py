@@ -50,32 +50,41 @@ class OutputManager:
         for var in self.variables:
 
 # this is what I've seen in Soumya mail. To be checked
-#sample A: CV = 1    , C2V = 1   , klambda = 1    xs = 0.0015929203539823008  * BR(HH->bbgg)  
-#sample B: CV = 1    , C2V = 2   , klambda = 1    xs = 0.013923303834808259   * BR(HH->bbgg) 
-#sample C: CV = 1    , C2V = 1   , klambda = 2    xs = 0.0012979351032448377  * BR(HH->bbgg)  
-#sample D: CV = 1    , C2V = 1   , klambda = 0    xs = 0.004277286135693214   * BR(HH->bbgg) 
-#sample E: CV = 0.5  , C2V = 1   , klambda = 1    xs = 0.010412979351032449   * BR(HH->bbgg) 
-#sample F: CV = 1.5  , C2V = 1   , klambda = 1    xs = 0.06339233038348081    * BR(HH->bbgg)
+#sample A: CV = 1    , C2V = 1   , klambda = 1    xs = 0.001668   * BR(HH->bbgg)  
+#sample B: CV = 1    , C2V = 2   , klambda = 1    xs = 0.013740   * BR(HH->bbgg) 
+#sample C: CV = 1    , C2V = 1   , klambda = 2    xs = 0.001375   * BR(HH->bbgg)  
+#sample D: CV = 1    , C2V = 1   , klambda = 0    xs = 0.004454   * BR(HH->bbgg) 
+#sample E: CV = 0.5  , C2V = 1   , klambda = 1    xs = 0.010460   * BR(HH->bbgg) 
+#sample F: CV = 1.5  , C2V = 1   , klambda = 1    xs = 0.063800   * BR(HH->bbgg)
+
+#VBF_HH_CV_1_C2V_1_C3_1      0.001668                                
+#VBF_HH_CV_1_C2V_1_C3_0      0.004454                                             
+#VBF_HH_CV_1_C2V_1_C3_2      0.001375                                                
+#VBF_HH_CV_1_C2V_2_C3_1      0.01374                                                     
+#VBF_HH_CV_0_5_C2V_1_C3_1    0.01046                                                    
+#VBF_HH_CV_1_5_C2V_1_C3_1    0.0638                                                      
+#VBF_HH_CV_1_C2V_0_C3_1      0.02617    
+
+#k_NNLO = xs_SM(N3LO) / xs_SM(LO) = 1.726/1.668 = 1.034 
 
                 # Create a list of inputSamples
             inputList = [
-                inputSample(  1., 1., 1., 0.001499 ), # node 1
-                inputSample(  1., 1., 0., 0.003947 ), # node 2
-                inputSample(  1., 1., 2., 0.001243 ), # node 3
-                inputSample(  1., 2., 1., 0.012719 ), # node 4
-                inputSample( 1.5, 1., 1., 0.057943 ), # node 5
-#                inputSample(  1,  0., 2.,   0.0178 ), # node 19
-                inputSample(0.5, 1., 1.,   0.009579 ), # node 6 ---> calculated from Francesco code 
+                inputSample(  1., 1., 1., 0.001668 ), # node 1
+                inputSample(  1., 1., 0., 0.004454 ), # node 2
+                inputSample(  1., 1., 2., 0.001375 ), # node 3
+                inputSample(  1., 2., 1., 0.013740 ), # node 4
+                inputSample( 1.5, 1., 1., 0.063800 ), # node 5
+                inputSample(0.5, 1., 1.,   0.010460 ), # node 6 ---> calculated from Francesco code 
             ]
 
                 # Instantiate a VBFReweight object
             VBFreweighter = VBFReweight(inputList)
 
 
-            #f=open("outKLweight.txt", "w+")
-            f=open("outC2Vweight.txt", "w+")
-            #fxs=open("outXS_KL.txt", "w+")
-            fxs=open("outXS_C2V.txt", "w+")
+            f=open("outKLweight.txt", "w+")
+            #f=open("outC2Vweight.txt", "w+")
+            fxs=open("outXS_KL.txt", "w+")
+            #fxs=open("outXS_C2V.txt", "w+")
                 # Get the modeled histogram for each (cv,c2v,kl) target point
 
             for cv in target_cv:
@@ -94,7 +103,7 @@ class OutputManager:
 
  
                         f.write("%f %f %f %f %f %f %f %f %f\n" % ( (6+kl)/0.2+1, (6+c2v)/0.2+1, cv, coefficients[0]/modeled_xs, coefficients[1]/modeled_xs, coefficients[2]/modeled_xs, coefficients[3]/modeled_xs, coefficients[4]/modeled_xs, coefficients[5]/modeled_xs ))                         
-                        fxs.write("%f %f %f %f %f\n" % ( (6+kl)/0.2+1, (6+c2v)/0.2+1, cv, (1.726/1.499)*modeled_xs*target_bf*1000, xsec ))                         
+                        fxs.write("%f %f %f %f %f\n" % ( (6+kl)/0.2+1, (6+c2v)/0.2+1, cv, (1.726/1.668)*modeled_xs*target_bf*1000, xsec ))                         
  
 #                        print 'total_xs ', modeled_xs
 #                        print 'total_xs*bf ', modeled_xs*target_bf
