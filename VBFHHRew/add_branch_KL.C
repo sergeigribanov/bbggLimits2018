@@ -1,26 +1,43 @@
 void add_branch_KL()
 {  
-   TString indirFT = "/afs/cern.ch/work/i/ivovtin/public/legacy_branch_flattrees/vbfhh/2018/C2VmixVBFtraining/withMVA/";
-   //TString indirFT = "/afs/cern.ch/work/i/ivovtin/public/legacy_branch_flattrees/vbfhh/2017/SMVBFtraining/withMVA/";
+   TString indirFT = "/afs/cern.ch/work/i/ivovtin/public/legacy_branch_flattrees/vbfhh/2018/2018_160520_SM_wCosTheta_conversion/";
+   //TString indirFT = "/afs/cern.ch/work/i/ivovtin/public/legacy_branch_flattrees/vbfhh/2018/2018_160520_SM_noCosTheta_conversion/";
+   //TString indirFT = "/afs/cern.ch/work/i/ivovtin/public/legacy_branch_flattrees/vbfhh/2018/2018_170520_SM_posmix_wCosTheta_conversion/";
+   //TString indirFT = "/afs/cern.ch/work/i/ivovtin/public/legacy_branch_flattrees/vbfhh/2018/2018_170520_SM_posmix_noCosTheta_conversion/";
+   //TString indirFT = "/afs/cern.ch/work/i/ivovtin/public/legacy_branch_flattrees/vbfhh/2018/2018_160520_c2v0_wCosTheta_conversion/";
+   //TString indirFT = "/afs/cern.ch/work/i/ivovtin/public/legacy_branch_flattrees/vbfhh/2018/2018_170520_c2v0_noCosTheta_conversion/";
+
    TString outdirFT;
    bool KLscan=1;  
    bool C2Vscan=0; 
 
-   if ( KLscan ) outdirFT = "/afs/cern.ch/work/i/ivovtin/public/legacy_branch_flattrees/vbfhh/2018/C2VmixVBFtraining/withMVA/KL/";
-   if ( C2Vscan ) outdirFT = "/afs/cern.ch/work/i/ivovtin/public/legacy_branch_flattrees/vbfhh/2018/C2VmixVBFtraining/withMVA/C2V/"; 
-
-   //if ( KLscan ) outdirFT = "/afs/cern.ch/work/i/ivovtin/public/legacy_branch_flattrees/vbfhh/2017/SMVBFtraining/withMVA/KL/";
-   //if ( C2Vscan ) outdirFT = "/afs/cern.ch/work/i/ivovtin/public/legacy_branch_flattrees/vbfhh/2017/SMVBFtraining/withMVA/C2V/"; 
+   if ( KLscan ) {
+        gSystem->Exec("mkdir " + indirFT + "KL");
+	outdirFT = indirFT + "KL/";
+   } 
+   if ( C2Vscan ) {
+        gSystem->Exec("mkdir " + indirFT + "C2V");
+	outdirFT = indirFT + "C2V/";
+   }
 
    //==========================================
    //['VBFHHTo2B2G_CV_1_C2V_1_C3_1', 'VBFHHTo2B2G_CV_1_C2V_1_C3_0', 'VBFHHTo2B2G_CV_1_C2V_1_C3_2', 'VBFHHTo2B2G_CV_1_C2V_2_C3_1', 'VBFHHTo2B2G_CV_1_5_C2V_1_C3_1', 'VBFHHTo2B2G_CV_0_5_C2V_1_C3_1']
 
+   /*  
    TString Sig1 = "output_VBFHHTo2B2G_CV_1_C2V_1_C3_1_TuneCP5_PSWeights_13TeV-madgraph-pythia8.root";
    TString Sig2 = "output_VBFHHTo2B2G_CV_1_C2V_1_C3_0_TuneCP5_PSWeights_13TeV-madgraph-pythia8.root";
    TString Sig3 = "output_VBFHHTo2B2G_CV_1_C2V_1_C3_2_TuneCP5_PSWeights_13TeV-madgraph-pythia8.root";
    TString Sig4 = "output_VBFHHTo2B2G_CV_1_C2V_2_C3_1_TuneCP5_PSWeights_13TeV-madgraph-pythia8.root";
    TString Sig5 = "output_VBFHHTo2B2G_CV_1_5_C2V_1_C3_1_TuneCP5_PSWeights_13TeV-madgraph-pythia8.root";
    TString Sig6 = "output_VBFHHTo2B2G_CV_0_5_C2V_1_C3_1_TuneCP5_PSWeights_13TeV-madgraph-pythia8.root";
+   */
+   TString Sig1 = "output_VBFHHTo2B2G_CV_1_C2V_1_C3_1_dipoleRecoilOff-TuneCP5_PSweights_13TeV-madgraph-pythia8.root";
+   TString Sig2 = "output_VBFHHTo2B2G_CV_1_C2V_1_C3_0_dipoleRecoilOff-TuneCP5_PSweights_13TeV-madgraph-pythia8.root";
+   TString Sig3 = "output_VBFHHTo2B2G_CV_1_C2V_1_C3_2_dipoleRecoilOff-TuneCP5_PSweights_13TeV-madgraph-pythia8.root";
+   TString Sig4 = "output_VBFHHTo2B2G_CV_1_C2V_2_C3_1_dipoleRecoilOff-TuneCP5_PSweights_13TeV-madgraph-pythia8.root";
+   TString Sig5 = "output_VBFHHTo2B2G_CV_1_5_C2V_1_C3_1_dipoleRecoilOff-TuneCP5_PSweights_13TeV-madgraph-pythia8.root";
+   TString Sig6 = "output_VBFHHTo2B2G_CV_0_5_C2V_1_C3_1_dipoleRecoilOff-TuneCP5_PSweights_13TeV-madgraph-pythia8.root";
+
 
    for (TString fname : {Sig1,Sig2,Sig3,Sig4,Sig5,Sig6})
    {
