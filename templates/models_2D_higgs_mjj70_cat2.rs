@@ -6,6 +6,14 @@ mgg_sig_alpha2_cat2[1.0, 0.05, 10.0];
 mgg_sig_n2_cat2[2.0, 0.1, 10.0];
 mggSig_cat2 = RooDoubleCB(mgg, mgg_sig_m0_cat2, mgg_sig_sigma_cat2, mgg_sig_alpha1_cat2, mgg_sig_n1_cat2, mgg_sig_alpha2_cat2, mgg_sig_n2_cat2);
 
+mgg_sigVBF_m0_cat2[125., 122, 127];
+mgg_sigVBF_sigma_cat2[1.0, 0.1, 3.0];
+mgg_sigVBF_alpha1_cat2[1.0, 0.05, 10.0];
+mgg_sigVBF_n1_cat2[2.0, 0.1, 10.0];
+mgg_sigVBF_alpha2_cat2[1.0, 0.05, 10.0];
+mgg_sigVBF_n2_cat2[2.0, 0.1, 10.0];
+mggSigVBF_cat2 = RooDoubleCB(mgg, mgg_sigVBF_m0_cat2, mgg_sigVBF_sigma_cat2, mgg_sigVBF_alpha1_cat2, mgg_sigVBF_n1_cat2, mgg_sigVBF_alpha2_cat2, mgg_sigVBF_n2_cat2);
+
 mgg_hig_m0_ggh_cat2[124.2, 123, 125];
 mgg_hig_sigma_ggh_cat2[2.0, 0.1, 3.0];
 mgg_hig_alpha1_ggh_cat2[1.0, 0.05, 10.0];
@@ -53,6 +61,14 @@ mjj_sig_n1_cat2[2.0, 0.1, 10.0];
 mjj_sig_alpha2_cat2[1.0, 0.05, 10.0];
 mjj_sig_n2_cat2[2.0, 0.1, 5.0];
 mjjSig_cat2 = RooDoubleCB(mjj, mjj_sig_m0_cat2, mjj_sig_sigma_cat2, mjj_sig_alpha1_cat2, mjj_sig_n1_cat2, mjj_sig_alpha2_cat2, mjj_sig_n2_cat2);
+
+mjj_sigVBF_m0_cat2[110.0, 99, 140];
+mjj_sigVBF_sigma_cat2[10.0, 1.0, 60.0];
+mjj_sigVBF_alpha1_cat2[1.0, 0.05, 10.0];
+mjj_sigVBF_n1_cat2[2.0, 0.1, 10.0];
+mjj_sigVBF_alpha2_cat2[1.0, 0.05, 10.0];
+mjj_sigVBF_n2_cat2[2.0, 0.1, 5.0];
+mjjSigVBF_cat2 = RooDoubleCB(mjj, mjj_sigVBF_m0_cat2, mjj_sigVBF_sigma_cat2, mjj_sigVBF_alpha1_cat2, mjj_sigVBF_n1_cat2, mjj_sigVBF_alpha2_cat2, mjj_sigVBF_n2_cat2);
 
 mjj_hig_par1_ggh_cat2[0.1, 0, 10];
 mjj_hig_par2_ggh_cat2[0.1, 0, 10];
