@@ -511,8 +511,8 @@ void bbgg2DFitter::SigVBFHHModelFit(float mass)
       if (_verbLvl>1) std::cout << " Started with cat="<<c<<std::endl;
       
       sigVBFHHToFit[c] = (RooDataSet*) _w->data(TString::Format("Sig_vbfhh_cat%d",c));
-      mggSig[c] = (RooAbsPdf*) _w->pdf(TString::Format("mggSig_cat%d",c));
-      mjjSig[c] = (RooAbsPdf*) _w->pdf(TString::Format("mjjSig_cat%d",c));
+      mggSig[c] = (RooAbsPdf*) _w->pdf(TString::Format("mggSigVBF_cat%d",c));
+      mjjSig[c] = (RooAbsPdf*) _w->pdf(TString::Format("mjjSigVBF_cat%d",c));
 
       if (_verbLvl>1) std::cout << " DBG point 1 cat="<<c<<std::endl;
       mggSig[c]->Print();
@@ -804,16 +804,16 @@ void bbgg2DFitter::MakeSigVBFWS(std::string fileBaseName)
         wAll->import( *_w->var( tempObj->GetName() ), RenameVariable( thisVarName, newVarName));
       }
       //Shifts and smearings
-      _w->factory(TString::Format("prod::CMS_hgg_sigVBF_m0_cat%d(mgg_sig_m0_cat%d, CMS_hgg_sig_m0_absShift)", c, c));
-      _w->factory(TString::Format("prod::CMS_hgg_sigVBF_sigma_cat%d(mgg_sig_sigma_cat%d, CMS_hgg_sig_sigmaScale)", c, c));
+      _w->factory(TString::Format("prod::CMS_hgg_sigVBF_m0_cat%d(mgg_sigVBF_m0_cat%d, CMS_hgg_sig_m0_absShift)", c, c));
+      _w->factory(TString::Format("prod::CMS_hgg_sigVBF_sigma_cat%d(mgg_sigVBF_sigma_cat%d, CMS_hgg_sig_sigmaScale)", c, c));
       if (_fitStrategy==2){
-	_w->factory(TString::Format("prod::CMS_hbb_sigVBF_m0_cat%d(mjj_sig_m0_cat%d, CMS_hbb_sig_m0_absShift)", c, c));
-	_w->factory(TString::Format("prod::CMS_hbb_sigVBF_sigma_cat%d(mjj_sig_sigma_cat%d, CMS_hbb_sig_sigmaScale)", c, c));
+	_w->factory(TString::Format("prod::CMS_hbb_sigVBF_m0_cat%d(mjj_sigVBF_m0_cat%d, CMS_hbb_sig_m0_absShift)", c, c));
+	_w->factory(TString::Format("prod::CMS_hbb_sigVBF_sigma_cat%d(mjj_sigVBF_sigma_cat%d, CMS_hbb_sig_sigmaScale)", c, c));
       }
       if(!_useDSCB) {
-        _w->factory(TString::Format("prod::CMS_hgg_gsigma_cat%d(mgg_sig_gsigma_cat%d, CMS_hgg_sig_sigmaScale)", c, c));
+        _w->factory(TString::Format("prod::CMS_hgg_gsigma_cat%d(mgg_sigVBF_gsigma_cat%d, CMS_hgg_sig_sigmaScale)", c, c));
 	if (_fitStrategy==2)
-	  _w->factory(TString::Format("prod::CMS_hbb_gsigma_cat%d(mjj_sig_gsigma_cat%d, CMS_hbb_sig_sigmaScale)", c, c));
+	  _w->factory(TString::Format("prod::CMS_hbb_gsigma_cat%d(mjj_sigVBF_gsigma_cat%d, CMS_hbb_sig_sigmaScale)", c, c));
       }
 
       TString EditPDF = TString::Format("EDIT::CMS_sig_vbfhh_cat%d(SigVBFHHPdf_cat%d,", c, c);
@@ -821,18 +821,18 @@ void bbgg2DFitter::MakeSigVBFWS(std::string fileBaseName)
         EditPDF += TString::Format("%s=%s,", varsToChange[iv].first.Data(), varsToChange[iv].second.Data());
       //Shifted and smeared vars
       if(!_useDSCB) {
-        EditPDF += TString::Format("mgg_sig_gsigma_cat%d=CMS_hgg_sig_gsigma_cat%d", c, c);
+        EditPDF += TString::Format("mgg_sigVBF_gsigma_cat%d=CMS_hgg_sig_gsigma_cat%d", c, c);
 	if (_fitStrategy==2)
-	  EditPDF += TString::Format(",mjj_sig_gsigma_cat%d=CMS_hbb_sig_gsigma_cat%d)", c, c);
+	  EditPDF += TString::Format(",mjj_sigVBF_gsigma_cat%d=CMS_hbb_sig_gsigma_cat%d)", c, c);
 	else
 	  EditPDF += (")");
 
       }
-      EditPDF += TString::Format("mgg_sig_m0_cat%d=CMS_hgg_sigVBF_m0_cat%d,", c, c);
-      EditPDF += TString::Format("mgg_sig_sigma_cat%d=CMS_hgg_sigVBF_sigma_cat%d", c, c);
+      EditPDF += TString::Format("mgg_sigVBF_m0_cat%d=CMS_hgg_sigVBF_m0_cat%d,", c, c);
+      EditPDF += TString::Format("mgg_sigVBF_sigma_cat%d=CMS_hgg_sigVBF_sigma_cat%d", c, c);
       if (_fitStrategy==2){
-	EditPDF += TString::Format(",mjj_sig_m0_cat%d=CMS_hbb_sigVBF_m0_cat%d,", c, c);
-	EditPDF += TString::Format("mjj_sig_sigma_cat%d=CMS_hbb_sigVBF_sigma_cat%d)", c, c);
+	EditPDF += TString::Format(",mjj_sigVBF_m0_cat%d=CMS_hbb_sigVBF_m0_cat%d,", c, c);
+	EditPDF += TString::Format("mjj_sigVBF_sigma_cat%d=CMS_hbb_sigVBF_sigma_cat%d)", c, c);
       }
       else
 	EditPDF += (")");

@@ -59,13 +59,13 @@ def main(argv):
 
 	for i,ob in enumerate(obs):
 		print "Start" 
-		data2D = workspace.data("Sig_cat"+str(cat))
-		#data2D = workspace.data("Sig_vbfhh_cat"+str(cat))
+		#data2D = workspace.data("Sig_cat"+str(cat))
+		data2D = workspace.data("Sig_vbfhh_cat"+str(cat))
 		data2D.Print()
-		pdf = workspace.pdf(ob+"Sig_cat"+str(cat)+"_CMS_sig_cat"+str(cat))
-		#pdf = workspace.pdf(ob+"Sig_cat"+str(cat)+"_CMS_sig_vbfhh_cat"+str(cat))
-		print ob+"Sig_cat"+str(cat)+"_CMS_sig_cat"+str(cat)
-		#print ob+"Sig_vbfhh_cat"+str(cat)+"_CMS_sig_vbfhh_cat"+str(cat)
+		#pdf = workspace.pdf(ob+"Sig_cat"+str(cat)+"_CMS_sig_cat"+str(cat))
+		pdf = workspace.pdf(ob+"SigVBF_cat"+str(cat)+"_CMS_sig_vbfhh_cat"+str(cat))
+		#print ob+"Sig_cat"+str(cat)+"_CMS_sig_cat"+str(cat)
+		print ob+"Sig_vbfhh_cat"+str(cat)+"_CMS_sig_vbfhh_cat"+str(cat)
 		pdf.Print()
 		var = workspace.var(ob)
 		data = data2D.reduce(RooArgSet(var))
