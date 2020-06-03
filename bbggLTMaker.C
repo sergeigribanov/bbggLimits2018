@@ -148,14 +148,14 @@ void bbggLTMaker::Begin(TTree * /*tree*/)
   _outFile = new TFile(_outFileName, "RECREATE");
   _outTree = new TTree("LT", "A tree for studying new particles");
 
-  _outTree->Branch("run", &o_run, "o_run/i");
+  //_outTree->Branch("run", &o_run, "o_run/i");
   _outTree->Branch("evt", &o_evt, "o_evt/l");
 
   _outTree->Branch("evWeight", &o_weight, "o_weight/D");
   _outTree->Branch("mgg", &o_mgg, "o_mgg/D");
   _outTree->Branch("mjj", &o_mjj, "o_mjj/D");
   _outTree->Branch("MX",  &o_MX,  "o_MX/D");
-  _outTree->Branch("mbbgg", &o_bbggMass, "o_bbggMass/D");
+  //_outTree->Branch("mbbgg", &o_bbggMass, "o_bbggMass/D");
   _outTree->Branch("catID", &o_catID, "o_catID/I");
   _outTree->Branch("ttHTagger", &o_ttHTagger, "ttHTagger/D");
 
@@ -173,7 +173,7 @@ void bbggLTMaker::Begin(TTree * /*tree*/)
   bbggLTMaker::SetupTriggerSF(trig_file);
 
   ifstream normfact;
-  normfact.open ("normalisation_numbers_for1.txt");
+  normfact.open ("normalisation_numbers.txt");
   for (int i=0;i<82;i++)
       normfact>>NF_2016[i]>>NF_2017[i]>>NF_2018[i];
 
@@ -187,7 +187,7 @@ void bbggLTMaker::SlaveBegin(TTree * /*tree*/)
 Bool_t bbggLTMaker::Process(Long64_t entry)
 {
   GetEntry(entry);
-  o_run = run;
+  //o_run = run;
   o_evt = event;
   
   //For SM 
@@ -242,7 +242,7 @@ Bool_t bbggLTMaker::Process(Long64_t entry)
 
   o_mgg = CMS_hgg_mass;
   o_mjj = Mjj;
-  o_bbggMass = diHiggs_mass;
+  //o_bbggMass = diHiggs_mass;
 
   o_MX = MX;
 
@@ -581,69 +581,101 @@ Bool_t bbggLTMaker::Process(Long64_t entry)
 //=========with cut =========================
   //Categorisation for boundaries from flashgg. VBFHH categories
   else if (_whichCategorization==6){
-    //if( (o_vbf_Cat_Selected!=0) && ttHScore>0.3 && MVAOutput_vbf_gg>0.99 && MVAOutput_vbf_gg <= 1.0 ) {  //sm, c2v2 
-    //if( (o_vbf_Cat_Selected!=0) && ttHScore>0.3 && MVAOutput_vbf_gg>0.98 && MVAOutput_vbf_gg <= 1.0 ) {    //c2vmix
-    //if( MVAOutput_vbf_gg>0.75 && ttHScore>0.3 ) { //c2v0 
-    	//std::cout<<"o_vbf_Cat="<<o_vbf_Cat_Selected<<"\t"<<"o_vbf_Cat_Selected="<<o_vbf_Cat_Selected<<"\t"<<"Mjj="<<Mjj<<std::endl;
-    //	o_catID = 12;
-    //} 
-    //=== 
-    //C2V2trainVBF2018C2V_16cats
-
-    if ( MVAOutput_vbf_ggf > 0.1 && ttHScore>0.3 ) {
-      if( o_MX > 1100 && MVAOutput_vbf_gg > 0.85 ){
-          o_catID = 15; 
-      }
-      else if ( o_MX > 650 && o_MX <= 1100 && MVAOutput_vbf_gg > 0.992 ){
-          o_catID = 14; 
-      }  
-      else if ( o_MX > 400 && o_MX <= 650 && MVAOutput_vbf_gg > 0.987 ){
-          o_catID = 13; 
-      }  
-      else if ( o_MX <= 400 && MVAOutput_vbf_gg > 0.95 ){
-          o_catID = 12; 
-      }  
-       else {
-        return kTRUE;
-      }
-    }
-    
-    //=== 
-    /*    
-    if ( o_vbf_Cat_Selected!=0 && ttHScore>0.3 ) {
-    if( MVAOutput_vbf_gg > 0.974 && MVAOutput_vbf_gg <= 0.99 && leadingJet_pt/Mjj > 0.55 ){
-          o_catID = 13; 
-    }
-    else if ( MVAOutput_vbf_gg > 0.99 && MVAOutput_vbf_gg <= 1.0 && leadingJet_pt/Mjj > 0.55 ){
-          o_catID = 12; 
-    }  
-    }
-    */
-    //=== 
-    /*    
+    //===============
+    /*
+    //14 cats 
     //C2V2trainVBF2018C2V_14cats_v2 - best!
-    if( MVAOutput_vbf_gg > 0.992 && MVAOutput_vbf_gg < 0.9975 && MVAOutput_vbf_ggf > 0.1 && ttHScore > 0.3 && leadingJet_pt/Mjj > 0.55 ){
+    if( MVAOutput_vbf_gg > 0.992 && MVAOutput_vbf_gg < 0.9965 && MVAOutput_vbf_ggf > 0.1 && ttHScore > 0.3 && leadingJet_pt/Mjj > 0.55 ){
           o_catID = 13; 
     }
-    else if ( MVAOutput_vbf_gg > 0.9975 && MVAOutput_vbf_ggf > 0.1 && ttHScore > 0.3 && leadingJet_pt/Mjj > 0.55 ){
+    else if ( MVAOutput_vbf_gg > 0.9965 && MVAOutput_vbf_ggf > 0.1 && ttHScore > 0.3 && leadingJet_pt/Mjj > 0.55 ){
           o_catID = 12; 
     }
-    */  
-    //===     
-    /*     
-    if( (o_vbf_Cat_Selected==1) && ttHScore>0.3 ) {
+    */   
+    //===============
+    /*
+    //14 cats - for SM_c2v01_noCosTheta
+    if( MVAOutput_vbf_gg > 0.9870 && MVAOutput_vbf_gg < 0.9920 && MVAOutput_vbf_ggf > 0.1 && ttHScore > 0.3 && leadingJet_pt/Mjj > 0.55 ){
+          o_catID = 13; 
+    }
+    else if ( MVAOutput_vbf_gg >= 0.9920 && MVAOutput_vbf_ggf > 0.1 && ttHScore > 0.3 && leadingJet_pt/Mjj > 0.55 ){
+          o_catID = 12; 
+    }
+    */    
+    //===============     
+    /* 
+    //14 cats - for SM_c2v01_noCosTheta
+    if( o_MX<498 && vbf_Cat!=0 && MVAOutput_vbf_gg > 0.9860 && ttHScore > 0.3 && leadingJet_pt/Mjj > 0.55 ){
+          o_catID = 13; 
+    }
+    else if ( o_MX>498 && vbf_Cat!=0 && MVAOutput_vbf_gg > 0.9860 && ttHScore > 0.3 && leadingJet_pt/Mjj > 0.55 ){
+          o_catID = 12; 
+    }
+    */   
+    //===============     
+    /*
+    //16 cats - for SM_c2v01_noCosTheta    
+    if( o_MX < 498 &&  MVAOutput_vbf_gg > 0.9860 && ttHScore > 0.3 && leadingJet_pt/Mjj > 0.55 ) {
        o_catID = 12; 
     }
-    else if( (o_vbf_Cat_Selected==2) && ttHScore>0.3 ) {
+    else if( o_MX < 498 && MVAOutput_vbf_gg > 0.9730 && MVAOutput_vbf_gg < 0.9860 && ttHScore > 0.3 && leadingJet_pt/Mjj > 0.55 ) {
        o_catID = 13; 
     }
-    else if( (o_vbf_Cat_Selected==3) && ttHScore>0.3 ) {
+    else if( o_MX >= 498 &&  MVAOutput_vbf_gg > 0.9860 && ttHScore > 0.3 && leadingJet_pt/Mjj > 0.55 ) {
        o_catID = 14; 
     }
-    else if( (o_vbf_Cat_Selected==4) && ttHScore>0.3 ) {
+    else if( o_MX >= 498 &&  MVAOutput_vbf_gg > 0.9730 && MVAOutput_vbf_gg < 0.9860 && ttHScore > 0.3 && leadingJet_pt/Mjj > 0.55 ) {
        o_catID = 15; 
-    }    
+    } 
     */
+    //===============     
+    
+    //16 cats - for SM_c2v01_noCosTheta    
+    if( absCosThetaStar_CS < 0.90 &&  MVAOutput_vbf_gg >= 0.9925 && ttHScore > 0.3 && leadingJet_pt/Mjj > 0.55 ) {
+       o_catID = 12; 
+    }
+    else if( absCosThetaStar_CS < 0.90 && MVAOutput_vbf_gg > 0.9865 && MVAOutput_vbf_gg < 0.9925 && ttHScore > 0.3 && leadingJet_pt/Mjj > 0.55 ) {
+       o_catID = 13; 
+    }
+    else if( absCosThetaStar_CS > 0.90 &&  MVAOutput_vbf_gg >= 0.9925 && ttHScore > 0.3 && leadingJet_pt/Mjj > 0.55 ) {
+       o_catID = 14; 
+    }
+    else if( absCosThetaStar_CS > 0.90 && MVAOutput_vbf_gg > 0.9865 && MVAOutput_vbf_gg < 0.9925 && ttHScore > 0.3 && leadingJet_pt/Mjj > 0.55 ) {
+       o_catID = 15; 
+    } 
+ 
+    //for 2018 
+    /*
+    if( absCosThetaStar_CS < 0.80 &&  MVAOutput_vbf_gg >= 0.9860 && ttHScore > 0.3 && leadingJet_pt/Mjj > 0.55 ) {
+       o_catID = 12; 
+    }
+    else if( absCosThetaStar_CS < 0.80 && MVAOutput_vbf_gg > 0.9730 && MVAOutput_vbf_gg < 0.9860 && ttHScore > 0.3 && leadingJet_pt/Mjj > 0.55 ) {
+       o_catID = 13; 
+    }
+    else if( absCosThetaStar_CS > 0.80 &&  MVAOutput_vbf_gg >= 0.9860 && ttHScore > 0.3 && leadingJet_pt/Mjj > 0.55 ) {
+       o_catID = 14; 
+    }
+    else if( absCosThetaStar_CS > 0.80 && MVAOutput_vbf_gg > 0.9730 && MVAOutput_vbf_gg < 0.9860 && ttHScore > 0.3 && leadingJet_pt/Mjj > 0.55 ) {
+       o_catID = 15; 
+    } 
+    */
+    //===============     
+    /*
+    //16 cats     
+    if( o_MX < 650 && absCosThetaStar_CS > 0.7 && MVAOutput_vbf_gg > 0.987 ) {
+       o_catID = 12; 
+    }
+    else if( o_MX < 650 && absCosThetaStar_CS < 0.7 && MVAOutput_vbf_gg > 0.992  ) {
+       o_catID = 13; 
+    }
+    else if( o_MX > 650 && absCosThetaStar_CS > 0.7 && MVAOutput_vbf_gg > 0.992 ) {
+       o_catID = 14; 
+    }
+    else if( o_MX > 650 && absCosThetaStar_CS < 0.7 && MVAOutput_vbf_gg > 0.99 ) {
+       o_catID = 15; 
+    } 
+    */   
+    //===============
     else{   
     if (o_MX > boundary_MX_2019[0] && o_MX <= boundary_MX_2019[14] ){
     if (HHbbggMVA > boundary_MVA_2019[0] && HHbbggMVA <= boundary_MVA_2019[1] && leadingJet_pt/Mjj > 0.55 ){
