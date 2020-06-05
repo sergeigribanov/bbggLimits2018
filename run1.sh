@@ -3,9 +3,9 @@
 ##./makeLT.py /afs/cern.ch/work/i/ivovtin/public/ForMaxim/new_flattrees2017/st_variables/ -x nonres -o /afs/cern.ch/work/i/ivovtin/Hggbb/LT_OutDir -c 3
 
 #Input directory with samples
-indir16="/afs/cern.ch/user/i/ivovtin/workarea/public/legacy_branch_flattrees/synch/2016/"
-indir17="/afs/cern.ch/user/i/ivovtin/workarea/public/legacy_branch_flattrees/synch/2017/"
-indir18="/afs/cern.ch/user/i/ivovtin/workarea/public/legacy_branch_flattrees/synch/2018/"
+#indir16="/afs/cern.ch/user/i/ivovtin/workarea/public/legacy_branch_flattrees/synch/2016/"
+#indir17="/afs/cern.ch/user/i/ivovtin/workarea/public/legacy_branch_flattrees/synch/2017/"
+#indir18="/afs/cern.ch/user/i/ivovtin/workarea/public/legacy_branch_flattrees/synch/2018/"
 
 ######For L2 Regression from Stepan
 #indir16="/afs/cern.ch/user/s/stzakhar/afs/mjj_reg_output/2016/"
@@ -13,10 +13,16 @@ indir18="/afs/cern.ch/user/i/ivovtin/workarea/public/legacy_branch_flattrees/syn
 #indir18="/afs/cern.ch/user/s/stzakhar/afs/mjj_reg_output/2018/"
 ####################
 
+#samples for VBFHH study
+indir16="/afs/cern.ch/work/i/ivovtin/public/legacy_branch_flattrees/vbfhh/2016/2016_SM_c2v01_noCosTheta_conversion/"
+indir17="/afs/cern.ch/work/i/ivovtin/public/legacy_branch_flattrees/vbfhh/2017/2017_SM_c2v01_noCosTheta_conversion/"
+indir18="/afs/cern.ch/work/i/ivovtin/public/legacy_branch_flattrees/vbfhh/2018/2018_SM_c2v01_noCosTheta_conversion/"
+
 ##Output directory with Limit Tree (LT)
-#path=/afs/cern.ch/work/i/ivovtin/Hggbb
-path=.
-LT=LT_2D_Y5_Data_15cat
+path=/afs/cern.ch/work/i/ivovtin/Hggbb
+#path=.
+#LT=LT_2D_Y4_Data_SigNLOkl5_16042020
+LT=LT_ggHHonly_SM_04062020
 
 out="$path/$LT"
 
@@ -44,13 +50,13 @@ echo "Start makeLT ..."
 #./makeLT.py  $indir17 -x nonres -l 41.5 -o $outdir17 -c 2
 #./makeLT.py  $indir18 -x nonres -l 59.4 -o $outdir18 -c 2
 
-#./makeLT.py  $indir16 -x nonres -l 35.9 -o $outdir16 -c 4
-#./makeLT.py  $indir17 -x nonres -l 41.5 -o $outdir17 -c 4
-#./makeLT.py  $indir18 -x nonres -l 59.4 -o $outdir18 -c 4
+./makeLT.py  $indir16 -x nonres -l 35.9 -o $outdir16 -c 4
+./makeLT.py  $indir17 -x nonres -l 41.5 -o $outdir17 -c 4
+./makeLT.py  $indir18 -x nonres -l 59.4 -o $outdir18 -c 4
 
-./makeLT.py  $indir16 -x nonres -l 35.9 -o $outdir16 -c 5
-./makeLT.py  $indir17 -x nonres -l 41.5 -o $outdir17 -c 5
-./makeLT.py  $indir18 -x nonres -l 59.4 -o $outdir18 -c 5
+#./makeLT.py  $indir16 -x nonres -l 35.9 -o $outdir16 -c 5
+#./makeLT.py  $indir17 -x nonres -l 41.5 -o $outdir17 -c 5
+#./makeLT.py  $indir18 -x nonres -l 59.4 -o $outdir18 -c 5
 
 echo "Finish makeLT ..."
 
