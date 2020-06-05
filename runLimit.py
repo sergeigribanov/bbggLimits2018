@@ -231,6 +231,8 @@ def runFullChain(opt, Params, point=None, NRgridPoint=-1, extraLabel=''):
 #  if fitStrategy==1:
 ##    theFitter.SetCut("mjj > 100 && mjj < 150")
 
+  #theFitter.SetCut("mjj > 90 && catID>9")
+
   if opt.verb>0:
     mainLog.info('Using Double Sided Crystal Ball as Signal Model: %r', doDoubleSidedCB)
   if doDoubleSidedCB: theFitter.UseDoubleSidedCB()
@@ -297,8 +299,8 @@ def runFullChain(opt, Params, point=None, NRgridPoint=-1, extraLabel=''):
   if opt.verb>1:
     theFitter.PrintWorkspace();
 
-  #JsonForEnvelop = "/afs/cern.ch/user/i/ivovtin/HHggbb/CMSSW_8_1_0/src/HiggsAnalysis/bbggLimits2018/jsonsForEnvelope/Env_json_2D_Data_18032020_15cat_withcut.dat"
-  JsonForEnvelop = "jsonsForEnvelope/Env_json_2D_Data_18032020_15cat_withcut.dat"
+  #JsonForEnvelop = "/afs/cern.ch/user/i/ivovtin/HHggbb/CMSSW_8_1_0/src/HiggsAnalysis/bbggLimits2018/jsonsForEnvelope/Env_json_2016-17-18_nlo_2D_ttHon_ggHH_16042020_withcut.dat"
+  JsonForEnvelop = "/afs/cern.ch/user/i/ivovtin/HHggbb/CMSSW_8_1_0/src/HiggsAnalysis/bbggLimits2018/jsonsForEnvelope/Env_json_2D_Data_VBFHH_ggHH_27052020_12cat_withcut.dat"
   fitresults = theFitter.BkgModelFit(JsonForEnvelop)
   wsMultipdfFileBkgName = "ws_hhbbgg.data_bkg_multipdf"
   theFitter.BkgMultiModelFitAllOrders(wsMultipdfFileBkgName, JsonForEnvelop)
