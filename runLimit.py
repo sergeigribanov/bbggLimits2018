@@ -327,7 +327,10 @@ def runFullChain(opt, Params, point=None, NRgridPoint=-1, extraLabel=''):
     theFitter.PrintWorkspace();
 
   #JsonForEnvelop = "/afs/cern.ch/user/i/ivovtin/HHggbb/CMSSW_8_1_0/src/HiggsAnalysis/bbggLimits2018/jsonsForEnvelope/Env_json_2D_Data_18032020_15cat_withcut.dat"
-  JsonForEnvelop = "jsonsForEnvelope/Env_json_2D_Data_VBFHH_ggHH_09042020_14cat_withcut.dat"
+  #JsonForEnvelop = "jsonsForEnvelope/Env_json_2D_Data_VBFHH_ggHH_06052020_13cat_withcut.dat"
+  #JsonForEnvelop = "jsonsForEnvelope/Env_json_2D_Data_VBFHH_ggHH_06052020_16cat_withcut.dat"
+  JsonForEnvelop = "jsonsForEnvelope/Env_json_2D_Data_VBFHH_ggHH_03062020_16cat_run2.dat"
+  #JsonForEnvelop = "jsonsForEnvelope/Env_json_2D_Data_VBFHH_ggHH_22052020_14cat_SM_wCosTheta_14cats.dat"
   fitresults = theFitter.BkgModelFit(JsonForEnvelop)
   wsMultipdfFileBkgName = "ws_hhbbgg.data_bkg_multipdf"
   theFitter.BkgMultiModelFitAllOrders(wsMultipdfFileBkgName, JsonForEnvelop)

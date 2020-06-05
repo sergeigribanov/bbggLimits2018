@@ -1,7 +1,5 @@
 #!/bin/bash/
 
-#!/bin/bash/
-
 indir16="/afs/cern.ch/work/i/ivovtin/public/legacy_branch_flattrees/vbfhh/2016/2016_SM_c2v01_noCosTheta_conversion/"
 indir17="/afs/cern.ch/work/i/ivovtin/public/legacy_branch_flattrees/vbfhh/2017/2017_SM_c2v01_noCosTheta_conversion/"
 indir18="/afs/cern.ch/work/i/ivovtin/public/legacy_branch_flattrees/vbfhh/2018/2018_SM_c2v01_noCosTheta_conversion/"
@@ -10,8 +8,9 @@ indir18="/afs/cern.ch/work/i/ivovtin/public/legacy_branch_flattrees/vbfhh/2018/2
 path=/afs/cern.ch/work/i/ivovtin/Hggbb
 #path=.
 Train=RUN2_SM_c2v01_noCosTheta
-Scan=KLscan
-LT=LT_vbfhh_KL79
+Scan=C2Vscan
+#Scan=KLscan
+LT=LT_vbfhh_C2V79
 
 out="$path/$Train"
 
@@ -36,7 +35,7 @@ echo "Start makeLT ..."
 ./makeLT.py  $indir17 -x nonres -l 41.5 -o $outdir17 -v -c 6
 ./makeLT.py  $indir18 -x nonres -l 59.4 -o $outdir18 -v -c 6
 
-##./makeLT.py /afs/cern.ch/work/i/ivovtin/public/legacy_branch_flattrees/vbfhh/2018/2018_200520_SM_posmix_noCosTheta_conversion/ -x nonres -l 59.4 -o /afs/cern.ch/work/i/ivovtin/Hggbb/SM_posmix_noCosTheta_14cats/KLscan/LT_vbfhh_KL79 -c 6
+##./makeLT.py /afs/cern.ch/work/i/ivovtin/public/legacy_branch_flattrees/vbfhh/2018/2018_260520_SM_c2v01_noCosTheta_conversion/ -x nonres -l 59.4 -o /afs/cern.ch/work/i/ivovtin/Hggbb/SM_c2v01_noCosTheta_14catsMX/C2Vscan/LT_vbfhh_C2V79 -c 6
 
 echo "Finish makeLT ..."
 
@@ -84,9 +83,6 @@ echo "Merge of files completed"
 rm -r "$out/$Scan/2016"
 rm -r "$out/$Scan/2017"
 rm -r "$out/$Scan/2018"
-
-
-
 
 
 

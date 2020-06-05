@@ -199,27 +199,30 @@ Bool_t bbggLTMaker::Process(Long64_t entry)
   F_2016 = 61.2285468;
   F_2017 = 8.196101254;
   F_2018 = 8.268999711;
-  */
+ */ 
   o_weight = weight*_normalization;
  
   //if (o_evt<20) cout<<"event="<<event<<"\t"<<"weight="<<weight<<"\t"<<"Mjj="<<Mjj<<"\t"<<"CMS_hgg_mass="<<CMS_hgg_mass<<endl;
   //if (o_evt<20) cout<<"_normalization="<<_normalization<<endl;
   //if (o_evt<20) cout<<"o_weight="<<o_weight<<endl;
-    
+  /*  
   if (_normalization == 35.9) { F_year=F_2016; btagnorm=1.01171; }
   if (_normalization == 41.5) { F_year=F_2017; btagnorm=1.008805; }
   if (_normalization == 59.4) { F_year=F_2018; btagnorm=1.001397; }
-  /*
-  if (_normalization == 35.9) {F_year=NF_2016[80];btagnorm=1.01171;}
-  if (_normalization == 41.5) {F_year=NF_2017[80];btagnorm=1.008805;}
-  if (_normalization == 59.4) {F_year=NF_2018[80];btagnorm=1.001397;}
-  */ 
-  if ( _normalization!=1 && _genDiPhotonFilter==0) o_weight=o_weight*btagnorm*reweight/(F_year/1.06); //ggHH signal
+  */
+  
+  if (_normalization == 35.9) {F_year=NF_2016[79-1]; btagnorm=1.01171;}
+  if (_normalization == 41.5) {F_year=NF_2017[79-1]; btagnorm=1.008805;}
+  if (_normalization == 59.4) {F_year=NF_2018[79-1]; btagnorm=1.001397;}
+  
+  if ( _normalization!=1 && _genDiPhotonFilter==0) {
+    o_weight=o_weight*btagnorm*reweight/(F_year/1.06); //ggHH signal
+    //cout<<"gghh, o_weight="<<o_weight<<"\t"<<"reweight="<<reweight<<"\t"<<"F_year="<<F_year<<endl;
+  }
   if ( _normalization!=1 && _genDiPhotonFilter==2) 
   {
-    o_weight=o_weight*btagnorm*reweightvbfhh*1.06; //VBFHH signal
-    //o_weight=o_weight*btagnorm*1.06; //VBFHH signal
-    //cout<<"vbfhh, o_weight="<<o_weight<<"\t"<<"reweightvbfhh="<<reweightvbfhh<<endl; 
+    o_weight=o_weight*btagnorm*reweight*1.06; //VBFHH signal
+    //cout<<"vbfhh, o_weight="<<o_weight<<"\t"<<"reweight="<<reweight<<endl; 
   }
   //===========FIXME for extraction limits on MC - indicate right path to out LT
 /*
@@ -581,54 +584,6 @@ Bool_t bbggLTMaker::Process(Long64_t entry)
 //=========with cut =========================
   //Categorisation for boundaries from flashgg. VBFHH categories
   else if (_whichCategorization==6){
-    //===============
-    /*
-    //14 cats 
-    //C2V2trainVBF2018C2V_14cats_v2 - best!
-    if( MVAOutput_vbf_gg > 0.992 && MVAOutput_vbf_gg < 0.9965 && MVAOutput_vbf_ggf > 0.1 && ttHScore > 0.3 && leadingJet_pt/Mjj > 0.55 ){
-          o_catID = 13; 
-    }
-    else if ( MVAOutput_vbf_gg > 0.9965 && MVAOutput_vbf_ggf > 0.1 && ttHScore > 0.3 && leadingJet_pt/Mjj > 0.55 ){
-          o_catID = 12; 
-    }
-    */   
-    //===============
-    /*
-    //14 cats - for SM_c2v01_noCosTheta
-    if( MVAOutput_vbf_gg > 0.9870 && MVAOutput_vbf_gg < 0.9920 && MVAOutput_vbf_ggf > 0.1 && ttHScore > 0.3 && leadingJet_pt/Mjj > 0.55 ){
-          o_catID = 13; 
-    }
-    else if ( MVAOutput_vbf_gg >= 0.9920 && MVAOutput_vbf_ggf > 0.1 && ttHScore > 0.3 && leadingJet_pt/Mjj > 0.55 ){
-          o_catID = 12; 
-    }
-    */    
-    //===============     
-    /* 
-    //14 cats - for SM_c2v01_noCosTheta
-    if( o_MX<498 && vbf_Cat!=0 && MVAOutput_vbf_gg > 0.9860 && ttHScore > 0.3 && leadingJet_pt/Mjj > 0.55 ){
-          o_catID = 13; 
-    }
-    else if ( o_MX>498 && vbf_Cat!=0 && MVAOutput_vbf_gg > 0.9860 && ttHScore > 0.3 && leadingJet_pt/Mjj > 0.55 ){
-          o_catID = 12; 
-    }
-    */   
-    //===============     
-    /*
-    //16 cats - for SM_c2v01_noCosTheta    
-    if( o_MX < 498 &&  MVAOutput_vbf_gg > 0.9860 && ttHScore > 0.3 && leadingJet_pt/Mjj > 0.55 ) {
-       o_catID = 12; 
-    }
-    else if( o_MX < 498 && MVAOutput_vbf_gg > 0.9730 && MVAOutput_vbf_gg < 0.9860 && ttHScore > 0.3 && leadingJet_pt/Mjj > 0.55 ) {
-       o_catID = 13; 
-    }
-    else if( o_MX >= 498 &&  MVAOutput_vbf_gg > 0.9860 && ttHScore > 0.3 && leadingJet_pt/Mjj > 0.55 ) {
-       o_catID = 14; 
-    }
-    else if( o_MX >= 498 &&  MVAOutput_vbf_gg > 0.9730 && MVAOutput_vbf_gg < 0.9860 && ttHScore > 0.3 && leadingJet_pt/Mjj > 0.55 ) {
-       o_catID = 15; 
-    } 
-    */
-    //===============     
     
     //16 cats - for SM_c2v01_noCosTheta    
     if( absCosThetaStar_CS < 0.90 &&  MVAOutput_vbf_gg >= 0.9925 && ttHScore > 0.3 && leadingJet_pt/Mjj > 0.55 ) {
@@ -643,39 +598,7 @@ Bool_t bbggLTMaker::Process(Long64_t entry)
     else if( absCosThetaStar_CS > 0.90 && MVAOutput_vbf_gg > 0.9865 && MVAOutput_vbf_gg < 0.9925 && ttHScore > 0.3 && leadingJet_pt/Mjj > 0.55 ) {
        o_catID = 15; 
     } 
- 
-    //for 2018 
-    /*
-    if( absCosThetaStar_CS < 0.80 &&  MVAOutput_vbf_gg >= 0.9860 && ttHScore > 0.3 && leadingJet_pt/Mjj > 0.55 ) {
-       o_catID = 12; 
-    }
-    else if( absCosThetaStar_CS < 0.80 && MVAOutput_vbf_gg > 0.9730 && MVAOutput_vbf_gg < 0.9860 && ttHScore > 0.3 && leadingJet_pt/Mjj > 0.55 ) {
-       o_catID = 13; 
-    }
-    else if( absCosThetaStar_CS > 0.80 &&  MVAOutput_vbf_gg >= 0.9860 && ttHScore > 0.3 && leadingJet_pt/Mjj > 0.55 ) {
-       o_catID = 14; 
-    }
-    else if( absCosThetaStar_CS > 0.80 && MVAOutput_vbf_gg > 0.9730 && MVAOutput_vbf_gg < 0.9860 && ttHScore > 0.3 && leadingJet_pt/Mjj > 0.55 ) {
-       o_catID = 15; 
-    } 
-    */
-    //===============     
-    /*
-    //16 cats     
-    if( o_MX < 650 && absCosThetaStar_CS > 0.7 && MVAOutput_vbf_gg > 0.987 ) {
-       o_catID = 12; 
-    }
-    else if( o_MX < 650 && absCosThetaStar_CS < 0.7 && MVAOutput_vbf_gg > 0.992  ) {
-       o_catID = 13; 
-    }
-    else if( o_MX > 650 && absCosThetaStar_CS > 0.7 && MVAOutput_vbf_gg > 0.992 ) {
-       o_catID = 14; 
-    }
-    else if( o_MX > 650 && absCosThetaStar_CS < 0.7 && MVAOutput_vbf_gg > 0.99 ) {
-       o_catID = 15; 
-    } 
-    */   
-    //===============
+  
     else{   
     if (o_MX > boundary_MX_2019[0] && o_MX <= boundary_MX_2019[14] ){
     if (HHbbggMVA > boundary_MVA_2019[0] && HHbbggMVA <= boundary_MVA_2019[1] && leadingJet_pt/Mjj > 0.55 ){

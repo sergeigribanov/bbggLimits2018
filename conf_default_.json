@@ -1,7 +1,7 @@
 {
-    "LTDIR" : "/afs/cern.ch/work/i/ivovtin/Hggbb/LT_vbfhh_13cat_KL10",
+    "LTDIR" : "/afs/cern.ch/work/i/ivovtin/Hggbb/RUN2_SM_c2v01_noCosTheta/KLscan/merged/LT_vbfhh_KL21",
     "RooFitTemplateName" : "templates/models_2D_higgs_mjj70",
-    "ncat" : 13,
+    "ncat" : 16,
     "doDoubleSidedCB": 1,
     "energy" : "13TeV",
     "higgsMass" : 125.0,

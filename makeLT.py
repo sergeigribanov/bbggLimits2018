@@ -92,8 +92,8 @@ if __name__ == "__main__":
 
     fChain = TChain("bbggSelectionTree")
     #fname = opt.indir+'/output_VBFHHTo2B2G_CV_1_C2V_1_C3_1_TuneCP5_PSWeights_13TeV-madgraph-pythia8.root'
-    #fname = opt.indir+'KL/output_VBFHHTo2B2G_allnodes_TuneCP5_PSWeights_13TeV-madgraph-pythia8.root'
-    fname = opt.indir+'C2V/output_VBFHHTo2B2G_allnodes_TuneCP5_PSWeights_13TeV-madgraph-pythia8.root'
+    fname = opt.indir+'KL/output_VBFHHTo2B2G_allnodes_TuneCP5_PSWeights_13TeV-madgraph-pythia8.root'
+    #fname = opt.indir+'C2V/output_VBFHHTo2B2G_allnodes_TuneCP5_PSWeights_13TeV-madgraph-pythia8.root'
     fChain.Add(fname)
     outFileName = opt.outDir+"/LT_output_VBFHHTo2B2G_CV_1_C2V_1_C3_1_TuneCP5_PSWeights_13TeV-madgraph-pythia8.root"
     

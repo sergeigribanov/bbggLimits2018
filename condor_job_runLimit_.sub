@@ -1,7 +1,8 @@
 #for run need done - condor_submit exercise01.sub    
 universe = vanilla
 #The fully qualified name of the executable to be run
-executable = run_extLimitKL10.sh
+executable = run_extLimitKL36.sh
+#executable = run_extLimit_v3_KL36.sh
 #Any arguments that are to be passed to the executable
 arguments = $(ClusterId)$(ProcId)
 #RequestCpus = 8
@@ -14,7 +15,9 @@ arguments = $(ClusterId)$(ProcId)
 # testmatch    = 3 days
 # nextweek     = 1 week
 #+JobFlavour = "espresso"
-+JobFlavour = "microcentury"
+#+JobFlavour = "microcentury"
++JobFlavour = "longlunch"
+#+JobFlavour = "workday"
 #By default this the time corresponding to the espresso JobFlavour. The maximum is 1 week, or 604800 seconds.
 #+MaxRuntime = 21600 
 #Where the STDOUT of the executable is written. This can be a relative or absolute path. HTCondor will not create the directory and hence an error will occur if the specified directory does not exist. 

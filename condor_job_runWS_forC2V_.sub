@@ -13,8 +13,9 @@ arguments = $(ClusterId)$(ProcId)
 # tomorrow     = 1 day
 # testmatch    = 3 days
 # nextweek     = 1 week
-+JobFlavour = "espresso"
-#+JobFlavour = "longlunch"
+#+JobFlavour = "espresso"
+#+JobFlavour = "microcentury"
++JobFlavour = "longlunch"
 #By default this the time corresponding to the espresso JobFlavour. The maximum is 1 week, or 604800 seconds.
 #+MaxRuntime = 21600 
 #Where the STDOUT of the executable is written. This can be a relative or absolute path. HTCondor will not create the directory and hence an error will occur if the specified directory does not exist. 
