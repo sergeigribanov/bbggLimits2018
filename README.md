@@ -101,7 +101,7 @@ The process may take a while to complete, especially when running with many cate
 . runLTs_for_KL.sh
 ```
 
-2. Create a workspace using the produced LTs on condor (1 task ~8 minutes):
+2. Create a workspace using the produced LTs on condor (1 task ~2 hours):
 ```
 . runWSs_for_KL.sh
 ```
@@ -120,7 +120,7 @@ The process may take a while to complete, especially when running with many cate
 . runLTs_for_C2V.sh
 ```
 
-2. Create a workspace using the produced LTs on condor (1 task ~8 minutes):
+2. Create a workspace using the produced LTs on condor (1 task ~2 hours):
 ```
 . runWSs_for_C2V.sh
 ```
