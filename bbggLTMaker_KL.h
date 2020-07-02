@@ -86,6 +86,8 @@ public :
    Float_t         MVAOutputTransformed;
    Float_t         MVAOutput_vbf_gg;
    Float_t         MVAOutput_vbf_ggf;
+   Float_t         MVAOutputTransformed_vbf_gg;
+   Float_t         MVAOutputTransformed_vbf_ggf;
    Int_t           vbf_Cat;
    Int_t           vbf_Cat_Selected;
    Float_t         MX;
@@ -160,6 +162,8 @@ public :
    TBranch        *b_MVAOutputTransformed;   //!
    TBranch        *b_MVAOutput_vbf_gg;   //!
    TBranch        *b_MVAOutput_vbf_ggf;   //!
+   TBranch        *b_MVAOutputTransformed_vbf_gg;   //!
+   TBranch        *b_MVAOutputTransformed_vbf_ggf;   //!
    TBranch        *b_absCosThetaStar_CS;   //!
    TBranch        *b_HHTagger_LM;   //!
    TBranch        *b_HHTagger_HM;   //!
@@ -239,6 +243,8 @@ void bbggLTMaker::Init(TTree *tree)
    //fChain->SetBranchAddress("MVAwithMjj", &HHbbggMVA, &b_HHbbggMVA);                 //MVA training with include Mjj   
    fChain->SetBranchAddress("MVAOutput_vbf_gg", &MVAOutput_vbf_gg, &b_MVAOutput_vbf_gg);
    fChain->SetBranchAddress("MVAOutput_vbf_ggf", &MVAOutput_vbf_ggf, &b_MVAOutput_vbf_ggf);
+   fChain->SetBranchAddress("MVAOutputTransformed_vbf_gg", &MVAOutputTransformed_vbf_gg, &b_MVAOutputTransformed_vbf_gg);
+   fChain->SetBranchAddress("MVAOutputTransformed_vbf_ggf", &MVAOutputTransformed_vbf_ggf, &b_MVAOutputTransformed_vbf_ggf);
    fChain->SetBranchAddress("absCosThetaStar_CS", &absCosThetaStar_CS, &b_absCosThetaStar_CS);
    //fChain->SetBranchAddress("run", &run, &b_run);
    fChain->SetBranchAddress("Mjj", &Mjj, &b_Mjj);
@@ -252,9 +258,6 @@ void bbggLTMaker::Init(TTree *tree)
    /*
    if(fChain->GetBranch("benchmark_reweight_SM")) {
       fChain->SetBranchAddress("benchmark_reweight_SM", &reweight, &b_reWeight);
-   }
-   if(fChain->GetBranch("C2V79")) {
-      fChain->SetBranchAddress("C2V79", &reweightvbfhh, &b_reWeightvbfhh);
    }
    */  
    if(fChain->GetBranch("KL36")) {

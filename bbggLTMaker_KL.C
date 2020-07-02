@@ -148,14 +148,14 @@ void bbggLTMaker::Begin(TTree * /*tree*/)
   _outFile = new TFile(_outFileName, "RECREATE");
   _outTree = new TTree("LT", "A tree for studying new particles");
 
-  _outTree->Branch("run", &o_run, "o_run/i");
+  //_outTree->Branch("run", &o_run, "o_run/i");
   _outTree->Branch("evt", &o_evt, "o_evt/l");
 
   _outTree->Branch("evWeight", &o_weight, "o_weight/D");
   _outTree->Branch("mgg", &o_mgg, "o_mgg/D");
   _outTree->Branch("mjj", &o_mjj, "o_mjj/D");
   _outTree->Branch("MX",  &o_MX,  "o_MX/D");
-  _outTree->Branch("mbbgg", &o_bbggMass, "o_bbggMass/D");
+  //_outTree->Branch("mbbgg", &o_bbggMass, "o_bbggMass/D");
   _outTree->Branch("catID", &o_catID, "o_catID/I");
   _outTree->Branch("ttHTagger", &o_ttHTagger, "ttHTagger/D");
 
@@ -187,7 +187,7 @@ void bbggLTMaker::SlaveBegin(TTree * /*tree*/)
 Bool_t bbggLTMaker::Process(Long64_t entry)
 {
   GetEntry(entry);
-  o_run = run;
+  //o_run = run;
   o_evt = event;
   
   //For SM 
@@ -211,17 +211,24 @@ Bool_t bbggLTMaker::Process(Long64_t entry)
   if (_normalization == 59.4) { F_year=F_2018; btagnorm=1.001397; }
   */
   
-  if (_normalization == 35.9) {F_year=NF_2016[KL]; btagnorm=1.01171;}
-  if (_normalization == 41.5) {F_year=NF_2017[KL]; btagnorm=1.008805;}
-  if (_normalization == 59.4) {F_year=NF_2018[KL]; btagnorm=1.001397;}
+  //for NLO ggHH samples
+  if (_normalization == 35.9) { F_year=NF_2016[KL-1]; btagnorm=1.011; }
+  if (_normalization == 41.5) { F_year=NF_2017[KL-1]; btagnorm=1.013; }
+  if (_normalization == 59.4) { F_year=NF_2018[KL-1]; btagnorm=1.004; }
   
   if ( _normalization!=1 && _genDiPhotonFilter==0) {
-    o_weight=o_weight*btagnorm*reweight/(F_year/1.06); //ggHH signal
+    //o_weight=o_weight*btagnorm*reweight/(F_year/1.06); //LO ggHH signal
+    o_weight=o_weight*btagnorm*reweight; //NLO ggHH signal
     //cout<<"gghh, o_weight="<<o_weight<<"\t"<<"reweight="<<reweight<<"\t"<<"F_year="<<F_year<<endl;
   }
+
+  if (_normalization == 35.9) {F_year=NF_2016[KL-1]; btagnorm=1.01171;}
+  if (_normalization == 41.5) {F_year=NF_2017[KL-1]; btagnorm=1.008805;}
+  if (_normalization == 59.4) {F_year=NF_2018[KL-1]; btagnorm=1.001397;}
+
   if ( _normalization!=1 && _genDiPhotonFilter==2) 
   {
-    o_weight=o_weight*btagnorm*reweight*1.06; //VBFHH signal
+    o_weight=o_weight*btagnorm*reweight; //VBFHH signal
     //cout<<"vbfhh, o_weight="<<o_weight<<"\t"<<"reweight="<<reweight<<endl; 
   }
   //===========FIXME for extraction limits on MC - indicate right path to out LT
@@ -245,7 +252,7 @@ Bool_t bbggLTMaker::Process(Long64_t entry)
 
   o_mgg = CMS_hgg_mass;
   o_mjj = Mjj;
-  o_bbggMass = diHiggs_mass;
+  //o_bbggMass = diHiggs_mass;
 
   o_MX = MX;
 
@@ -584,56 +591,150 @@ Bool_t bbggLTMaker::Process(Long64_t entry)
 //=========with cut =========================
   //Categorisation for boundaries from flashgg. VBFHH categories
   else if (_whichCategorization==6){
-    //if( (o_vbf_Cat_Selected!=0) && ttHScore>0.3 && MVAOutput_vbf_gg>0.99 && MVAOutput_vbf_gg <= 1.0 ) {  //sm, c2v2 
-    //if( (o_vbf_Cat_Selected!=0) && ttHScore>0.3 && MVAOutput_vbf_gg>0.98 && MVAOutput_vbf_gg <= 1.0 ) {    //c2vmix
-    //if( MVAOutput_vbf_gg>0.75 && ttHScore>0.3 ) { //c2v0 
-    	//std::cout<<"o_vbf_Cat="<<o_vbf_Cat_Selected<<"\t"<<"o_vbf_Cat_Selected="<<o_vbf_Cat_Selected<<"\t"<<"Mjj="<<Mjj<<std::endl;
-    //	o_catID = 12;
-    //} 
-    //=== 
-    //C2V2trainVBF2018C2V_16cats
+
+    //16 cats - for SM_c2v01_noCosTheta    
     /*
-    if ( MVAOutput_vbf_ggf > 0.1 && ttHScore>0.3 ) {
-      if( o_MX > 1100 && MVAOutput_vbf_gg > 0.85 ){
-          o_catID = 15; 
-      }
-      else if ( o_MX > 650 && o_MX <= 1100 && MVAOutput_vbf_gg > 0.992 ){
-          o_catID = 14; 
-      }  
-      else if ( o_MX > 400 && o_MX <= 650 && MVAOutput_vbf_gg > 0.987 ){
-          o_catID = 13; 
-      }  
-      else if ( o_MX <= 400 && MVAOutput_vbf_gg > 0.95 ){
-          o_catID = 12; 
-      }  
-       else {
-        return kTRUE;
-      }
+    if( absCosThetaStar_CS < 0.90 &&  MVAOutput_vbf_gg >= 0.9925 && ttHScore > 0.3 && leadingJet_pt/Mjj > 0.55 ) {
+       o_catID = 12; 
+    }
+    else if( absCosThetaStar_CS < 0.90 && MVAOutput_vbf_gg > 0.9865 && MVAOutput_vbf_gg < 0.9925 && ttHScore > 0.3 && leadingJet_pt/Mjj > 0.55 ) {
+       o_catID = 13; 
+    }
+    else if( absCosThetaStar_CS > 0.90 &&  MVAOutput_vbf_gg >= 0.9925 && ttHScore > 0.3 && leadingJet_pt/Mjj > 0.55 ) {
+       o_catID = 14; 
+    }
+    else if( absCosThetaStar_CS > 0.90 && MVAOutput_vbf_gg > 0.9865 && MVAOutput_vbf_gg < 0.9925 && ttHScore > 0.3 && leadingJet_pt/Mjj > 0.55 ) {
+       o_catID = 15; 
+    } 
+    */
+
+    /*
+    if( absCosThetaStar_CS < 0.90 &&  MVAOutput_vbf_gg >= 0.9925 && MVAOutput_vbf_ggf>0.65 && ttHScore > 0.26 && leadingJet_pt/Mjj > 0.55 ) {
+       o_catID = 12;
+    }
+    else if( absCosThetaStar_CS < 0.90 && MVAOutput_vbf_gg > 0.9865 && MVAOutput_vbf_gg < 0.9925 && MVAOutput_vbf_ggf>0.65 && ttHScore > 0.26 && leadingJet_pt/Mjj > 0.55 ) {
+       o_catID = 13;
+    }
+    else if( absCosThetaStar_CS > 0.90 &&  MVAOutput_vbf_gg >= 0.9925 && MVAOutput_vbf_ggf>0.65 && ttHScore > 0.26 && leadingJet_pt/Mjj > 0.55 ) {
+       o_catID = 14;
+    }
+    else if( absCosThetaStar_CS > 0.90 && MVAOutput_vbf_gg > 0.9865 && MVAOutput_vbf_gg < 0.9925 && MVAOutput_vbf_ggf>0.65 && ttHScore > 0.26 && leadingJet_pt/Mjj > 0.55 ) {
+       o_catID = 15;
     }
     */ 
-    //=== 
-    /*    
-    if ( o_vbf_Cat_Selected!=0 && ttHScore>0.3 ) {
-    if( MVAOutput_vbf_gg > 0.974 && MVAOutput_vbf_gg <= 0.99 && leadingJet_pt/Mjj > 0.55 ){
-          o_catID = 13; 
+    /*
+     //ETH strategy
+    if( MX<500 && MVAOutput_vbf_gg > 0.9865 && MVAOutput_vbf_ggf>0.65 && ttHScore > 0.26 && leadingJet_pt/Mjj > 0.55 ){
+          o_catID = 13;
     }
-    else if ( MVAOutput_vbf_gg > 0.99 && MVAOutput_vbf_gg <= 1.0 && leadingJet_pt/Mjj > 0.55 ){
-          o_catID = 12; 
-    }  
+    else if ( MX>500 && MVAOutput_vbf_gg > 0.9865 && MVAOutput_vbf_ggf>0.65 && ttHScore > 0.26 && leadingJet_pt/Mjj > 0.55 ){
+          o_catID = 12;
     }
     */
-    //=== 
-        
-    //C2V2trainVBF2018C2V_14cats_v2 - best!
-    if( MVAOutput_vbf_gg > 0.992 && MVAOutput_vbf_gg < 0.9965 && MVAOutput_vbf_ggf > 0.1 && ttHScore > 0.3 && leadingJet_pt/Mjj > 0.55 ){
-          o_catID = 13; 
+    /* 
+    if( absCosThetaStar_CS < 0.90 &&  MVAOutputTransformed_vbf_gg >= 0.54 && MVAOutputTransformed_vbf_ggf>0.68 && ttHScore > 0.26 && leadingJet_pt/Mjj > 0.55 ) {
+       o_catID = 12;
     }
-    else if ( MVAOutput_vbf_gg > 0.9965 && MVAOutput_vbf_ggf > 0.1 && ttHScore > 0.3 && leadingJet_pt/Mjj > 0.55 ){
-          o_catID = 12; 
+    else if( absCosThetaStar_CS < 0.90 && MVAOutputTransformed_vbf_gg > 0.44 && MVAOutputTransformed_vbf_gg < 0.54 && MVAOutputTransformed_vbf_ggf>0.68 && ttHScore > 0.26 && leadingJet_pt/Mjj > 0.55 ) {
+       o_catID = 13;
     }
-      
-    //===
-    
+    else if( absCosThetaStar_CS >= 0.90 &&  MVAOutputTransformed_vbf_gg >= 0.54 && MVAOutputTransformed_vbf_ggf>0.68 && ttHScore > 0.26 && leadingJet_pt/Mjj > 0.55 ) {
+       o_catID = 14;
+    }
+    else if( absCosThetaStar_CS >= 0.90 && MVAOutputTransformed_vbf_gg > 0.44 && MVAOutputTransformed_vbf_gg < 0.54 && MVAOutputTransformed_vbf_ggf>0.68 && ttHScore > 0.26 && leadingJet_pt/Mjj > 0.55 ) {
+       o_catID = 15;
+    }
+    */
+    /*
+    //1 Tatyana
+    if( absCosThetaStar_CS < 0.88 &&  MVAOutputTransformed_vbf_gg >= 0.560 && MVAOutputTransformed_vbf_ggf>0.5 && ttHScore > 0.26 && leadingJet_pt/Mjj > 0.55 ) {
+       o_catID = 12;
+    }
+    else if( absCosThetaStar_CS < 0.88 && MVAOutputTransformed_vbf_gg > 0.335 && MVAOutputTransformed_vbf_gg < 0.560 && MVAOutputTransformed_vbf_ggf>0.5 && ttHScore > 0.26 && leadingJet_pt/Mjj > 0.55 ) {
+       o_catID = 13;
+    }
+    else if( absCosThetaStar_CS >= 0.88 &&  MVAOutputTransformed_vbf_gg >= 0.560 && MVAOutputTransformed_vbf_ggf>0.5 && ttHScore > 0.26 && leadingJet_pt/Mjj > 0.55 ) {
+       o_catID = 14;
+    }
+    else if( absCosThetaStar_CS >= 0.88 && MVAOutputTransformed_vbf_gg > 0.335 && MVAOutputTransformed_vbf_gg < 0.560 && MVAOutputTransformed_vbf_ggf>0.5 && ttHScore > 0.26 && leadingJet_pt/Mjj > 0.55 ) {
+       o_catID = 15;
+    }
+   */
+   /*
+   //looose cut
+   if( absCosThetaStar_CS < 0.848 &&  MVAOutputTransformed_vbf_gg >= 0.555 && MVAOutputTransformed_vbf_ggf>0.1 && ttHScore > 0.26 && leadingJet_pt/Mjj > 0.55 ) {
+       o_catID = 12;
+    }
+    else if( absCosThetaStar_CS < 0.848 && MVAOutputTransformed_vbf_gg > 0.326 && MVAOutputTransformed_vbf_gg < 0.555 && MVAOutputTransformed_vbf_ggf>0.1 && ttHScore > 0.26 && leadingJet_pt/Mjj > 0.55 ) {
+       o_catID = 13;
+    }
+    else if( absCosThetaStar_CS >= 0.848 &&  MVAOutputTransformed_vbf_gg >= 0.555 && MVAOutputTransformed_vbf_ggf>0.1 && ttHScore > 0.26 && leadingJet_pt/Mjj > 0.55 ) {
+       o_catID = 14;
+    }
+    else if( absCosThetaStar_CS >= 0.848 && MVAOutputTransformed_vbf_gg > 0.326 && MVAOutputTransformed_vbf_gg < 0.555 && MVAOutputTransformed_vbf_ggf>0.1 && ttHScore > 0.26 && leadingJet_pt/Mjj > 0.55 ) {
+       o_catID = 15;
+    }
+    */
+    /*
+    //from Tatyana 21/06/20 - Tight MVAggHH 
+    if( absCosThetaStar_CS < 0.900 &&  MVAOutputTransformed_vbf_gg >= 0.550 && MVAOutputTransformed_vbf_ggf>0.5 && ttHScore > 0.26 && leadingJet_pt/Mjj > 0.55 ) {
+       o_catID = 12;
+    }
+    else if( absCosThetaStar_CS < 0.900 && MVAOutputTransformed_vbf_gg > 0.340 && MVAOutputTransformed_vbf_gg < 0.550 && MVAOutputTransformed_vbf_ggf>0.5 && ttHScore > 0.26 && leadingJet_pt/Mjj > 0.55 ) {
+       o_catID = 13;
+    }
+    else if( absCosThetaStar_CS >= 0.900 &&  MVAOutputTransformed_vbf_gg >= 0.550 && MVAOutputTransformed_vbf_ggf>0.5 && ttHScore > 0.26 && leadingJet_pt/Mjj > 0.55 ) {
+       o_catID = 14;
+    }
+    else if( absCosThetaStar_CS >= 0.900 && MVAOutputTransformed_vbf_gg > 0.340 && MVAOutputTransformed_vbf_gg < 0.550 && MVAOutputTransformed_vbf_ggf>0.5 && ttHScore > 0.26 && leadingJet_pt/Mjj > 0.55 ) {
+       o_catID = 15;
+    }
+    */
+    /*
+    //from Tatyana 21/06/20 - Loose MVAggHH
+    if( absCosThetaStar_CS < 0.810 &&  MVAOutputTransformed_vbf_gg >= 0.580 && MVAOutputTransformed_vbf_ggf>0.20 && ttHScore > 0.26 && leadingJet_pt/Mjj > 0.55 ) {
+       o_catID = 12;
+    }
+    else if( absCosThetaStar_CS < 0.810 && MVAOutputTransformed_vbf_gg > 0.370 && MVAOutputTransformed_vbf_gg < 0.580 && MVAOutputTransformed_vbf_ggf>0.20 && ttHScore > 0.26 && leadingJet_pt/Mjj > 0.55 ) {
+       o_catID = 13;
+    }
+    else if( absCosThetaStar_CS >= 0.810 &&  MVAOutputTransformed_vbf_gg >= 0.580 && MVAOutputTransformed_vbf_ggf>0.20 && ttHScore > 0.26 && leadingJet_pt/Mjj > 0.55 ) {
+       o_catID = 14;
+    }
+    else if( absCosThetaStar_CS >= 0.810 && MVAOutputTransformed_vbf_gg > 0.370 && MVAOutputTransformed_vbf_gg < 0.580 && MVAOutputTransformed_vbf_ggf>0.20 && ttHScore > 0.26 && leadingJet_pt/Mjj > 0.55 ) {
+       o_catID = 15;
+    }
+    */
+    /*
+    //from Tatyana 24/06/20 - Loose MVAggHH
+    if( absCosThetaStar_CS < 0.856 &&  MVAOutputTransformed_vbf_gg >= 0.611 && MVAOutputTransformed_vbf_ggf>0.30 && ttHScore > 0.26 && leadingJet_pt/Mjj > 0.55 ) {
+       o_catID = 12;
+    }
+    else if( absCosThetaStar_CS < 0.856 && MVAOutputTransformed_vbf_gg > 0.390 && MVAOutputTransformed_vbf_gg < 0.611 && MVAOutputTransformed_vbf_ggf>0.30 && ttHScore > 0.26 && leadingJet_pt/Mjj > 0.55 ) {
+       o_catID = 13;
+    }
+    else if( absCosThetaStar_CS >= 0.856 &&  MVAOutputTransformed_vbf_gg >= 0.611 && MVAOutputTransformed_vbf_ggf>0.30 && ttHScore > 0.26 && leadingJet_pt/Mjj > 0.55 ) {
+       o_catID = 14;
+    }
+    else if( absCosThetaStar_CS >= 0.856 && MVAOutputTransformed_vbf_gg > 0.390 && MVAOutputTransformed_vbf_gg < 0.611 && MVAOutputTransformed_vbf_ggf>0.30 && ttHScore > 0.26 && leadingJet_pt/Mjj > 0.55 ) {
+       o_catID = 15;
+    }
+   */
+
+    //from Tatyana 25/06/20 - Loose MVAggHH
+    if( absCosThetaStar_CS < 0.809 &&  MVAOutputTransformed_vbf_gg >= 0.622 && MVAOutputTransformed_vbf_ggf>0.10 && ttHScore > 0.26 && leadingJet_pt/Mjj > 0.55 ) {
+       o_catID = 12;
+    }
+    else if( absCosThetaStar_CS < 0.809 && MVAOutputTransformed_vbf_gg > 0.571 && MVAOutputTransformed_vbf_gg < 0.622 && MVAOutputTransformed_vbf_ggf>0.10 && ttHScore > 0.26 && leadingJet_pt/Mjj > 0.55 ) {
+       o_catID = 13;
+    }
+    else if( absCosThetaStar_CS >= 0.809 &&  MVAOutputTransformed_vbf_gg >= 0.622 && MVAOutputTransformed_vbf_ggf>0.10 && ttHScore > 0.26 && leadingJet_pt/Mjj > 0.55 ) {
+       o_catID = 14;
+    }
+    else if( absCosThetaStar_CS >= 0.809 && MVAOutputTransformed_vbf_gg > 0.571 && MVAOutputTransformed_vbf_gg < 0.622 && MVAOutputTransformed_vbf_ggf>0.10 && ttHScore > 0.26 && leadingJet_pt/Mjj > 0.55 ) {
+       o_catID = 15;
+    }
+
     else{   
     if (o_MX > boundary_MX_2019[0] && o_MX <= boundary_MX_2019[14] ){
     if (HHbbggMVA > boundary_MVA_2019[0] && HHbbggMVA <= boundary_MVA_2019[1] && leadingJet_pt/Mjj > 0.55 ){
