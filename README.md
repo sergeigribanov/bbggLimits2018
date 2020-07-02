@@ -105,7 +105,7 @@ The process may take a while to complete, especially when running with many cate
 ```
 . runWSs_for_KL.sh
 ```
-3. Set right xs-normalisation and ggHH signal to background:
+3. Set right xs-normalisation:
 ```
 . exchange_normWS_KL.sh
 ``` 
