@@ -1,13 +1,13 @@
 #!/bin/bash/
 
-indir16="/afs/cern.ch/work/i/ivovtin/public/legacy_branch_flattrees/vbfhh/2016/2016_SM_c2v01_noCosTheta_conversion/"
-indir17="/afs/cern.ch/work/i/ivovtin/public/legacy_branch_flattrees/vbfhh/2017/2017_SM_c2v01_noCosTheta_conversion/"
-indir18="/afs/cern.ch/work/i/ivovtin/public/legacy_branch_flattrees/vbfhh/2018/2018_SM_c2v01_noCosTheta_conversion/"
+indir16="/afs/cern.ch/work/i/ivovtin/public/legacy_branch_flattrees/vbfhhMjjreg/2016/"
+indir17="/afs/cern.ch/work/i/ivovtin/public/legacy_branch_flattrees/vbfhhMjjreg/2017/"
+indir18="/afs/cern.ch/work/i/ivovtin/public/legacy_branch_flattrees/vbfhhMjjreg/2018/"
 
 ##Output directory with Limit Tree (LT)
 path=/afs/cern.ch/work/i/ivovtin/Hggbb
 #path=.
-Train=RUN2_SM_c2v01_noCosTheta
+Train=RUN2_ggHHNLO_vbfhhAN_14cats_MjjReg
 Scan=C2Vscan
 #Scan=KLscan
 LT=LT_vbfhh_C2V36
@@ -31,9 +31,9 @@ mkdir $outdir18
 
 echo "Start makeLT ..."
 
-./makeLT.py  $indir16 -x nonres -l 35.9 -o $outdir16 -v -c 6
-./makeLT.py  $indir17 -x nonres -l 41.5 -o $outdir17 -v -c 6
-./makeLT.py  $indir18 -x nonres -l 59.4 -o $outdir18 -v -c 6
+./makeLT.py  $indir16 -x nonres -l 35.9 -o $outdir16 -v -c 7
+./makeLT.py  $indir17 -x nonres -l 41.5 -o $outdir17 -v -c 7
+./makeLT.py  $indir18 -x nonres -l 59.4 -o $outdir18 -v -c 7
 
 ##./makeLT.py /afs/cern.ch/work/i/ivovtin/public/legacy_branch_flattrees/vbfhh/2018/2018_260520_SM_c2v01_noCosTheta_conversion/ -x nonres -l 59.4 -o /afs/cern.ch/work/i/ivovtin/Hggbb/SM_c2v01_noCosTheta_14catsMX/C2Vscan/LT_vbfhh_C2V20 -c 6
 
