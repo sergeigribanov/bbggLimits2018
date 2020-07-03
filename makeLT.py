@@ -21,7 +21,7 @@ parser.add_argument("-l", "--lumi", dest="lumi", type=float, default=0.,
 parser.add_argument('-o', '--outDir', dest="outDir", type=str, default=None,
                     required=True, help="Output directory (will be created).")
 parser.add_argument('-c', '--categ', dest="categ", type=int, default=0,
-                    choices = [0,1,2,3,4,5,6], help="Which categorization to use. 0 - 2016 tagger; 1 - 2017 ETH tagger, using 2016 style categorization; 2 - 2017 ETH tagger, with optimized categorization; 3 - 2017 tagger with mjj cuts; 4 - 2019 tagger with Mjj in train; 5 - 15 categories; 6 - 12 categories + 1 VBFHH")
+                    choices = [0,1,2,3,4,5,6,7], help="Which categorization to use. 0 - 2016 tagger; 1 - 2017 ETH tagger, using 2016 style categorization; 2 - 2017 ETH tagger, with optimized categorization; 3 - 2017 tagger with mjj cuts; 4 - 2019 tagger with Mjj in train; 5 - 15 categories; 6 - 12 categories + 4 VBFHH; 7 - 12 categories + 2 VBFHH")
 
 opt = parser.parse_args()
 
@@ -47,7 +47,9 @@ if __name__ == "__main__":
       fChain = TChain("bbggSelectionTree")
       #fname = opt.indir+"/output_GluGluToHHTo2B2G_node_"+str(n[0])+"_13TeV-madgraph.root"  
       #fname = opt.indir+"/output_GluGluToHHTo2B2G_allnodes_no_unit_norm.root"
-      fname = opt.indir+"/output_GluGluToHHTo2B2G_all_node.root"
+      ##fname = opt.indir+"/output_GluGluToHHTo2B2G_all_node.root"
+      ##fname = opt.indir+"/output_GluGluToHHTo2B2G_node_cHHH1_PSWeights_13TeV-powheg-pythia8.root"
+      fname = opt.indir+"/output_GluGluToHHTo2B2G_node_cHHH015_TuneCP5_PSWeights_13TeV-powheg-pythia8.root"
       fChain.Add(fname)
       ttHkiller = fChain.GetListOfBranches().FindObject("ttHScore");
       if ttHkiller: _ttHTagger=1
@@ -92,8 +94,8 @@ if __name__ == "__main__":
 
     fChain = TChain("bbggSelectionTree")
     #fname = opt.indir+'/output_VBFHHTo2B2G_CV_1_C2V_1_C3_1_TuneCP5_PSWeights_13TeV-madgraph-pythia8.root'
-    fname = opt.indir+'KL/output_VBFHHTo2B2G_allnodes_TuneCP5_PSWeights_13TeV-madgraph-pythia8.root'
-    #fname = opt.indir+'C2V/output_VBFHHTo2B2G_allnodes_TuneCP5_PSWeights_13TeV-madgraph-pythia8.root'
+    #fname = opt.indir+'KL/output_VBFHHTo2B2G_allnodes_TuneCP5_PSWeights_13TeV-madgraph-pythia8.root'
+    fname = opt.indir+'C2V/output_VBFHHTo2B2G_allnodes_TuneCP5_PSWeights_13TeV-madgraph-pythia8.root'
     fChain.Add(fname)
     outFileName = opt.outDir+"/LT_output_VBFHHTo2B2G_CV_1_C2V_1_C3_1_TuneCP5_PSWeights_13TeV-madgraph-pythia8.root"
     
