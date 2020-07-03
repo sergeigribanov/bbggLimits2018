@@ -94,7 +94,9 @@ The results of the limit will be put at `LIMS_OutDir/Node_SM/result_1.log`.
 
 The process may take a while to complete, especially when running with many categories (about 30 minuts for 2D method and 12 categories).
 
-# Need check that for VBFHH signal samples inside are present KL and C2V weights. Also need update KL weight for ggHH signal samples. For adding KL and C2V weights using next code: https://github.com/ivovtin/bbggLimits2018/tree/run2_analysis_vbfhh/VBFHHRew#prepare-kl-and-c2v-weights-in-vbfhh-signal-samples
+# KL and C2V scans
+
+### Need check that for VBFHH signal samples inside are present KL and C2V weights. Also need update KL weight for ggHH signal samples. For adding KL and C2V weights using next code: https://github.com/ivovtin/bbggLimits2018/tree/run2_analysis_vbfhh/VBFHHRew#prepare-kl-and-c2v-weights-in-vbfhh-signal-samples
 
 # KL scan
 1. Making limit trees (LTs) for list of KL
