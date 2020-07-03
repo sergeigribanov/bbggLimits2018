@@ -1,7 +1,7 @@
 #for run need done - condor_submit exercise01.sub    
 universe = vanilla
 #The fully qualified name of the executable to be run
-executable = run_extLimitKL36.sh
+executable = run_extLimitC236.sh
 #executable = run_extLimit_v3_KL36.sh
 #Any arguments that are to be passed to the executable
 arguments = $(ClusterId)$(ProcId)
@@ -14,8 +14,8 @@ arguments = $(ClusterId)$(ProcId)
 # tomorrow     = 1 day
 # testmatch    = 3 days
 # nextweek     = 1 week
-+JobFlavour = "espresso"
-#+JobFlavour = "microcentury"
+#+JobFlavour = "espresso"
++JobFlavour = "microcentury"
 #+JobFlavour = "longlunch"
 #+JobFlavour = "workday"
 #By default this the time corresponding to the espresso JobFlavour. The maximum is 1 week, or 604800 seconds.

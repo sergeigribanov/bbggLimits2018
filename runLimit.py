@@ -300,7 +300,10 @@ def runFullChain(opt, Params, point=None, NRgridPoint=-1, extraLabel=''):
     theFitter.PrintWorkspace();
 
   #JsonForEnvelop = "/afs/cern.ch/user/i/ivovtin/HHggbb/CMSSW_8_1_0/src/HiggsAnalysis/bbggLimits2018/jsonsForEnvelope/Env_json_2016-17-18_nlo_2D_ttHon_ggHH_16042020_withcut.dat"
-  JsonForEnvelop = "/afs/cern.ch/user/i/ivovtin/HHggbb/CMSSW_8_1_0/src/HiggsAnalysis/bbggLimits2018/jsonsForEnvelope/Env_json_2D_Data_VBFHH_ggHH_27052020_12cat_withcut.dat"
+  #JsonForEnvelop = "/afs/cern.ch/user/i/ivovtin/HHggbb/CMSSW_8_1_0/src/HiggsAnalysis/bbggLimits2018/jsonsForEnvelope/Env_json_2D_Data_VBFHH_ggHH_27052020_12cat_withcut.dat"
+  #JsonForEnvelop = "/afs/cern.ch/user/i/ivovtin/HHggbb/CMSSW_8_1_0/src/HiggsAnalysis/bbggLimits2018/jsonsForEnvelope/Env_json_2D_Data_VBFHH_ggHH_28062020_Mjjreg.dat"
+  #JsonForEnvelop = "/afs/cern.ch/user/i/ivovtin/HHggbb/CMSSW_8_1_0/src/HiggsAnalysis/bbggLimits2018/jsonsForEnvelope/Env_json_2D_Data_VBFHH_ggHH_28062020_Mjj.dat"
+  JsonForEnvelop = "/afs/cern.ch/user/i/ivovtin/HHggbb/CMSSW_8_1_0/src/HiggsAnalysis/bbggLimits2018/jsonsForEnvelope/Env_json_2D_Data_VBFHH_ggHH_02072020_Mjj.dat"
   fitresults = theFitter.BkgModelFit(JsonForEnvelop)
   wsMultipdfFileBkgName = "ws_hhbbgg.data_bkg_multipdf"
   theFitter.BkgMultiModelFitAllOrders(wsMultipdfFileBkgName, JsonForEnvelop)

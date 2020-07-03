@@ -2,17 +2,16 @@
 
 #!/bin/bash/
 
-indir16="/afs/cern.ch/work/i/ivovtin/public/legacy_branch_flattrees/vbfhhMjjreg/2016/"
-indir17="/afs/cern.ch/work/i/ivovtin/public/legacy_branch_flattrees/vbfhhMjjreg/2017/"
-indir18="/afs/cern.ch/work/i/ivovtin/public/legacy_branch_flattrees/vbfhhMjjreg/2018/"
+indir16="/afs/cern.ch/work/i/ivovtin/public/legacy_branch_flattrees/vbfhh/2016/"
+indir17="/afs/cern.ch/work/i/ivovtin/public/legacy_branch_flattrees/vbfhh/2017/"
+indir18="/afs/cern.ch/work/i/ivovtin/public/legacy_branch_flattrees/vbfhh/2018/"
 
 ##Output directory with Limit Tree (LT)
 path=/afs/cern.ch/work/i/ivovtin/Hggbb
 #path=.
-Train=ggHH_NLO_12cats_Mjjreg
-#Train=ggHH_NLO_12cats_Mjj
-Scan=KLscan
-LT=LT_vbfhh_KL36
+Train=RUN2_ggHHonly_C2scan
+Scan=C2scan
+LT=LT_vbfhh_C236
 
 out="$path/$Train"
 
@@ -68,6 +67,7 @@ echo "Merging files ..."
 #$execute_cmd $dirout/$file5 $dir1/$file5  $dir3/$file5
 #$execute_cmd $dirout/$file6 $dir1/$file6  $dir3/$file6
 #$execute_cmd $dirout/$file7 $dir1/$file7  $dir3/$file7
+#$execute_cmd $dirout/$file8 $dir1/$file8  $dir3/$file8
 
 $execute_cmd $dirout/$file1 $dir1/$file1  $dir2/$file1  $dir3/$file1
 $execute_cmd $dirout/$file2 $dir1/$file2  $dir2/$file2  $dir3/$file2

@@ -50,7 +50,11 @@ if __name__ == "__main__":
       #fname = opt.indir+"/output_GluGluToHHTo2B2G_all_nodes.root"
       #fname = opt.indir+"/output_GluGluToHHTo2B2G_node_cHHH1.root"
       #fname = opt.indir+"/output_GluGluToHHTo2B2G_node_cHHH5.root"
-      fname = opt.indir+"/output_GluGluToHHTo2B2G_all_node.root"
+      #fname = opt.indir+"/output_GluGluToHHTo2B2G_all_node.root"
+      #fname = opt.indir+"/output_GluGluToHHTo2B2G_node_cHHH1_TuneCP5_PSWeights_13TeV-powheg-pythia8.root"
+      fname = opt.indir+"/output_GluGluToHHTo2B2G_node_cHHH015_TuneCP5_PSWeights_13TeV-powheg-pythia8.root"
+      #fname = opt.indir+"/output_GluGluToHHTo2B2G_allnodes_C2Scan.root"
+      #fname = opt.indir+"/KL/output_VBFHHTo2B2G_allnodes_TuneCP5_PSWeights_13TeV-madgraph-pythia8.root"
       fChain.Add(fname)
       ttHkiller = fChain.GetListOfBranches().FindObject("ttHScore");
       if ttHkiller: _ttHTagger=1
@@ -67,7 +71,7 @@ if __name__ == "__main__":
     print "Doing Single Higgs samples"
     for n in SMHiggsNodes:
       if opt.verb: print n
-#      fChain = TChain("tagsDumper/trees/bbggSelectionTree")
+      #fChain = TChain("tagsDumper/trees/bbggSelectionTree")
       fChain = TChain("bbggSelectionTree")
       fname = opt.indir+n[0]
 #     

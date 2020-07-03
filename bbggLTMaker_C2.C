@@ -21,96 +21,16 @@ const Float_t boundary_MVA_tagger2017_HM[3] = {0.226, 0.6195, 1.0};
 //const Float_t boundary_MVA_tagger2017[4] = {0.271, 0.543, 0.740, 1.05};
 //const Float_t boundary_MX_2017[5]  = {250, 341.4, 426.1, 544, 35000};
 
-//// upating the categrisation number according to this part of 2017 analysis code https://github.com/michelif/flashgg/blob/hh_tag_94X_20180601/Taggers/python/flashggDoubleHTag_cfi.py#L31-L34
-//eth categorisation - std!
-//const Float_t boundary_MVA_2017[4]   = {0.29, 0.441, 0.724, 1.0}; // category boundaries for MVA ###boundaries before 29/10/2019
-//const Float_t boundary_MX_2017[5]   = {250., 354., 478., 560., 35000};// .. and MX
-//eth categorisation - new boundaries for extra variables - prev flashgg
-//const Float_t boundary_MVA_2017[4]   = {0.283, 0.504, 0.775, 1.0}; 
-//const Float_t boundary_MX_2017[5]   = {250., 370., 481., 521., 35000};
-//eth categorisation - new boundaries for extra variables - dev_legacy - 2016-17
-//const Float_t boundary_MVA_2017[4]   = {0.267, 0.465, 0.718, 1.0}; 
-//const Float_t boundary_MX_2017[5]   = {250., 357., 478., 574., 35000};
-//eth categorisation - new boundaries for extra variables - dev_legacy - 2016-17-18
-//const Float_t boundary_MVA_2017[4]   = {0.283, 0.524, 0.717, 1.0}; 
-//const Float_t boundary_MX_2017[5]   = {250., 360., 417., 663., 35000};
-//eth categorisation for Mjj - dev_legacy - 2016-17
-//const Float_t boundary_MVA_2017[4]   = {0.275, 0.483, 0.736, 1.0};
-//const Float_t boundary_MX_2017[5]   = {250., 386., 454., 556., 35000};
-///eth categorisation for Mjj - dev_legacy - 2016-17-18
-//const Float_t boundary_MVA_2017[4]   = {0.290, 0.496, 0.741, 1.0};
-//const Float_t boundary_MX_2017[5]   = {250., 367., 450., 504., 35000};
-//eth categorisation for Mjj 
-//const Float_t boundary_MVA_2017[4]   = {0.23, 0.455, 0.709, 1.0}; // category boundaries for MVA
-//const Float_t boundary_MX_2017[5]   = {250., 336., 411., 556., 35000};// .. and MX
-//New categorisation - new boundaries for extra variables - legacy - Tatyina
-//const Float_t boundary_MVA_2017[4]   = {0.307, 0.551, 0.766, 1.0}; 
-//const Float_t boundary_MX_2017[5]   = {250., 386., 422., 563., 35000};
-//Flashgg, eth categorisation - dev_legacy - 2016-17-18 - with Mjj
-//const Float_t boundary_MVA_2017[4]   = {0.230, 0.455, 0.709, 1.0};
-//const Float_t boundary_MX_2017[5]   = {250., 336., 411., 556., 35000};
-//const Float_t boundary_MVA_2019[4]   = {0.320, 0.540, 0.700, 1.0};
-//const Float_t boundary_MX_2019[15]   = {250., 370., 480., 585., 35000., 250., 335., 380., 545., 35000., 250., 330., 360., 530., 35000};
-//const Float_t boundary_MVA_2019[4]   = {0.330, 0.560, 0.700, 1.0};
-//const Float_t boundary_MX_2019[15]   = {250., 375., 470., 600., 35000., 250., 325., 365., 585., 35000., 250., 330., 360., 520., 35000};
-//from presentation ETH 11/11/2019 
-//const Float_t boundary_MVA_2019[4]   = {0.300, 0.540, 0.700, 1.0};
-//const Float_t boundary_MX_2019[15]   = {250., 330., 375., 555., 35000., 250., 315., 365., 580., 35000., 250., 360., 470., 575., 35000};
-//from AN - for std+Mjj
-//const Float_t boundary_MVA_2019[4]   = {0.320, 0.540, 0.720, 1.0};
-//const Float_t boundary_MX_2019[15]   = {250., 330., 360., 530., 35000., 250., 335., 380., 545., 35000., 250., 370., 480., 585., 35000};
-//Flashgg, categorisation Tatyana - dev_legacy - 2016-17-18 - reweight - for 2D!!! 
-//const Float_t boundary_MVA_2019[4]   = {0.249, 0.450, 0.729, 1.0};
-//const Float_t boundary_MX_2019[15]   = {250., 383., 461., 514., 35000., 250., 343., 437., 563., 35000., 250., 342., 470., 553., 35000};
-//from presentation ETH 03/02/2020
 //for 1D
 //const Float_t boundary_MVA_2019[4]   = {0.440, 0.670, 0.790, 1.0};
 //const Float_t boundary_MX_2019[15]   = {250., 330., 365., 645., 35000., 250., 345., 440., 515., 35000., 250., 385., 470., 640., 35000};
 //for 2D
 const Float_t boundary_MVA_2019[4]   = {0.37, 0.620, 0.78, 1.0};
 const Float_t boundary_MX_2019[15]   = {250., 330., 375., 585., 35000., 250., 330., 360., 540., 35000., 250., 385., 510., 600., 35000};
-//16/03/2020 - form Tatyana - b enriched MC
-//const Float_t boundary_MVA_2019[4]   = {0.19, 0.41, 0.70, 1.0};
-//const Float_t boundary_MX_2019[15]   = {250., 346., 660., 781., 35000., 250., 351., 660., 755., 35000., 250., 356., 698., 745., 35000};
-//Flashgg, eth categorisation - dev_legacy - 2016-17-18 - wo Mjj
-//const Float_t boundary_MVA_2017[4]   = {0.290, 0.441, 0.724, 1.0};
-//const Float_t boundary_MX_2017[5]   = {250., 354., 478., 560., 35000};
-//Flashgg, diphoton categorisation (Tatyana) - dev_legacy - 2016-17-18 - reweight
-//const Float_t boundary_MVA_2017[4]   = {0.242, 0.447, 0.724, 1.0};
-//const Float_t boundary_MX_2017[5]   = {250., 385., 423., 563., 35000};
-//Flashgg, new categorisation (Tatyana) - dev_legacy - 2016-17-18 - reweight
-//const Float_t boundary_MVA_2017[4]   = {0.249, 0.450, 0.729, 1.0};
-//const Float_t boundary_MX_2017[5]   = {250., 375., 553., 637., 35000};
-//new categorisation (Tatyana) - dev_legacy - 2016-17-18 - reweight - 22/01/2020
-//for our 2D result 0.41 
-//const Float_t boundary_MVA_2017[4]   = {0.248, 0.450, 0.728, 1.0};
-//const Float_t boundary_MX_2017[5]   = {250., 376., 521., 603., 35000};
-//for withbtagreweight from Tatyana - mvawithmjj - 1D
-//const Float_t boundary_MVA_2017[4]   = {0.36, 0.56 , 0.79, 1.0};
-//const Float_t boundary_MX_2017[5]   = {250., 390., 570., 652., 35000};
-//for withbtagreweight from Tatyana - mvawomjj - 2D
-//const Float_t boundary_MVA_2017[4]   = {0.38, 0.61 , 0.81, 1.0};
-//const Float_t boundary_MX_2017[5]   = {250., 409., 533., 632., 35000};
-//for withbtagreweight from Tatyana - mvawomjj, our train - 2D
-//const Float_t boundary_MVA_2017[4]   = {0.30, 0.52 , 0.78, 1.0};
-//const Float_t boundary_MX_2017[5]   = {250., 383., 471., 515., 35000};
-//const Float_t boundary_MVA_2017[4]   = {0.38, 0.62 , 0.82, 1.0};
-//const Float_t boundary_MX_2017[5]   = {250., 415., 490., 602., 35000};
-//16/03/2020 - form Tatyana - b enriched MC
-//vrsion 1
-//const Float_t boundary_MVA_2017[4]   = {0.19, 0.41 , 0.70, 1.0};
-//const Float_t boundary_MX_2017[5]   = {250., 356., 595., 755., 35000};
 //version 2
 const Float_t boundary_MVA_2017[4]   = {0.19, 0.41 , 0.70, 1.0};
 const Float_t boundary_MX_2017[5]   = {250., 330., 641., 742., 35000};
 
-
-// Cuts for 2020 tagger (_which==4): for check with 2 categories
-//const Float_t boundary_MVA_2020[2] = {0.250, 1.0};
-//const Float_t boundary_MX_2020[3] = {250., 350., 35000};
-//15 categories - MC b-encriched
-//const Float_t boundary_MVA_cat15[4]   = {0.19, 0.41, 0.70, 1.0};
-//const Float_t boundary_MX_cat15[15]   = {250., 335., 380., 670., 744., 35000.};
 //15 categories - MC DiPhoton+Jets
 const Float_t boundary_MVA_cat15[4]   = {0.38, 0.62, 0.82, 1.0};
 const Float_t boundary_MX_cat15[15]   = {250., 402., 469., 531., 619., 35000.};
@@ -173,7 +93,7 @@ void bbggLTMaker::Begin(TTree * /*tree*/)
   bbggLTMaker::SetupTriggerSF(trig_file);
 
   ifstream normfact;
-  normfact.open ("normalisation_numbers.txt");
+  normfact.open ("normalisation_numbers_c2.txt");
   for (int i=0;i<82;i++)
       normfact>>NF_2016[i]>>NF_2017[i]>>NF_2018[i];
 
@@ -210,19 +130,14 @@ Bool_t bbggLTMaker::Process(Long64_t entry)
   if (_normalization == 41.5) { F_year=F_2017; btagnorm=1.008805; }
   if (_normalization == 59.4) { F_year=F_2018; btagnorm=1.001397; }
   */
-  /*
-  if (_normalization == 35.9) {F_year=NF_2016[KL-1]; btagnorm=1.01171;}     //for LO
-  if (_normalization == 41.5) {F_year=NF_2017[KL-1]; btagnorm=1.008805;}
-  if (_normalization == 59.4) {F_year=NF_2018[KL-1]; btagnorm=1.001397;}
-  */
-  //for NLO ggHH samples
-  if (_normalization == 35.9) { F_year=NF_2016[KL-1]; btagnorm=1.011; }
-  if (_normalization == 41.5) { F_year=NF_2017[KL-1]; btagnorm=1.013; }
-  if (_normalization == 59.4) { F_year=NF_2018[KL-1]; btagnorm=1.004; }
-
+  
+  if (_normalization == 35.9) {F_year=NF_2016[C2-1]; btagnorm=1.01171;}              //for LO
+  if (_normalization == 41.5) {F_year=NF_2017[C2-1]; btagnorm=1.008805;}
+  if (_normalization == 59.4) {F_year=NF_2018[C2-1]; btagnorm=1.001397;}
+  
   if ( _normalization!=1 && _genDiPhotonFilter==0) {
-    //o_weight=o_weight*btagnorm*reweight/(F_year/1.06); //ggHH signal
-    o_weight=o_weight*btagnorm*reweight; //ggHH signal
+    o_weight=o_weight*btagnorm*reweight/(F_year/1.06); //ggHH signal
+    //o_weight=o_weight*btagnorm*reweight; //ggHH signal
     //cout<<"gghh, o_weight="<<o_weight<<"\t"<<"reweight="<<reweight<<"\t"<<"F_year="<<F_year<<endl;
   }
 //  if ( _normalization!=1 && _genDiPhotonFilter==2) 
@@ -231,23 +146,6 @@ Bool_t bbggLTMaker::Process(Long64_t entry)
 //    //cout<<"vbfhh, o_weight="<<o_weight<<"\t"<<"reweight="<<reweight<<endl; 
 //  }
   //===========FIXME for extraction limits on MC - indicate right path to out LT
-/*
-  TString option = GetOption(); 
-  TObjArray *args = (TObjArray*)option.Tokenize(" "); 
- 
-  if( _normalization==1 && ((string)((TObjString*)args->At(1))->GetString() == "/afs/cern.ch/work/i/ivovtin/Hggbb/LT_2D_Y5_DatatoMC_15cat_20032020/2016/LT_DoubleEG.root") ) {o_weight=o_weight*2.9*35.9; 
-   if (o_evt<20) cout<<"(string)((TObjString*)args->At(1))->GetString()="<<(string)((TObjString*)args->At(1))->GetString()<<endl; 
-   if (o_evt<20) cout<<"o_weight="<<o_weight<<endl;
-  }
-  if( _normalization==1 && ((string)((TObjString*)args->At(1))->GetString() == "/afs/cern.ch/work/i/ivovtin/Hggbb/LT_2D_Y5_DatatoMC_15cat_20032020/2017/LT_DoubleEG.root") ) o_weight=o_weight*2.9*41.5;
-  //if( _normalization==1 && ((string)((TObjString*)args->At(1))->GetString() == "/afs/cern.ch/work/i/ivovtin/Hggbb/LT_2D_Y4_DatatoMC_benriched_05032020/2018/LT_DoubleEG.root") ) o_weight=o_weight*2.9*59.4;
-  if( _normalization==1 && ((string)((TObjString*)args->At(1))->GetString() == "/afs/cern.ch/work/i/ivovtin/Hggbb/LT_2D_Y5_DatatoMC_15cat_20032020/2018/LT_DoubleEG.root") ) o_weight=o_weight*2.9;
-*/   
-  //===========
-
-  //if (o_evt<20) cout<<"o_weight="<<o_weight<<endl;
-
-  //o_weight = 1;
 
   o_mgg = CMS_hgg_mass;
   o_mjj = Mjj;
