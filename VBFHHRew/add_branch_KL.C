@@ -1,16 +1,13 @@
 void add_branch_KL()
 {  
-   TString indirFT = "/afs/cern.ch/work/i/ivovtin/public/legacy_branch_flattrees/vbfhh/2018/2018_160520_SM_wCosTheta_conversion/";
-   //TString indirFT = "/afs/cern.ch/work/i/ivovtin/public/legacy_branch_flattrees/vbfhh/2018/2018_160520_SM_noCosTheta_conversion/";
-   //TString indirFT = "/afs/cern.ch/work/i/ivovtin/public/legacy_branch_flattrees/vbfhh/2018/2018_170520_SM_posmix_wCosTheta_conversion/";
-   //TString indirFT = "/afs/cern.ch/work/i/ivovtin/public/legacy_branch_flattrees/vbfhh/2018/2018_170520_SM_posmix_noCosTheta_conversion/";
-   //TString indirFT = "/afs/cern.ch/work/i/ivovtin/public/legacy_branch_flattrees/vbfhh/2018/2018_160520_c2v0_wCosTheta_conversion/";
-   //TString indirFT = "/afs/cern.ch/work/i/ivovtin/public/legacy_branch_flattrees/vbfhh/2018/2018_170520_c2v0_noCosTheta_conversion/";
+   bool KLscan=0;  
+   bool C2Vscan=1; 
+
+   for (TString year : {"2016","2017","2018"}){
+
+   TString indirFT = "/afs/cern.ch/work/i/ivovtin/public/legacy_branch_flattrees/vbfhhMjjreg/" + year + "/";     
 
    TString outdirFT;
-   bool KLscan=1;  
-   bool C2Vscan=0; 
-
    if ( KLscan ) {
         gSystem->Exec("mkdir " + indirFT + "KL");
 	outdirFT = indirFT + "KL/";
@@ -22,22 +19,27 @@ void add_branch_KL()
 
    //==========================================
    //['VBFHHTo2B2G_CV_1_C2V_1_C3_1', 'VBFHHTo2B2G_CV_1_C2V_1_C3_0', 'VBFHHTo2B2G_CV_1_C2V_1_C3_2', 'VBFHHTo2B2G_CV_1_C2V_2_C3_1', 'VBFHHTo2B2G_CV_1_5_C2V_1_C3_1', 'VBFHHTo2B2G_CV_0_5_C2V_1_C3_1']
+   
+   TString Sig1, Sig2, Sig3, Sig4, Sig5, Sig6; 
 
-   /*  
-   TString Sig1 = "output_VBFHHTo2B2G_CV_1_C2V_1_C3_1_TuneCP5_PSWeights_13TeV-madgraph-pythia8.root";
-   TString Sig2 = "output_VBFHHTo2B2G_CV_1_C2V_1_C3_0_TuneCP5_PSWeights_13TeV-madgraph-pythia8.root";
-   TString Sig3 = "output_VBFHHTo2B2G_CV_1_C2V_1_C3_2_TuneCP5_PSWeights_13TeV-madgraph-pythia8.root";
-   TString Sig4 = "output_VBFHHTo2B2G_CV_1_C2V_2_C3_1_TuneCP5_PSWeights_13TeV-madgraph-pythia8.root";
-   TString Sig5 = "output_VBFHHTo2B2G_CV_1_5_C2V_1_C3_1_TuneCP5_PSWeights_13TeV-madgraph-pythia8.root";
-   TString Sig6 = "output_VBFHHTo2B2G_CV_0_5_C2V_1_C3_1_TuneCP5_PSWeights_13TeV-madgraph-pythia8.root";
-   */
-   TString Sig1 = "output_VBFHHTo2B2G_CV_1_C2V_1_C3_1_dipoleRecoilOff-TuneCP5_PSweights_13TeV-madgraph-pythia8.root";
-   TString Sig2 = "output_VBFHHTo2B2G_CV_1_C2V_1_C3_0_dipoleRecoilOff-TuneCP5_PSweights_13TeV-madgraph-pythia8.root";
-   TString Sig3 = "output_VBFHHTo2B2G_CV_1_C2V_1_C3_2_dipoleRecoilOff-TuneCP5_PSweights_13TeV-madgraph-pythia8.root";
-   TString Sig4 = "output_VBFHHTo2B2G_CV_1_C2V_2_C3_1_dipoleRecoilOff-TuneCP5_PSweights_13TeV-madgraph-pythia8.root";
-   TString Sig5 = "output_VBFHHTo2B2G_CV_1_5_C2V_1_C3_1_dipoleRecoilOff-TuneCP5_PSweights_13TeV-madgraph-pythia8.root";
-   TString Sig6 = "output_VBFHHTo2B2G_CV_0_5_C2V_1_C3_1_dipoleRecoilOff-TuneCP5_PSweights_13TeV-madgraph-pythia8.root";
-
+   if ( year=="2017" || year=="2018" )
+   {
+    Sig1 = "output_VBFHHTo2B2G_CV_1_C2V_1_C3_1_dipoleRecoilOff-TuneCP5_PSweights_13TeV-madgraph-pythia8.root";
+    Sig2 = "output_VBFHHTo2B2G_CV_1_C2V_1_C3_0_dipoleRecoilOff-TuneCP5_PSweights_13TeV-madgraph-pythia8.root";
+    Sig3 = "output_VBFHHTo2B2G_CV_1_C2V_1_C3_2_dipoleRecoilOff-TuneCP5_PSweights_13TeV-madgraph-pythia8.root";
+    Sig4 = "output_VBFHHTo2B2G_CV_1_C2V_2_C3_1_dipoleRecoilOff-TuneCP5_PSweights_13TeV-madgraph-pythia8.root";
+    Sig5 = "output_VBFHHTo2B2G_CV_1_5_C2V_1_C3_1_dipoleRecoilOff-TuneCP5_PSweights_13TeV-madgraph-pythia8.root";
+    Sig6 = "output_VBFHHTo2B2G_CV_0_5_C2V_1_C3_1_dipoleRecoilOff-TuneCP5_PSweights_13TeV-madgraph-pythia8.root";
+   }
+   if ( year=="2016" )
+   {
+    Sig1 = "output_VBFHHTo2B2G_CV_1_C2V_1_C3_1_dipoleRecoilOff-TuneCUETP8M1_PSweights_13TeV-madgraph-pythia8.root";
+    Sig2 = "output_VBFHHTo2B2G_CV_1_C2V_1_C3_0_dipoleRecoilOff-TuneCUETP8M1_PSweights_13TeV-madgraph-pythia8.root";
+    Sig3 = "output_VBFHHTo2B2G_CV_1_C2V_1_C3_2_dipoleRecoilOff-TuneCUETP8M1_PSweights_13TeV-madgraph-pythia8.root";
+    Sig4 = "output_VBFHHTo2B2G_CV_1_C2V_2_C3_1_dipoleRecoilOff-TuneCUETP8M1_PSweights_13TeV-madgraph-pythia8.root";
+    Sig5 = "output_VBFHHTo2B2G_CV_1_5_C2V_1_C3_1_dipoleRecoilOff-TuneCUETP8M1_PSweights_13TeV-madgraph-pythia8.root";
+    Sig6 = "output_VBFHHTo2B2G_CV_0_5_C2V_1_C3_1_dipoleRecoilOff-TuneCUETP8M1_PSweights_13TeV-madgraph-pythia8.root";
+   }
 
    for (TString fname : {Sig1,Sig2,Sig3,Sig4,Sig5,Sig6})
    {
@@ -135,5 +137,9 @@ void add_branch_KL()
       newtree->Print();       
       newfile->Write();
       newfile->Close();
+  }
+
+  gSystem->Exec("hadd " + outdirFT + "output_VBFHHTo2B2G_allnodes_TuneCP5_PSWeights_13TeV-madgraph-pythia8.root " + outdirFT + Sig1 + " "+ outdirFT + Sig2 + " "+ outdirFT + Sig3 + " " + outdirFT + Sig4 + " " + outdirFT + Sig5 + " " + outdirFT + Sig6);
+  gSystem->Exec("rm " + outdirFT + Sig1 + " "+ outdirFT + Sig2 + " "+ outdirFT + Sig3 + " " + outdirFT + Sig4 + " " + outdirFT + Sig5 + " " + outdirFT + Sig6);
   }
 }

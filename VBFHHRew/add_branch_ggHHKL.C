@@ -1,8 +1,8 @@
 void add_branch_ggHHKL()
 {  
-   //TString indirFT = "/afs/cern.ch/work/i/ivovtin/public/legacy_branch_flattrees/vbfhh/2018/2018_SM_c2v01_noCosTheta_conversion/";
-   //TString indirFT = "/afs/cern.ch/work/i/ivovtin/public/legacy_branch_flattrees/vbfhh/2016/2016_SM_c2v01_noCosTheta_conversion/";
-   TString indirFT = "/afs/cern.ch/work/i/ivovtin/public/legacy_branch_flattrees/vbfhh/2017/2017_SM_c2v01_noCosTheta_conversion/";
+   for (TString year : {"2016","2017","2018"}){
+
+   TString indirFT = "/afs/cern.ch/work/i/ivovtin/public/legacy_branch_flattrees/vbfhhMjjreg/" + year + "/";
 
    TString outdirFT;
 
@@ -32,8 +32,6 @@ void add_branch_ggHHKL()
       TFile *newfile = new TFile(outdirFT + fname,"recreate");   
       TTree *newtree = inTree->CloneTree();
       
-      //TTree *newtree = inTree->CloneTree(-1,"KL2");   
-     
       float KL[81];
       TBranch *brKL[81];     
       
@@ -63,6 +61,7 @@ void add_branch_ggHHKL()
             {
                if( fname==Sig1 && (k+1)==inKL ) { KL[k]=weight1; /*cout<<"inKL="<<inKL<<"\t"<<"weight1="<<weight1<<endl;*/ }
                if( fname==Sig2 && (k+1)==inKL ) { KL[k]=weight2; /*cout<<"inKL="<<inKL<<"\t"<<"weight2="<<weight2<<endl;*/ }
+               if( year=="2018" && fname==Sig2 && (k+1)==inKL ) { KL[k]=weight2*(1.026078/0.849527); /*cout<<"inKL="<<inKL<<"\t"<<"weight2="<<weight2<<endl;*/ }   //!!!!!!! - for 2018
                if( fname==Sig3 && (k+1)==inKL ) { KL[k]=weight3; /*cout<<"inKL="<<inKL<<"\t"<<"weight3="<<weight3<<endl;*/ }
             }
         }
@@ -73,5 +72,8 @@ void add_branch_ggHHKL()
       newtree->Print();       
       newfile->Write();
       newfile->Close();
+  }
+  gSystem->Exec("hadd " + outdirFT + "output_GluGluToHHTo2B2G_node_cHHH015_TuneCP5_PSWeights_13TeV-powheg-pythia8.root " + outdirFT + Sig1 + " "+ outdirFT + Sig2 + " "+ outdirFT + Sig3);
+  gSystem->Exec("rm " + outdirFT + Sig1 + " "+ outdirFT + Sig2 + " "+ outdirFT + Sig3);
   }
 }
