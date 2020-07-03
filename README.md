@@ -67,7 +67,7 @@ fitStrategy: 2 - for 2D fit of (mgg, mjj); 1 - for 1D fit of mgg
 The results of the limit will be put at `LIMS_OutDir/Node_SM/result_1.log`.
 
 
- 3. Run the FTest on the workspace ([link](https://github.com/ivovtin/Envelop#ftest))
+ 3. Run the FTest on the workspace ([link](https://github.com/ivovtin/Envelop#ftest-and-functions-for-envelop))
 
  4. Write the orders obtaing from the step 3 to the file from step 1. Example here: [Envelopejson](https://github.com/ivovtin/bbggLimits2018/blob/run2_analysis/jsonsForEnvelope/Env_json_2D_ttHon0.26_31012020.dat)
 
@@ -76,9 +76,9 @@ The results of the limit will be put at `LIMS_OutDir/Node_SM/result_1.log`.
 . run2.sh
 ```
 
-### Importance: You can use CombinedLimit v8.0.1 for release CMSSW_10_2_X - recommended version for extraction limits (https://cms-analysis.github.io/HiggsAnalysis-CombinedLimit/) and skip next 6-8 steps.
+### Importance: You can use CombinedLimit v8.0.1 for release CMSSW_10_2_X - recommended version for extraction limits (https://cms-analysis.github.io/HiggsAnalysis-CombinedLimit/).
 
- 6. Choose the best function for each category using the code below: [link](https://github.com/ivovtin/Envelop#ftest)
+ 6. Choose the best function for each category using the code below: [link](https://github.com/ivovtin/Envelop#reducing-the-number-of-functions-at-the-envelop-important-for-2d-method)
 
  7. Write the best functions to the file from the step 1 like here: [Envelopejson](https://github.com/ivovtin/bbggLimits2018/blob/run2_analysis/jsonsForEnvelope/Env_json_2D_ttHon0.26_31012020.dat) for each category at the column after order numbers. Use comma for separation.
 
