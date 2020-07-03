@@ -104,18 +104,16 @@ The process may take a while to complete, especially when running with many cate
 . runLTs_for_KL.sh
 ```
 
-2. Create a workspace using the produced LTs on condor (1 task ~2 hours):
+2. Create a workspace using the produced LTs on condor (1 task ~2 hours) and performe FTest and choose the best function for each category (see https://github.com/ivovtin/bbggLimits2018/tree/run2_analysis_vbfhh#3-performing-fit-and-extraction-of-limits) only for KL36 (SM) point:
 ```
 . runWSs_for_KL.sh
 ```
 
-3. Performe FTest and choose the best function for each category (see https://github.com/ivovtin/bbggLimits2018/tree/run2_analysis_vbfhh#3-performing-fit-and-extraction-of-limits) only for KL36 (SM) point
-
-4. Set right xs-normalisation:
+3. Set right xs-normalisation:
 ```
 . exchange_normWS_KL.sh
 ``` 
-5. Extract the limit on condor (1 task ~45 minutes):
+4. Extract the limit on condor (1 task ~45 minutes):
 ```
 . run_extLimit_for_KL.sh
 ```
@@ -126,19 +124,17 @@ The process may take a while to complete, especially when running with many cate
 . runLTs_for_C2V.sh
 ```
 
-2. Create a workspace using the produced LTs on condor (1 task ~2 hours):
+2. Create a workspace using the produced LTs on condor (1 task ~2 hours) and performe FTest and choose the best function for each category (see https://github.com/ivovtin/bbggLimits2018/tree/run2_analysis_vbfhh#3-performing-fit-and-extraction-of-limits) only for C2V36 (SM) point:
 ```
 . runWSs_for_C2V.sh
 ```
 
-3. Performe FTest and choose the best function for each category (see https://github.com/ivovtin/bbggLimits2018/tree/run2_analysis_vbfhh#3-performing-fit-and-extraction-of-limits) only for C2V36 (SM) point
-
-4. Set right xs-normalisation and ggHH signal to background:
+3. Set right xs-normalisation and ggHH signal to background:
 ```
 . exchange_normWS_C2V.sh 
 ``` 
 
-5. Extract the limit on condor (1 task ~45 minutes):
+4. Extract the limit on condor (1 task ~45 minutes):
 ```
 . run_extLimit_for_C2V.sh
 ```
