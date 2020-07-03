@@ -99,7 +99,7 @@ The process may take a while to complete, especially when running with many cate
 ### Need check that for VBFHH signal samples inside are present KL and C2V weights. Also need update KL weight for ggHH signal samples. For adding KL and C2V weights using next code: https://github.com/ivovtin/bbggLimits2018/tree/run2_analysis_vbfhh/VBFHHRew#prepare-kl-and-c2v-weights-in-vbfhh-signal-samples
 
 # KL scan
-1. Making limit trees (LTs) for list of KL
+1. Making limit trees (LTs) for list of KL (indicate path to VBFHH signal sample from KL directory [here](https://github.com/ivovtin/bbggLimits2018/blob/d9b8c2ff6bca903a5afe059a26fc4e366cf5a488/makeLT.py#L97))
 ```
 . runLTs_for_KL.sh
 ```
@@ -119,7 +119,7 @@ The process may take a while to complete, especially when running with many cate
 ```
 
 # C2V scan
-1. Making limit trees (LTs) for list of C2V
+1. Making limit trees (LTs) for list of C2V (indicate path to VBFHH signal sample from C2V directory [here](https://github.com/ivovtin/bbggLimits2018/blob/d9b8c2ff6bca903a5afe059a26fc4e366cf5a488/makeLT.py#L98))
 ```
 . runLTs_for_C2V.sh
 ```
