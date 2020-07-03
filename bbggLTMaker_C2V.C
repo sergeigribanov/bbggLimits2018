@@ -159,8 +159,8 @@ void bbggLTMaker::Begin(TTree * /*tree*/)
   _outTree->Branch("catID", &o_catID, "o_catID/I");
   _outTree->Branch("ttHTagger", &o_ttHTagger, "ttHTagger/D");
 
-  _outTree->Branch("vbf_Cat", &o_vbf_Cat, "o_vbf_Cat/I");
-  _outTree->Branch("vbf_Cat_Selected", &o_vbf_Cat_Selected, "o_vbf_Cat_Selected/I");
+  //_outTree->Branch("vbf_Cat", &o_vbf_Cat, "o_vbf_Cat/I");
+  //_outTree->Branch("vbf_Cat_Selected", &o_vbf_Cat_Selected, "o_vbf_Cat_Selected/I");
 
   TString phoSFID_file = TString(std::getenv("CMSSW_BASE")) + TString("/src/HiggsAnalysis/bbggLimits2018/Weights/MVAID/egammaEffi.txt_EGM2D.root");
   if (DEBUG) cout << "phoSFsID file: " << phoSFID_file << endl;
@@ -885,8 +885,65 @@ Bool_t bbggLTMaker::Process(Long64_t entry)
   }
  
   //=============================================================================================================
- 
+  //Categorisation for boundaries from flashgg. VBFHH categories 
+  else if (_whichCategorization==7){
+   if( treeID==12 && leadingJet_pt/Mjj > 0.55 ) {
+       o_catID = 12;
+    }
+    else if( treeID==13 && leadingJet_pt/Mjj > 0.55 ) {
+       o_catID = 13;
+    }
 
+    else{   
+    if (o_MX > boundary_MX_2019[0] && o_MX <= boundary_MX_2019[14] ){
+      if ( treeID==11 && leadingJet_pt/Mjj > 0.55 ){
+        o_catID = 11;
+      }
+      else if ( treeID==10 && leadingJet_pt/Mjj > 0.55 ){
+        o_catID = 10;
+      }
+      else if ( treeID==9 && leadingJet_pt/Mjj > 0.55 ){
+        o_catID = 9;
+      }
+      else if ( treeID==8 && leadingJet_pt/Mjj > 0.55 ){
+        o_catID = 8;
+      }
+      else if ( treeID==7 && leadingJet_pt/Mjj > 0.55 ){
+        o_catID = 7;
+      }
+      else if ( treeID==6 && leadingJet_pt/Mjj > 0.55 ){
+        o_catID = 6;
+      }
+      else if ( treeID==5 && leadingJet_pt/Mjj > 0.55 ){
+        o_catID = 5;
+      }
+      else if ( treeID==4 && leadingJet_pt/Mjj > 0.55 ){
+        o_catID = 4;
+      }
+      else if ( treeID==3 && leadingJet_pt/Mjj > 0.55 ){
+        o_catID = 3;
+      }
+      else if ( treeID==2 && leadingJet_pt/Mjj > 0.55 ){
+        o_catID = 2;
+      }
+      else if ( treeID==1 && leadingJet_pt/Mjj > 0.55 ){
+        o_catID = 1;
+      }
+      else if ( treeID==0 && leadingJet_pt/Mjj > 0.55 ){
+        o_catID = 0;
+      }
+      else {
+        return kTRUE;
+      }
+    }
+    else  {
+      std::cout<<"MX is out of bounds!  MX="<<o_MX<<"\t"<<"MVA="<<HHbbggMVA<<std::endl;
+      return kTRUE;
+    }
+   }
+  }
+
+  //=============================================================================================================
   else {
     std::cout<<"This categorization is not supported: "<<_whichCategorization<<std::endl;
     return kTRUE;
