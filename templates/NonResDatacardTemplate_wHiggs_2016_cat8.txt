@@ -34,7 +34,7 @@ lumi_13TeV              lnN           1.025          1.025          -           
 pdf                     lnN           1.030          1.030          -              1.021      	   1.021          1.025          1.036          1.031
 theory_bbH_scale        lnN           -              -              -              -              0.76/1.2	  -              -              -
 theory_ggHN3LO          lnN           -              -              -              -              -              -              -              1.039
-QCDscale_hh             lnN           0.950/1.022    0.950/1.022    -              -              -              -              -              -
+QCDscale_hh             lnN           0.950/1.022    -              -              -              -              -              -              -
 
 CMS_hbb_sig_m0_absShift  param  1 0.012
 CMS_hbb_sig_sigmaScale   param  1 0.055
