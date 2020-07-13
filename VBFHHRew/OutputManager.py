@@ -81,10 +81,10 @@ class OutputManager:
             VBFreweighter = VBFReweight(inputList)
 
 
-            f=open("outKLweight.txt", "w+")
-            #f=open("outC2Vweight.txt", "w+")
-            fxs=open("outXS_KL.txt", "w+")
-            #fxs=open("outXS_C2V.txt", "w+")
+            #f=open("outKLweight.txt", "w+")
+            f=open("outC2Vweight.txt", "w+")
+            #fxs=open("outXS_KL.txt", "w+")
+            fxs=open("outXS_C2V.txt", "w+")
                 # Get the modeled histogram for each (cv,c2v,kl) target point
 
             for cv in target_cv:
@@ -97,8 +97,8 @@ class OutputManager:
                         print 'coeffs ', "{0:.5f}".format(coefficients[0]*1000), ' ',"{0:.5f}".format(coefficients[1]*1000), "{0:.5f}".format(coefficients[2]*1000), "{0:.5f}".format(coefficients[3]*1000), "{0:.5f}".format(coefficients[4]*1000), "{0:.5f}".format(coefficients[5]*1000), " fb"
 
                         print 'Norm coeffs ', "{0:.5f}".format(coefficients[0]/modeled_xs), ' ',"{0:.5f}".format(coefficients[1]/modeled_xs), "{0:.5f}".format(coefficients[2]/modeled_xs), "{0:.5f}".format(coefficients[3]/modeled_xs), "{0:.5f}".format(coefficients[4]/modeled_xs), "{0:.5f}".format(coefficients[5]/modeled_xs), " for 1 fb"
-                        xsec = 31.05*0.0026*functionGF(kl, 1.0, 0.0, 0.0, 0.0, A13tev)
-                        #xsec = 1.726*0.0026*functionGF(kl, 1.0, 0.0, 0.0, 0.0, A13tev)
+                        xsec = 31.05*0.002633*functionGF(kl, 1.0, 0.0, 0.0, 0.0, A13tev)
+                        #xsec = 1.726*0.002633*functionGF(kl, 1.0, 0.0, 0.0, 0.0, A13tev)
                         print 'xsec ggHHH ', "{0:.5f}".format(xsec)  
 
  

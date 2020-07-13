@@ -83,8 +83,8 @@ class OutputManager:
                         print 'coeffs ', "{0:.5f}".format(coefficients[0]*1000*kfact), ' ',"{0:.5f}".format(coefficients[1]*1000*kfact), "{0:.5f}".format(coefficients[2]*1000*kfact), "{0:.5f}".format(coefficients[3]*1000*kfact), "{0:.5f}".format(coefficients[4]*1000*kfact), "{0:.5f}".format(coefficients[5]*1000*kfact), " fb"
 
                         print 'Norm coeffs ', "{0:.5f}".format(coefficients[0]/modeled_xs), ' ',"{0:.5f}".format(coefficients[1]/modeled_xs), "{0:.5f}".format(coefficients[2]/modeled_xs), "{0:.5f}".format(coefficients[3]/modeled_xs), "{0:.5f}".format(coefficients[4]/modeled_xs), "{0:.5f}".format(coefficients[5]/modeled_xs), " for 1 fb"
-                        xsec = 31.05*0.0026*functionGF(kl, 1.0, 0.0, 0.0, 0.0, A13tev)
-                        #xsec = 1.726*0.0026*functionGF(kl, 1.0, 0.0, 0.0, 0.0, A13tev)
+                        xsec = 31.05*0.002633*functionGF(kl, 1.0, 0.0, 0.0, 0.0, A13tev)
+                        #xsec = 1.726*0.002633*functionGF(kl, 1.0, 0.0, 0.0, 0.0, A13tev)
                         print 'xsec ggHHH from LO*kNNLO*BF', "{0:.5f}".format(xsec)  
 
  
