@@ -14,12 +14,12 @@
 ####################
 
 #samples for VBFHH study
-indir16="/afs/cern.ch/work/i/ivovtin/public/legacy_branch_flattrees/vbfhh/2016/2016_SM_c2v01_noCosTheta_conversion/"
-indir17="/afs/cern.ch/work/i/ivovtin/public/legacy_branch_flattrees/vbfhh/2017/2017_SM_c2v01_noCosTheta_conversion/"
-indir18="/afs/cern.ch/work/i/ivovtin/public/legacy_branch_flattrees/vbfhh/2018/2018_SM_c2v01_noCosTheta_conversion/"
+indir16="/afs/cern.ch/work/i/ivovtin/public/legacy_branch_flattrees/vbfhh/vbfhhV2/2016/"
+indir17="/afs/cern.ch/work/i/ivovtin/public/legacy_branch_flattrees/vbfhh/vbfhhV2/2017/"
+indir18="/afs/cern.ch/work/i/ivovtin/public/legacy_branch_flattrees/vbfhh/vbfhhV2/2018/"
 
 ##Output directory with Limit Tree (LT)
-path=/afs/cern.ch/work/i/ivovtin/Hggbb
+path=/afs/cern.ch/user/s/segriban/test_Hggbb/data/bbggLimits2018
 #path=.
 #LT=LT_2D_Y4_Data_SigNLOkl5_16042020
 LT=LT_ggHHonly_SM_04062020
