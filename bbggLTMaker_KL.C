@@ -5,6 +5,10 @@
 #include <string>
 #include <fstream>
 
+#include <Math/Vector4Dfwd.h>
+#include <Math/GenVector/LorentzVector.h>
+#include <Math/GenVector/PtEtaPhiM4D.h>
+
 const bool DEBUG = 0;
 
 // Cuts for 2016 categorization (_which==0):
@@ -154,6 +158,8 @@ void bbggLTMaker::Begin(TTree * /*tree*/)
   _outTree->Branch("evWeight", &o_weight, "o_weight/D");
   _outTree->Branch("mgg", &o_mgg, "o_mgg/D");
   _outTree->Branch("mjj", &o_mjj, "o_mjj/D");
+  _outTree->Branch("mjjReg", &o_mjj_withMjjreg, "o_mjj_withMjjreg/D");
+  _outTree->Branch("mjjRegL2", &o_mjj_withMjjregL2, "o_mjj_withMjjregL2/D");
   _outTree->Branch("MX",  &o_MX,  "o_MX/D");
   //_outTree->Branch("mbbgg", &o_bbggMass, "o_bbggMass/D");
   _outTree->Branch("catID", &o_catID, "o_catID/I");
@@ -250,8 +256,22 @@ Bool_t bbggLTMaker::Process(Long64_t entry)
   //o_weight = 1;
 
   o_mgg = CMS_hgg_mass;
-  o_mjj = Mjj;
+  //o_mjj = Mjj;
+  //o_mjj = leadingJet_mass/leadingJet_bRegNNCorr + subleadingJet_mass/subleadingJet_bRegNNCorr;
+  //o_mjj = leadingJet_mass + subleadingJet_mass;
   //o_bbggMass = diHiggs_mass;
+
+  //==================================================
+  //with Mjj regression
+  o_mjj_withMjjreg = Mjj;
+  o_mjj_withMjjregL2 = MjjL2;
+  ROOT::Math::PtEtaPhiMVector bp1(leadingJet_pt, leadingJet_eta, leadingJet_phi, leadingJet_mass);
+  ROOT::Math::PtEtaPhiMVector bp2(subleadingJet_pt, subleadingJet_eta, subleadingJet_phi, subleadingJet_mass);
+  //w/o Mjj regression
+  //o_mjj = (bp1/leadingJet_bRegNNCorr + bp2/subleadingJet_bRegNNCorr).M();	
+  //with L2 Reg 
+  o_mjj = MjjL2;
+  //==================================================
 
   o_MX = MX;
 

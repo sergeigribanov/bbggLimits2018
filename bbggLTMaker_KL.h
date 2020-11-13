@@ -26,7 +26,7 @@ public :
    TTree *_outTree;
 
    Double_t o_weight;
-   Double_t o_mgg, o_mjj, o_bbggMass, o_MX, o_ttHTagger;
+   Double_t o_mgg, o_mjj, o_mjj_withMjjreg, o_mjj_withMjjregL2, o_bbggMass, o_MX, o_ttHTagger;
    Int_t o_catID;
    UInt_t o_run;
    ULong64_t o_evt;
@@ -91,6 +91,7 @@ public :
    Int_t           vbf_Cat_Selected;
    Float_t         MX;
    Float_t         Mjj;
+   Float_t         MjjL2;
    Float_t         dijet_pt;
    Float_t         dijet_eta;
    Float_t         dijet_phi;
@@ -176,9 +177,19 @@ public :
    //TBranch        *b_processIndex;   //!
    TBranch        *b_run;   //!
    TBranch        *b_Mjj;
+   TBranch        *b_MjjL2;
    TBranch        *b_vbf_Cat;
    TBranch        *b_vbf_Cat_Selected;
    TBranch        *b_leadingJet_pt;
+   TBranch        *b_leadingJet_eta;
+   TBranch        *b_leadingJet_phi;
+   TBranch        *b_leadingJet_mass;
+   TBranch        *b_leadingJet_bRegNNCorr;
+   TBranch        *b_subleadingJet_pt;
+   TBranch        *b_subleadingJet_eta;
+   TBranch        *b_subleadingJet_phi;
+   TBranch        *b_subleadingJet_mass;
+   TBranch        *b_subleadingJet_bRegNNCorr;
    TBranch        *b_Mgg;
    TBranch        *b_mbbgg;
    TBranch        *b_evWeight;
@@ -244,8 +255,18 @@ void bbggLTMaker::Init(TTree *tree)
    //fChain->SetBranchAddress("MVAOutput_vbf_ggf", &MVAOutput_vbf_ggf, &b_MVAOutput_vbf_ggf);
    //fChain->SetBranchAddress("run", &run, &b_run);
    //fChain->SetBranchAddress("Mjj", &Mjj, &b_Mjj);
+   fChain->SetBranchAddress("Mjj", &MjjL2, &b_MjjL2);
    fChain->SetBranchAddress("Mjj_noMReg", &Mjj, &b_Mjj);
    fChain->SetBranchAddress("leadingJet_pt", &leadingJet_pt, &b_leadingJet_pt);
+   fChain->SetBranchAddress("leadingJet_eta", &leadingJet_eta, &b_leadingJet_eta);
+   fChain->SetBranchAddress("leadingJet_phi", &leadingJet_phi, &b_leadingJet_phi);
+   fChain->SetBranchAddress("leadingJet_mass", &leadingJet_mass, &b_leadingJet_mass);
+   fChain->SetBranchAddress("leadingJet_bRegNNCorr", &leadingJet_bRegNNCorr, &b_leadingJet_bRegNNCorr);
+   fChain->SetBranchAddress("subleadingJet_pt", &subleadingJet_pt, &b_subleadingJet_pt);   
+   fChain->SetBranchAddress("subleadingJet_eta", &subleadingJet_eta, &b_subleadingJet_eta);
+   fChain->SetBranchAddress("subleadingJet_phi", &subleadingJet_phi, &b_subleadingJet_phi);
+   fChain->SetBranchAddress("subleadingJet_mass", &subleadingJet_mass, &b_subleadingJet_mass);
+   fChain->SetBranchAddress("subleadingJet_bRegNNCorr", &subleadingJet_bRegNNCorr, &b_subleadingJet_bRegNNCorr);
    //fChain->SetBranchAddress("MjjReg_mjj", &Mjj, &b_Mjj);
    //fChain->SetBranchAddress("vbf_Cat", &vbf_Cat, &b_vbf_Cat);
    //fChain->SetBranchAddress("vbf_Cat_Selected", &vbf_Cat_Selected, &b_vbf_Cat_Selected);
