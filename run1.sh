@@ -23,7 +23,7 @@ indir17="/afs/cern.ch/work/i/ivovtin/public/legacy_branch_flattrees/vbfhh/vbfhhV
 indir18="/afs/cern.ch/work/i/ivovtin/public/legacy_branch_flattrees/vbfhh/vbfhhV2/2018/"
 
 ##Output directory with Limit Tree (LT)
-path=/afs/cern.ch/user/s/segriban/test_Hggbb/data/bbggLimits2018
+path=/afs/cern.ch/user/s/segriban/test_Hggbb/data/Hggbb
 #path=.
 #LT=LT_2D_Y4_Data_SigNLOkl5_16042020
 #LT=LT_ggHHonly_SM_04062020
