@@ -2,12 +2,12 @@
 
 #!/bin/bash/
 
-indir16="/afs/cern.ch/work/i/ivovtin/public/legacy_branch_flattrees/vbfhhMjjreg/2016/"
-indir17="/afs/cern.ch/work/i/ivovtin/public/legacy_branch_flattrees/vbfhhMjjreg/2017/"
-indir18="/afs/cern.ch/work/i/ivovtin/public/legacy_branch_flattrees/vbfhhMjjreg/2018/"
+indir16="/afs/cern.ch/work/i/ivovtin/public/legacy_branch_flattrees/vbfhh/vbfhhV2/2016/"
+indir17="/afs/cern.ch/work/i/ivovtin/public/legacy_branch_flattrees/vbfhh/vbfhhV2/2017/"
+indir18="/afs/cern.ch/work/i/ivovtin/public/legacy_branch_flattrees/vbfhh/vbfhhV2/2018/"
 
 ##Output directory with Limit Tree (LT)
-path=/afs/cern.ch/work/i/ivovtin/Hggbb
+path=/afs/cern.ch/user/s/segriban/test_Hggbb/data/Hggbb
 #path=.
 Train=ggHH_NLO_12cats_Mjjreg
 #Train=ggHH_NLO_12cats_Mjj

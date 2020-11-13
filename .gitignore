@@ -1,0 +1,17 @@
+*~
+*.pyc
+ws_run*
+*.d
+*.so
+*.pcm
+runWSKL31.sh
+runWSKL36.sh	
+runWSKL46.sh
+conf_defaultKL26.json
+conf_defaultKL31.json
+conf_defaultKL36.json
+conf_defaultKL46.json
+*.root
+python/__init__.py
+runWSKL26.sh
+runWSKL36.sh

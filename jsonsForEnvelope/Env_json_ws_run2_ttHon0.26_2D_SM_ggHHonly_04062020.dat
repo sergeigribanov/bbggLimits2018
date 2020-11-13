@@ -1,0 +1,13 @@
+#orders Ber_mgg Exp_mgg Pow_mgg Ber_mjj Exp_mjj Pow_mjj
+cat 0: 1 1 1 1 1 1 Pow1_Pow1,Pow1_Ber1,Ber1_Pow1
+cat 1: 1 1 1 1 1 1 Ber1_Ber1,Ber1_Exp1,Pow1_Exp1
+cat 2: 2 1 1 1 1 1 Ber2_Ber1,Exp1_Ber1,Ber2_Pow1
+cat 3: 1 1 1 1 1 1 Pow1_Pow1,Ber1_Pow1
+cat 4: 1 1 1 1 1 1 Pow1_Pow1,Pow1_Ber1,Ber1_Ber1
+cat 5: 2 1 1 1 1 1 Ber1_Ber1,Ber2_Pow1,Pow1_Pow1
+cat 6: 1 1 1 1 1 1 Ber1_Exp1,Pow1_Ber1
+cat 7: 2 1 1 1 1 1 Ber2_Ber1,Pow1_Pow1
+cat 8: 1 1 1 1 1 1 Pow1_Pow1,Ber1_Pow1,Ber1_Exp1
+cat 9: 3 1 1 1 1 1 Ber2_Exp1
+cat 10: 2 1 1 1 1 1 Pow1_Pow1,Ber2_Ber1
+cat 11: 3 1 1 1 1 1 Ber1_Ber1,Ber2_Ber1,Pow1_Pow1

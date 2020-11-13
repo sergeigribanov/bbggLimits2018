@@ -148,14 +148,14 @@ void bbggLTMaker::Begin(TTree * /*tree*/)
   _outFile = new TFile(_outFileName, "RECREATE");
   _outTree = new TTree("LT", "A tree for studying new particles");
 
-  _outTree->Branch("run", &o_run, "o_run/i");
+  //_outTree->Branch("run", &o_run, "o_run/i");
   _outTree->Branch("evt", &o_evt, "o_evt/l");
 
   _outTree->Branch("evWeight", &o_weight, "o_weight/D");
   _outTree->Branch("mgg", &o_mgg, "o_mgg/D");
   _outTree->Branch("mjj", &o_mjj, "o_mjj/D");
   _outTree->Branch("MX",  &o_MX,  "o_MX/D");
-  _outTree->Branch("mbbgg", &o_bbggMass, "o_bbggMass/D");
+  //_outTree->Branch("mbbgg", &o_bbggMass, "o_bbggMass/D");
   _outTree->Branch("catID", &o_catID, "o_catID/I");
   _outTree->Branch("ttHTagger", &o_ttHTagger, "ttHTagger/D");
 
@@ -187,7 +187,7 @@ void bbggLTMaker::SlaveBegin(TTree * /*tree*/)
 Bool_t bbggLTMaker::Process(Long64_t entry)
 {
   GetEntry(entry);
-  o_run = run;
+  //o_run = run;
   o_evt = event;
   
   //For SM 
@@ -205,18 +205,24 @@ Bool_t bbggLTMaker::Process(Long64_t entry)
   //if (o_evt<20) cout<<"event="<<event<<"\t"<<"weight="<<weight<<"\t"<<"Mjj="<<Mjj<<"\t"<<"CMS_hgg_mass="<<CMS_hgg_mass<<endl;
   //if (o_evt<20) cout<<"_normalization="<<_normalization<<endl;
   //if (o_evt<20) cout<<"o_weight="<<o_weight<<endl;
-    
+  /*  
   if (_normalization == 35.9) { F_year=F_2016; btagnorm=1.01171; }
   if (_normalization == 41.5) { F_year=F_2017; btagnorm=1.008805; }
   if (_normalization == 59.4) { F_year=F_2018; btagnorm=1.001397; }
-  
+  */
   /*
-  if (_normalization == 35.9) {F_year=NF_2016[36-1]; btagnorm=1.01171;}
-  if (_normalization == 41.5) {F_year=NF_2017[36-1]; btagnorm=1.008805;}
-  if (_normalization == 59.4) {F_year=NF_2018[36-1]; btagnorm=1.001397;}
-  */ 
+  if (_normalization == 35.9) {F_year=NF_2016[46-1]; btagnorm=1.01171;}     //for LO
+  if (_normalization == 41.5) {F_year=NF_2017[46-1]; btagnorm=1.008805;}
+  if (_normalization == 59.4) {F_year=NF_2018[46-1]; btagnorm=1.001397;}
+  */
+  //for NLO ggHH samples
+  if (_normalization == 35.9) { F_year=NF_2016[46-1]; btagnorm=1.011; }
+  if (_normalization == 41.5) { F_year=NF_2017[46-1]; btagnorm=1.013; }
+  if (_normalization == 59.4) { F_year=NF_2018[46-1]; btagnorm=1.004; }
+
   if ( _normalization!=1 && _genDiPhotonFilter==0) {
-    o_weight=o_weight*btagnorm*reweight/(F_year/1.06); //ggHH signal
+    //o_weight=o_weight*btagnorm*reweight/(F_year/1.06); //ggHH signal
+    o_weight=o_weight*btagnorm*reweight; //ggHH signal
     //cout<<"gghh, o_weight="<<o_weight<<"\t"<<"reweight="<<reweight<<"\t"<<"F_year="<<F_year<<endl;
   }
 //  if ( _normalization!=1 && _genDiPhotonFilter==2) 
@@ -245,7 +251,7 @@ Bool_t bbggLTMaker::Process(Long64_t entry)
 
   o_mgg = CMS_hgg_mass;
   o_mjj = Mjj;
-  o_bbggMass = diHiggs_mass;
+  //o_bbggMass = diHiggs_mass;
 
   o_MX = MX;
 

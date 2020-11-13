@@ -303,7 +303,8 @@ def runFullChain(opt, Params, point=None, NRgridPoint=-1, extraLabel=''):
   #JsonForEnvelop = "/afs/cern.ch/user/i/ivovtin/HHggbb/CMSSW_8_1_0/src/HiggsAnalysis/bbggLimits2018/jsonsForEnvelope/Env_json_2D_Data_VBFHH_ggHH_27052020_12cat_withcut.dat"
   #JsonForEnvelop = "/afs/cern.ch/user/i/ivovtin/HHggbb/CMSSW_8_1_0/src/HiggsAnalysis/bbggLimits2018/jsonsForEnvelope/Env_json_2D_Data_VBFHH_ggHH_28062020_Mjjreg.dat"
   #JsonForEnvelop = "/afs/cern.ch/user/i/ivovtin/HHggbb/CMSSW_8_1_0/src/HiggsAnalysis/bbggLimits2018/jsonsForEnvelope/Env_json_2D_Data_VBFHH_ggHH_28062020_Mjj.dat"
-  JsonForEnvelop = "/afs/cern.ch/user/i/ivovtin/HHggbb/CMSSW_8_1_0/src/HiggsAnalysis/bbggLimits2018/jsonsForEnvelope/Env_json_2D_Data_VBFHH_ggHH_02072020_Mjj.dat"
+  # !!! ivan !!! JsonForEnvelop = "/afs/cern.ch/user/i/ivovtin/HHggbb/CMSSW_8_1_0/src/HiggsAnalysis/bbggLimits2018/jsonsForEnvelope/Env_json_2D_Data_VBFHH_ggHH_02072020_Mjj.dat"
+  JsonForEnvelop = "/afs/cern.ch/user/s/segriban/test_Hggbb/CMSSW_8_1_0/src/HiggsAnalysis/bbggLimits2018/jsonsForEnvelope/Env_json_ws_run2_ttHon0.26_2D_SM_ggHHonly_04062020.dat"
   fitresults = theFitter.BkgModelFit(JsonForEnvelop)
   wsMultipdfFileBkgName = "ws_hhbbgg.data_bkg_multipdf"
   theFitter.BkgMultiModelFitAllOrders(wsMultipdfFileBkgName, JsonForEnvelop)

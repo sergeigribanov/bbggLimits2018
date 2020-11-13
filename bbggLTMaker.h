@@ -57,6 +57,7 @@ public :
    //Variables from the input tree:
    
    typedef ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<double> > LorentzVector;
+   //Int_t           treeID;
    Int_t           candidate_id;
    Float_t         weight;
    Float_t         reweight;
@@ -81,8 +82,8 @@ public :
    Float_t         sigmaMOverMDecorr;
    Float_t         sigmaMJets;
    Float_t         PhoJetMinDr;
-   //Float_t        HHbbggMVA;
-   Double_t        HHbbggMVA;
+   Float_t         HHbbggMVA;
+   //Double_t        HHbbggMVA;
    Float_t         MVAOutputTransformed;
    Float_t         MVAOutput_vbf_gg;
    Float_t         MVAOutput_vbf_ggf;
@@ -164,6 +165,7 @@ public :
    TBranch        *b_HHTagger_HM;   //!
 
    TBranch        *b_MX;   //!
+   //TBranch        *b_treeID; 
    TBranch        *b_ttHTagger;
    //TBranch        *b_nelecs;   //!
    //TBranch        *b_nelecs_loose;   //!
@@ -231,37 +233,36 @@ void bbggLTMaker::Init(TTree *tree)
    fChain = tree;
    //fChain->SetBranchAddress("leadingJet_DeepCSV", &leadingJet_DeepCSV, &b_leadingJet_bDis);
    //fChain->SetBranchAddress("subleadingJet_DeepCSV", &subleadingJet_DeepCSV, &b_subleadingJet_bDis);
-   fChain->SetBranchAddress("MX", &MX, &b_MX);
+   //fChain->SetBranchAddress("treeID", &treeID, &b_treeID);
+   fChain->SetBranchAddress("MX_noMReg", &MX, &b_MX);
+   //fChain->SetBranchAddress("MX", &MX, &b_MX);
    fChain->SetBranchAddress("event", &event, &b_event);
-   //fChain->SetBranchAddress("HHbbggMVA", &HHbbggMVA, &b_HHbbggMVA);
-   fChain->SetBranchAddress("MVAwoMjj", &HHbbggMVA, &b_HHbbggMVA);                     //MVA training w/o include Mjj
+   fChain->SetBranchAddress("HHbbggMVA", &HHbbggMVA, &b_HHbbggMVA);
+   //fChain->SetBranchAddress("MVAwoMjj", &HHbbggMVA, &b_HHbbggMVA);                     //MVA training w/o include Mjj
    //fChain->SetBranchAddress("MVAwithMjj", &HHbbggMVA, &b_HHbbggMVA);                 //MVA training with include Mjj   
-   fChain->SetBranchAddress("MVAOutput_vbf_gg", &MVAOutput_vbf_gg, &b_MVAOutput_vbf_gg);
-   fChain->SetBranchAddress("MVAOutput_vbf_ggf", &MVAOutput_vbf_ggf, &b_MVAOutput_vbf_ggf);
-   fChain->SetBranchAddress("run", &run, &b_run);
-   fChain->SetBranchAddress("Mjj", &Mjj, &b_Mjj);
+   //fChain->SetBranchAddress("MVAOutput_vbf_gg", &MVAOutput_vbf_gg, &b_MVAOutput_vbf_gg);
+   //fChain->SetBranchAddress("MVAOutput_vbf_ggf", &MVAOutput_vbf_ggf, &b_MVAOutput_vbf_ggf);
+   //fChain->SetBranchAddress("run", &run, &b_run);
+   //fChain->SetBranchAddress("Mjj", &Mjj, &b_Mjj);
+   fChain->SetBranchAddress("Mjj_noMReg", &Mjj, &b_Mjj);
    fChain->SetBranchAddress("leadingJet_pt", &leadingJet_pt, &b_leadingJet_pt);
    //fChain->SetBranchAddress("MjjReg_mjj", &Mjj, &b_Mjj);
-   fChain->SetBranchAddress("vbf_Cat", &vbf_Cat, &b_vbf_Cat);
-   fChain->SetBranchAddress("vbf_Cat_Selected", &vbf_Cat_Selected, &b_vbf_Cat_Selected);
+   //fChain->SetBranchAddress("vbf_Cat", &vbf_Cat, &b_vbf_Cat);
+   //fChain->SetBranchAddress("vbf_Cat_Selected", &vbf_Cat_Selected, &b_vbf_Cat_Selected);
    fChain->SetBranchAddress("CMS_hgg_mass", &CMS_hgg_mass, &b_Mgg);
-   fChain->SetBranchAddress("diHiggs_mass", &diHiggs_mass, &b_mbbgg);
+   //fChain->SetBranchAddress("diHiggs_mass", &diHiggs_mass, &b_mbbgg);
    fChain->SetBranchAddress("weight", &weight, &b_evWeight);
-   
+   /*
    if(fChain->GetBranch("benchmark_reweight_SM")) {
       fChain->SetBranchAddress("benchmark_reweight_SM", &reweight, &b_reWeight);
    }
-   
-   /*
    if(fChain->GetBranch("C2V79")) {
       fChain->SetBranchAddress("C2V79", &reweightvbfhh, &b_reWeightvbfhh);
    }
-   */
-   /*
-   if(fChain->GetBranch("KL36")) {
-      fChain->SetBranchAddress("KL36", &reweight, &b_reWeight);
+   */  
+   if(fChain->GetBranch("KL46")) {
+      fChain->SetBranchAddress("KL46", &reweight, &b_reWeight);
    }
-   */
    fChain->SetBranchAddress("ttHScore", &ttHScore, &b_ttHTagger);
 }
 
