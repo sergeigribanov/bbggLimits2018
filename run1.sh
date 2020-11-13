@@ -3,9 +3,9 @@
 ##./makeLT.py /afs/cern.ch/work/i/ivovtin/public/ForMaxim/new_flattrees2017/st_variables/ -x nonres -o /afs/cern.ch/work/i/ivovtin/Hggbb/LT_OutDir -c 3
 
 #Input directory with samples
-#indir16="/afs/cern.ch/user/i/ivovtin/workarea/public/legacy_branch_flattrees/synch/2016/"
-#indir17="/afs/cern.ch/user/i/ivovtin/workarea/public/legacy_branch_flattrees/synch/2017/"
-#indir18="/afs/cern.ch/user/i/ivovtin/workarea/public/legacy_branch_flattrees/synch/2018/"
+##indir16="/afs/cern.ch/user/i/ivovtin/workarea/public/legacy_branch_flattrees/synch/2016/"
+##indir17="/afs/cern.ch/user/i/ivovtin/workarea/public/legacy_branch_flattrees/synch/2017/"
+##indir18="/afs/cern.ch/user/i/ivovtin/workarea/public/legacy_branch_flattrees/synch/2018/"
 
 ######For L2 Regression from Stepan
 #indir16="/afs/cern.ch/user/s/stzakhar/afs/mjj_reg_output/2016/"
@@ -14,15 +14,20 @@
 ####################
 
 #samples for VBFHH study
-indir16="/afs/cern.ch/work/i/ivovtin/public/legacy_branch_flattrees/vbfhh/2016/2016_SM_c2v01_noCosTheta_conversion/"
-indir17="/afs/cern.ch/work/i/ivovtin/public/legacy_branch_flattrees/vbfhh/2017/2017_SM_c2v01_noCosTheta_conversion/"
-indir18="/afs/cern.ch/work/i/ivovtin/public/legacy_branch_flattrees/vbfhh/2018/2018_SM_c2v01_noCosTheta_conversion/"
+#indir16="/afs/cern.ch/work/i/ivovtin/public/legacy_branch_flattrees/vbfhh/2016/2016_SM_c2v01_noCosTheta_conversion/"
+#indir17="/afs/cern.ch/work/i/ivovtin/public/legacy_branch_flattrees/vbfhh/2017/2017_SM_c2v01_noCosTheta_conversion/"
+#indir18="/afs/cern.ch/work/i/ivovtin/public/legacy_branch_flattrees/vbfhh/2018/2018_SM_c2v01_noCosTheta_conversion/"
+
+indir16="/afs/cern.ch/work/i/ivovtin/public/legacy_branch_flattrees/vbfhh/vbfhhV2/2016/" 
+indir17="/afs/cern.ch/work/i/ivovtin/public/legacy_branch_flattrees/vbfhh/vbfhhV2/2017/"
+indir18="/afs/cern.ch/work/i/ivovtin/public/legacy_branch_flattrees/vbfhh/vbfhhV2/2018/"
 
 ##Output directory with Limit Tree (LT)
 path=/afs/cern.ch/work/i/ivovtin/Hggbb
 #path=.
 #LT=LT_2D_Y4_Data_SigNLOkl5_16042020
-LT=LT_ggHHonly_SM_04062020
+#LT=LT_ggHHonly_SM_04062020
+LT=LT_ggHHonly_SM_cHHH015_04112020_NLO
 
 out="$path/$LT"
 
