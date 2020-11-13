@@ -1,5 +1,5 @@
 {
-    "LTDIR" : "/afs/cern.ch/user/s/segriban/test_Hggbb/data/Hggbb/LT_2D_Y2_31012020/merged",
+    "LTDIR" : "/afs/cern.ch/user/s/segriban/test_Hggbb/data/Hggbb/LT_ggHHonly_SM_cHHH015_04112020_NLO/merged",
     "RooFitTemplateName" : "templates/models_2D_higgs_mjj70",
     "ncat" : 12,
     "doDoubleSidedCB": 1,
