@@ -1,5 +1,5 @@
 {
-    "LTDIR" : "/afs/cern.ch/work/i/ivovtin/Hggbb/ggHH_NLO_12cats_Mjjreg/KLscan/merged/LT_vbfhh_KL36",
+    "LTDIR" : "/afs/cern.ch/work/i/ivovtin/Hggbb/ggHH_NLO_12cats_MjjL2_04112020/KLscan/merged/LT_vbfhh_KL36",
     "RooFitTemplateName" : "templates/models_2D_higgs_mjj70",
     "ncat" : 12,
     "doDoubleSidedCB": 1,
