@@ -9,8 +9,7 @@ indir18="/afs/cern.ch/work/i/ivovtin/public/legacy_branch_flattrees/vbfhhMjjreg/
 ##Output directory with Limit Tree (LT)
 path=/afs/cern.ch/work/i/ivovtin/Hggbb
 #path=.
-Train=ggHH_NLO_12cats_Mjjreg
-#Train=ggHH_NLO_12cats_Mjj
+Train=ggHH_NLO_12cats_MjjL2_04112020
 Scan=KLscan
 LT=LT_vbfhh_KL46
 
